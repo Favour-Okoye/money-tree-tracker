@@ -1,0 +1,63 @@
+name: poll-feeds
+
+on:
+  schedule:
+    - cron: "17 */3 * * *" # :17 offset — top-of-hour crons are delayed the most
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: poll
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - run: pip install -r pipeline/requirements.txt
+
+      - name: Poll RSS feed
+        id: poll
+        run: python -m pipeline.poll
+
+      - name: Commit catalog updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No catalog changes."
+          else
+            NEW="${{ steps.poll.outputs.new_count }}"
+            if [ "$NEW" != "0" ]; then MSG="data: +$NEW new video(s)"; else MSG="data: catalog refresh"; fi
+            git commit -m "$MSG"
+            git push
+          fi
+
+      - name: Email alert
+        if: steps.poll.outputs.new_count != '0'
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_APP_PASSWORD: ${{ secrets.MAIL_APP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python -m pipeline.notify
+
+      # Prevents the Supabase free project from pausing after ~7 idle days,
+      # and doubles as a standing RLS check (must return zero rows).
+      - name: Supabase keepalive
+        if: vars.VITE_SUPABASE_URL != ''
+        run: |
+          curl -s -o /dev/null -w "keepalive HTTP %{http_code}\n" \
+            "${{ vars.VITE_SUPABASE_URL }}/rest/v1/profiles?select=user_id&limit=1" \
+            -H "apikey: ${{ vars.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ vars.VITE_SUPABASE_ANON_KEY }}"

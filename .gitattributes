@@ -1,0 +1,4 @@
+# Keep the repo LF everywhere so CI-written data files never produce phantom diffs.
+* text=auto eol=lf
+*.png binary
+*.ico binary

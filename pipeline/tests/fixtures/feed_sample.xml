@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UCZe6cjgY3eVvePd3DQR6uig"/>
+ <id>yt:channel:Ze6cjgY3eVvePd3DQR6uig</id>
+ <yt:channelId>Ze6cjgY3eVvePd3DQR6uig</yt:channelId>
+ <title>Grace Ofure Zone</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCZe6cjgY3eVvePd3DQR6uig"/>
+ <author>
+  <name>Grace Ofure Zone</name>
+  <uri>https://www.youtube.com/channel/UCZe6cjgY3eVvePd3DQR6uig</uri>
+ </author>
+ <published>2015-06-01T00:00:00+00:00</published>
+ <entry>
+  <id>yt:video:testvid0001</id>
+  <yt:videoId>testvid0001</yt:videoId>
+  <yt:channelId>UCZe6cjgY3eVvePd3DQR6uig</yt:channelId>
+  <title>WHY HARD WORK ALONE WILL NEVER MAKE YOU WEALTHY</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=testvid0001"/>
+  <author>
+   <name>Grace Ofure Zone</name>
+   <uri>https://www.youtube.com/channel/UCZe6cjgY3eVvePd3DQR6uig</uri>
+  </author>
+  <published>2026-08-19T09:00:00+00:00</published>
+  <updated>2026-08-19T10:12:00+00:00</updated>
+  <media:group>
+   <media:title>WHY HARD WORK ALONE WILL NEVER MAKE YOU WEALTHY</media:title>
+   <media:content url="https://www.youtube.com/v/testvid0001?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/testvid0001/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Wealth is built through leverage, not effort alone. In this video I break down the three levers.</media:description>
+   <media:community>
+    <media:starRating count="120" average="5.00" min="1" max="5"/>
+    <media:statistics views="4021"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:testvid0002</id>
+  <yt:videoId>testvid0002</yt:videoId>
+  <yt:channelId>UCZe6cjgY3eVvePd3DQR6uig</yt:channelId>
+  <title>THE BIGGEST LIE YOU'VE BEEN TOLD ABOUT REAL ESTATE</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=testvid0002"/>
+  <author>
+   <name>Grace Ofure Zone</name>
+   <uri>https://www.youtube.com/channel/UCZe6cjgY3eVvePd3DQR6uig</uri>
+  </author>
+  <published>2026-08-17T15:30:00+00:00</published>
+  <updated>2026-08-17T16:00:00+00:00</updated>
+  <media:group>
+   <media:title>THE BIGGEST LIE YOU'VE BEEN TOLD ABOUT REAL ESTATE</media:title>
+   <media:content url="https://www.youtube.com/v/testvid0002?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/testvid0002/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Most people wait until they are rich to invest. Here is why that is backwards.</media:description>
+   <media:community>
+    <media:starRating count="98" average="5.00" min="1" max="5"/>
+    <media:statistics views="3550"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:testvid0003</id>
+  <yt:videoId>testvid0003</yt:videoId>
+  <yt:channelId>UCZe6cjgY3eVvePd3DQR6uig</yt:channelId>
+  <title>New Money Summit Event - London 2026</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=testvid0003"/>
+  <author>
+   <name>Grace Ofure Zone</name>
+   <uri>https://www.youtube.com/channel/UCZe6cjgY3eVvePd3DQR6uig</uri>
+  </author>
+  <published>2026-08-15T08:00:00+00:00</published>
+  <updated>2026-08-15T08:45:00+00:00</updated>
+  <media:group>
+   <media:title>New Money Summit Event - London 2026</media:title>
+   <media:content url="https://www.youtube.com/v/testvid0003?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/testvid0003/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Join me at the InterContinental London - The O2 on September 5th.</media:description>
+   <media:community>
+    <media:starRating count="75" average="5.00" min="1" max="5"/>
+    <media:statistics views="2100"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>

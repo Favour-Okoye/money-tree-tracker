@@ -1,0 +1,33 @@
+{
+  "source": "https://www.graceofure.com/grace-ofure-my-books",
+  "books": [
+    {
+      "slug": "co-investment",
+      "title": "Co-Investment",
+      "subtitle": null,
+      "emoji": "🤝",
+      "buy_url": "https://www.graceofure.com/grace-ofure-my-books"
+    },
+    {
+      "slug": "theres-a-land-for-you",
+      "title": "There's a Land For You",
+      "subtitle": null,
+      "emoji": "🏝️",
+      "buy_url": "https://www.graceofure.com/grace-ofure-my-books"
+    },
+    {
+      "slug": "billionaire-co-investor",
+      "title": "The Billionaire Co-Investor",
+      "subtitle": "A Pathway to Affluence",
+      "emoji": "💎",
+      "buy_url": "https://www.graceofure.com/grace-ofure-my-books"
+    },
+    {
+      "slug": "9-to-5-is-not-a-scam",
+      "title": "9 to 5 is Not a Scam!",
+      "subtitle": null,
+      "emoji": "💼",
+      "buy_url": "https://www.graceofure.com/grace-ofure-my-books"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "note": "Guest appearances on other channels. Hand-maintained: add entries here and commit.",
+  "appearances": [
+    {
+      "id": "8gSOCos_QD4",
+      "title": "Grace Ofure Gets Real on Money, Men & Power",
+      "host_show": "The Honest Bunch Podcast",
+      "url": "https://www.youtube.com/watch?v=8gSOCos_QD4",
+      "published_at": "2025-10-13T00:00:00Z"
+    },
+    {
+      "id": "HhTSlxHttMU",
+      "title": "Is Wealth Really This Simple? Grace Ofure Breaks It Down",
+      "host_show": "Jay On Air",
+      "url": "https://www.youtube.com/watch?v=HhTSlxHttMU",
+      "published_at": "2025-10-11T00:00:00Z"
+    }
+  ]
+}
