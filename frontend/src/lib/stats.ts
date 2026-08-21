@@ -3,11 +3,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./supabase";
 import { useAuth } from "./auth";
 import { brusselsDay } from "./format";
-import { awardCustom } from "./xp";
+import { award, awardCustom, watchPoints } from "./xp";
 import { XP_POINTS } from "./xp";
 import { BADGES, type BadgeContext } from "./badges";
 import { useStatuses } from "./queries";
-import { useCatalog } from "./catalog";
+import { useAppearances, useCatalog } from "./catalog";
 import { useQuizResults } from "./quiz";
 
 export interface XpDay {
@@ -114,6 +114,7 @@ export function useGrowth() {
   const xpDaysQ = useXpDays();
   const statusesQ = useStatuses();
   const catalogQ = useCatalog();
+  const appearQ = useAppearances();
   const countsQ = useProgressCounts();
   const quizzesQ = useQuizResults();
   const maintained = useRef(false);
@@ -151,7 +152,8 @@ export function useGrowth() {
   const quizzesDone = (quizzesQ.data ?? []).filter((r) => r.status === "done").length;
 
   const ready =
-    !!session && xpDaysQ.isSuccess && statusesQ.isSuccess && countsQ.isSuccess && quizzesQ.isSuccess;
+    !!session && xpDaysQ.isSuccess && statusesQ.isSuccess && countsQ.isSuccess && quizzesQ.isSuccess &&
+    catalogQ.isSuccess && appearQ.isSuccess;
 
   const badgeCtx: BadgeContext | null = ready
     ? {
@@ -177,6 +179,40 @@ export function useGrowth() {
     maintained.current = true;
     const run = async () => {
       const sb = supabase!;
+
+      // Ledger repair: anything watched/engaged that never earned (a pre-fix bug)
+      // gets credited now at the correct tier. Dedupe makes this safe to repeat.
+      const { data: earned } = await sb
+        .from("xp_events")
+        .select("action, ref_type, ref_id")
+        .in("action", ["watch_video", "engage_video", "complete_training"]);
+      const have = new Set(
+        ((earned ?? []) as { action: string; ref_type: string; ref_id: string }[]).map(
+          (r) => `${r.action}:${r.ref_type}:${r.ref_id}`
+        )
+      );
+      const durations = new Map<string, { d: number | null; short: boolean | null }>();
+      for (const v of catalogQ.data?.videos ?? []) durations.set(v.id, { d: v.duration_s, short: v.is_short });
+      for (const a of appearQ.data?.appearances ?? []) durations.set(a.id, { d: a.duration_s ?? null, short: false });
+      let repaired = 0;
+      for (const st of Object.values(statuses)) {
+        const k = `${st.media_type}:${st.media_id}`;
+        if (st.status === "watched") {
+          if (st.media_type === "hub_resource") {
+            if (!have.has(`complete_training:${k}`)) { await award("complete_training", st.media_type, st.media_id, true); repaired++; }
+          } else if (!have.has(`watch_video:${k}`)) {
+            const info = durations.get(st.media_id);
+            await awardCustom("watch_video", st.media_type, st.media_id, watchPoints(info?.d, info?.short), true);
+            repaired++;
+          }
+        }
+        if ((st.liked || st.commented) && !have.has(`engage_video:${k}`)) {
+          await award("engage_video", st.media_type, st.media_id, true);
+          repaired++;
+        }
+      }
+      if (repaired) void qc.invalidateQueries({ queryKey: ["xp_days", session.user.id] });
+
       await sb
         .from("profiles")
         .update({

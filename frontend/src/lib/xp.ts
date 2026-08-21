@@ -35,7 +35,7 @@ export function watchPoints(durationS: number | null | undefined, isShort: boole
  * conflict just means "already earned for this item".
  * Silently instrumented from Phase 1; the dashboard reads it in Phase 5.
  */
-export async function award(action: XpAction, refType: string, refId: string): Promise<boolean> {
+export async function award(action: XpAction, refType: string, refId: string, silent = false): Promise<boolean> {
   if (!supabase) return false;
   const day = brusselsDay();
   const { error } = await supabase.from("xp_events").insert({
@@ -49,7 +49,7 @@ export async function award(action: XpAction, refType: string, refId: string): P
     console.warn("xp award failed:", error.message);
     return false;
   }
-  if (!error) announce(XP_POINTS[action]);
+  if (!error && !silent) announce(XP_POINTS[action]);
   if (action !== "daily_streak_tick") {
     // one activity tick per Brussels-local day, fuels streaks later
     await supabase.from("xp_events").insert({
@@ -69,7 +69,8 @@ export async function awardCustom(
   action: string,
   refType: string,
   refId: string,
-  points: number
+  points: number,
+  silent = false
 ): Promise<boolean> {
   if (!supabase) return false;
   const { error } = await supabase.from("xp_events").insert({
@@ -83,7 +84,7 @@ export async function awardCustom(
     console.warn("xp awardCustom failed:", error.message);
     return false;
   }
-  if (!error) announce(points);
+  if (!error && !silent) announce(points);
   return !error;
 }
 

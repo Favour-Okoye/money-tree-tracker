@@ -68,22 +68,13 @@ export function useUpdateStatus() {
         .from("media_status")
         .upsert(row, { onConflict: "user_id,media_type,media_id" });
       if (error) throw error;
-
-      if (patch.status === "watched" && existing?.status !== "watched") {
-        if (patch.mediaType === "hub_resource") {
-          await award("complete_training", patch.mediaType, patch.mediaId);
-        } else {
-          await awardCustom("watch_video", patch.mediaType, patch.mediaId, watchPoints(patch.durationS, patch.isShort));
-        }
-      }
-      if ((patch.liked && !existing?.liked) || (patch.commented && !existing?.commented)) {
-        await award("engage_video", patch.mediaType, patch.mediaId);
-      }
       return row;
     },
     onMutate: async (patch) => {
       await qc.cancelQueries({ queryKey: key });
       const prev = qc.getQueryData<StatusMap>(key);
+      // Snapshot the row BEFORE the optimistic update: XP decisions use this.
+      const before = prev?.[statusKey(patch.mediaType, patch.mediaId)];
       qc.setQueryData<StatusMap>(key, (old = {}) => ({
         ...old,
         [statusKey(patch.mediaType, patch.mediaId)]: mergePatch(
@@ -91,7 +82,21 @@ export function useUpdateStatus() {
           patch
         ),
       }));
-      return { prev };
+      return { prev, before };
+    },
+    onSuccess: async (_row, patch, ctx) => {
+      const before = ctx?.before;
+      if (patch.status === "watched" && before?.status !== "watched") {
+        if (patch.mediaType === "hub_resource") {
+          await award("complete_training", patch.mediaType, patch.mediaId);
+        } else {
+          await awardCustom("watch_video", patch.mediaType, patch.mediaId, watchPoints(patch.durationS, patch.isShort));
+        }
+      }
+      if ((patch.liked && !before?.liked) || (patch.commented && !before?.commented)) {
+        await award("engage_video", patch.mediaType, patch.mediaId);
+      }
+      void qc.invalidateQueries({ queryKey: ["xp_days", session?.user.id] });
     },
     onError: (_err, _patch, ctx) => {
       if (ctx?.prev) qc.setQueryData(key, ctx.prev);
