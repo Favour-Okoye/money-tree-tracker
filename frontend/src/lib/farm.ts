@@ -150,6 +150,8 @@ export interface FarmState {
   loans: Loan[];
   skills: Skills;
   pendingExam: PendingExam | null;
+  prepaid: Partial<Record<CourseId, number>>; // exam credits already paid for
+  examVersion?: number;
   creditScore: number;
   marketMood: number;
   history: MonthReport[];
@@ -202,6 +204,8 @@ export function newFarm(today = brusselsDay()): FarmState {
     loans: [],
     skills: { ...EMPTY_SKILLS },
     pendingExam: null,
+    prepaid: {},
+    examVersion: 2,
     creditScore: 70,
     marketMood: 1,
     history: [],
@@ -250,11 +254,25 @@ export function livingCost(state: FarmState): number {
 /** Old saves predate some courses / the exam flow. */
 export function normalizeFarm(raw: FarmState): FarmState {
   const legacy = raw.skills as unknown as { salary?: number };
-  return {
-    ...raw,
-    skills: { ...EMPTY_SKILLS, ...raw.skills, career: raw.skills.career ?? legacy.salary ?? 0 },
-    pendingExam: raw.pendingExam ?? null,
-  };
+  const skills: Skills = { ...EMPTY_SKILLS, ...raw.skills, career: raw.skills.career ?? legacy.salary ?? 0 };
+  const prepaid: Partial<Record<CourseId, number>> = { ...(raw.prepaid ?? {}) };
+  let log = raw.log;
+  // Levels bought under the old one-tap system become prepaid exams:
+  // tuition stays paid, the bar resets, each level must now be passed.
+  if ((raw.examVersion ?? 1) < 2) {
+    let converted = 0;
+    for (const id of Object.keys(skills) as CourseId[]) {
+      if (skills[id] > 0) {
+        prepaid[id] = (prepaid[id] ?? 0) + skills[id];
+        converted += skills[id];
+        skills[id] = 0;
+      }
+    }
+    if (converted) {
+      log = [{ month: raw.month, text: `${converted} course level(s) converted to prepaid exams — pass them to earn the levels back` }, ...raw.log].slice(0, 40);
+    }
+  }
+  return { ...raw, skills, prepaid, examVersion: 2, pendingExam: raw.pendingExam ?? null, log };
 }
 export function netWorth(state: FarmState): number {
   return round(
@@ -339,12 +357,20 @@ export function sellAsset(state: FarmState, assetId: string): FarmState {
 export function enrolCourse(state: FarmState, course: CourseDef): FarmState {
   if (state.pendingExam) return state;
   const level = state.skills[course.id] + 1;
-  if (level > course.max || state.cash < course.price) return state;
+  const credits = state.prepaid[course.id] ?? 0;
+  if (level > course.max) return state;
+  if (credits === 0 && state.cash < course.price) return state;
   return {
     ...state,
-    cash: state.cash - course.price,
+    cash: credits ? state.cash : state.cash - course.price,
+    prepaid: credits ? { ...state.prepaid, [course.id]: credits - 1 } : state.prepaid,
     pendingExam: { course: course.id, level, attempts: 0 },
-    log: [{ month: state.month, text: `Enrolled: ${course.name} level ${level} — pass the exam to level up`, amount: -course.price }, ...state.log].slice(0, 40),
+    log: [
+      credits
+        ? { month: state.month, text: `Exam opened: ${course.name} level ${level} (prepaid)` }
+        : { month: state.month, text: `Enrolled: ${course.name} level ${level} — pass the exam to level up`, amount: -course.price },
+      ...state.log,
+    ].slice(0, 40),
   };
 }
 

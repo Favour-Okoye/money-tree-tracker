@@ -272,6 +272,7 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
       <p className="-mt-1 text-[11px] text-stone-400">Pay once per level, then pass the exam. Wrong answers are free — but the bar only moves when you get it right.</p>
       {COURSES.map((c) => {
         const level = state.skills[c.id];
+        const credits = state.prepaid[c.id] ?? 0;
         const mine = exam?.course === c.id;
         const maxed = level >= c.max;
         return (
@@ -285,22 +286,22 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
                   {Array.from({ length: c.max }, (_, i) => (
                     <span
                       key={i}
-                      className={`h-2 flex-1 rounded-full ${i < level ? "bg-green-600" : mine && i === level ? "animate-pulse bg-amber-400" : "bg-stone-200"}`}
+                      className={`h-2 flex-1 rounded-full ${i < level ? "bg-green-600" : mine && i === level ? "animate-pulse bg-amber-400" : i < level + credits + (mine ? 1 : 0) ? "bg-amber-200" : "bg-stone-200"}`}
                     />
                   ))}
                 </div>
-                <p className="mt-1 text-[10px] font-bold text-stone-400">level {level} of {c.max}{maxed ? " · mastered 🎓" : ""}</p>
+                <p className="mt-1 text-[10px] font-bold text-stone-400">level {level} of {c.max}{maxed ? " · mastered 🎓" : credits ? ` · ${credits} prepaid exam${credits > 1 ? "s" : ""} waiting` : ""}</p>
               </div>
               {maxed ? null : mine ? (
                 <span className="rounded-full bg-amber-400 px-3 py-1 text-[11px] font-black text-green-900">exam ↓</span>
               ) : (
                 <button
-                  disabled={!!exam || state.cash < c.price}
+                  disabled={!!exam || (credits === 0 && state.cash < c.price)}
                   onClick={() => save(enrolCourse(state, c))}
                   title={exam ? "Finish your current exam first" : ""}
-                  className="rounded-full bg-green-700 px-3 py-1 text-xs font-black text-white disabled:opacity-40"
+                  className={`rounded-full px-3 py-1 text-xs font-black disabled:opacity-40 ${credits ? "bg-amber-400 text-green-900" : "bg-green-700 text-white"}`}
                 >
-                  Enrol · {eur(c.price)}
+                  {credits ? "Take exam · prepaid" : `Enrol · ${eur(c.price)}`}
                 </button>
               )}
             </div>
