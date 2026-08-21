@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-08-21T00:08:08Z",
-  "count": 894,
+  "generated_at": "2026-08-21T00:08:22Z",
+  "count": 895,
   "videos": [
+    {
+      "id": "-a3MdQLfbag",
+      "title": "If you want to move your family to Dubai of sponsor them, you need to know this. #dubia #abroad",
+      "published_at": "2026-08-20T17:00:20Z",
+      "first_seen_at": "2026-08-21T00:08:22Z",
+      "thumbnail": "https://i2.ytimg.com/vi/-a3MdQLfbag/hqdefault.jpg",
+      "description_snippet": "",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "25lp6cF39Cc",
       "title": "WHY HARD WORK ALONE WILL NEVER MAKE YOU WEALTHY HARD WORK",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/hPlnsHnqk1Q/mqdefault.jpg",
       "description_snippet": "",
       "duration_s": 24,
-      "is_short": true,
-      "removed": false,
-      "source": "ytdlp"
-    },
-    {
-      "id": "7LC0YZuW6qI",
-      "title": "FOLLOW THIS SYSTEM AND CHANGE  LIVES",
-      "published_at": "2026-07-21T00:00:00Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/7LC0YZuW6qI/mqdefault.jpg",
-      "description_snippet": "",
-      "duration_s": 57,
       "is_short": true,
       "removed": false,
       "source": "ytdlp"
