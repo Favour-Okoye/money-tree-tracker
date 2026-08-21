@@ -34,6 +34,7 @@ import {
   type MonthReport,
 } from "../lib/farm";
 import { fmtDate } from "../lib/format";
+import { COURSE_TIERS, courseMaxLevel, locateLevel, tiersCompleted } from "../lib/courseBank";
 import { EmptyState } from "../components/EmptyState";
 
 const eur = (n: number) => `€${Math.round(n).toLocaleString("en-GB")}`;
@@ -244,6 +245,7 @@ function MarketDay({
 function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => void }) {
   const exam = state.pendingExam;
   const question = currentExamQuestion(state);
+  const examLoc = exam ? locateLevel(exam.course, exam.level - 1) : null;
   const [flash, setFlash] = useState<{ kind: "pass" | "fail"; text: string; course: string } | null>(null);
   const flashTimer = useRef<number | null>(null);
 
@@ -255,10 +257,15 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
   }, [exam, question]);
 
   const answer = (idx: number) => {
-    if (!exam || !question || !shuffled) return;
+    if (!exam || !question || !shuffled || !examLoc) return;
     if (idx === shuffled.correctIdx) {
-      setFlash({ kind: "pass", course: exam.course, text: `✅ Correct — level ${exam.level} unlocked. ${question.why}` });
-      void confetti({ particleCount: 50, spread: 55, origin: { y: 0.7 }, colors: ["#fbbf24", "#22c55e"] });
+      const finishesTier = examLoc.levelInTier + 1 >= examLoc.tier.levels.length;
+      setFlash({
+        kind: "pass",
+        course: exam.course,
+        text: `✅ Correct — ${examLoc.tier.name} level ${examLoc.levelInTier + 1} unlocked${finishesTier ? ` · ${examLoc.tier.name} tier complete!` : ""}. ${question.why}`,
+      });
+      void confetti({ particleCount: finishesTier ? 140 : 50, spread: finishesTier ? 80 : 55, origin: { y: 0.7 }, colors: ["#fbbf24", "#22c55e"] });
       save(answerExam(state, true));
     } else {
       setFlash({ kind: "fail", course: exam.course, text: "❌ Not quite. No charge — think it through and try again." });
@@ -271,46 +278,64 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
   return (
     <>
       <h3 className="mt-2 text-xs font-black uppercase tracking-wide text-stone-400">Invest in yourself</h3>
-      <p className="-mt-1 text-[11px] text-stone-400">Pay once per level, then pass the exam. Wrong answers are free — but the bar only moves when you get it right.</p>
+      <p className="-mt-1 text-[11px] text-stone-400">Three tiers per course: Basics → Intermediate → Mastery. Pay once per level, then pass the exam. Wrong answers are free — the bar only moves when you get it right.</p>
       {COURSES.map((c) => {
         const level = state.skills[c.id];
+        const max = courseMaxLevel(c.id);
+        const loc = locateLevel(c.id, level);
+        const done = tiersCompleted(c.id, level);
         const credits = state.prepaid[c.id] ?? 0;
         const mine = exam?.course === c.id;
-        const maxed = level >= c.max;
+        const maxed = level >= max;
+        const price = loc.tier.price;
         return (
           <div key={c.id} className={`rounded-2xl p-3 shadow-sm ring-1 ${mine ? "bg-amber-50 ring-amber-300" : "bg-white ring-green-100"}`}>
             <div className="flex items-center gap-3">
               <span className="text-2xl">{c.emoji}</span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-stone-800">{c.name}</p>
+                <p className="text-sm font-bold text-stone-800">
+                  {c.name} <span className="text-stone-400">·</span> {maxed ? "Mastered 🎓" : loc.tier.name}
+                </p>
                 <p className="text-[11px] text-stone-500">{c.effect}</p>
                 <div className="mt-1.5 flex gap-1">
-                  {Array.from({ length: c.max }, (_, i) => (
+                  {Array.from({ length: loc.tier.levels.length }, (_, i) => (
                     <span
                       key={i}
-                      className={`h-2 flex-1 rounded-full ${i < level ? "bg-green-600" : mine && i === level ? "animate-pulse bg-amber-400" : i < level + credits + (mine ? 1 : 0) ? "bg-amber-200" : "bg-stone-200"}`}
+                      className={`h-2 flex-1 rounded-full ${
+                        maxed || i < loc.levelInTier
+                          ? "bg-green-600"
+                          : mine && i === loc.levelInTier
+                            ? "animate-pulse bg-amber-400"
+                            : i < loc.levelInTier + credits + (mine ? 1 : 0)
+                              ? "bg-amber-200"
+                              : "bg-stone-200"
+                      }`}
                     />
                   ))}
                 </div>
-                <p className="mt-1 text-[10px] font-bold text-stone-400">level {level} of {c.max}{maxed ? " · mastered 🎓" : credits ? ` · ${credits} prepaid exam${credits > 1 ? "s" : ""} waiting` : ""}</p>
+                <p className="mt-1 text-[10px] font-bold text-stone-400">
+                  {maxed ? `all ${max} levels passed` : `level ${loc.levelInTier} of ${loc.tier.levels.length} · tier ${loc.tierIndex + 1} of ${COURSE_TIERS[c.id].length}`}
+                  {done > 0 && !maxed ? ` · ✓ ${COURSE_TIERS[c.id].slice(0, done).map((t) => t.name).join(", ")}` : ""}
+                  {credits ? ` · ${credits} prepaid exam${credits > 1 ? "s" : ""} waiting` : ""}
+                </p>
               </div>
               {maxed ? null : mine ? (
                 <span className="rounded-full bg-amber-400 px-3 py-1 text-[11px] font-black text-green-900">exam ↓</span>
               ) : (
                 <button
-                  disabled={!!exam || (credits === 0 && state.cash < c.price)}
+                  disabled={!!exam || (credits === 0 && state.cash < price)}
                   onClick={() => save(enrolCourse(state, c))}
                   title={exam ? "Finish your current exam first" : ""}
                   className={`rounded-full px-3 py-1 text-xs font-black disabled:opacity-40 ${credits ? "bg-amber-400 text-green-900" : "bg-green-700 text-white"}`}
                 >
-                  {credits ? "Take exam · prepaid" : `Enrol · ${eur(c.price)}`}
+                  {credits ? "Take exam · prepaid" : `Enrol · ${eur(price)}`}
                 </button>
               )}
             </div>
-            {mine && question && shuffled && (
+            {mine && question && shuffled && examLoc && (
               <div className="mt-3 rounded-2xl bg-white p-3 ring-1 ring-amber-200">
                 <p className="text-[10px] font-black uppercase tracking-wide text-amber-600">
-                  Exam · level {exam.level}{exam.attempts ? ` · attempt ${exam.attempts + 1}` : ""}
+                  {examLoc.tier.name} exam · level {examLoc.levelInTier + 1}{exam.attempts ? ` · attempt ${exam.attempts + 1}` : ""}
                 </p>
                 <p className="mt-1 text-sm font-black text-stone-800">{question.q}</p>
                 <div className="mt-2 flex flex-col gap-1.5">
