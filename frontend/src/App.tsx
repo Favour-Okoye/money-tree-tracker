@@ -9,7 +9,8 @@ import { More } from "./pages/More";
 import { ComingSoon } from "./pages/ComingSoon";
 import { Books } from "./pages/Books";
 import { BookDetail } from "./pages/BookDetail";
-import { Actions } from "./pages/Actions";
+import { Tasks } from "./pages/Tasks";
+import { Social } from "./pages/Social";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,8 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/books" element={<Books />} />
               <Route path="/books/:slug" element={<BookDetail />} />
-              <Route path="/tasks" element={<Actions />} />
+              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/social" element={<Social />} />
               <Route
                 path="/moves"
                 element={<ComingSoon emoji="🚀" title="Her Moves & events" phase="Phase 4" />}

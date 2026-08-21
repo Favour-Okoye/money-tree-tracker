@@ -9,10 +9,20 @@ const LINKS = [
   { emoji: "🎧", label: "Podcast — The Elite Table", url: "https://open.spotify.com/search/The%20Elite%20Table%20Grace%20Ofure" },
 ];
 
+import { Link } from "react-router-dom";
+
 export function More() {
   return (
     <div>
       <h1 className="text-xl font-black text-green-900">More 🌱</h1>
+
+      <Link
+        to="/social"
+        className="mt-3 flex items-center gap-3 rounded-2xl bg-green-700 p-3 text-sm font-black text-white shadow-md transition hover:bg-green-600"
+      >
+        <span className="text-xl">📸</span> My social log — posts I saw &amp; what I learned
+        <span className="ml-auto">→</span>
+      </Link>
 
       <section className="mt-3">
         <h2 className="text-xs font-black uppercase tracking-wide text-stone-400">
