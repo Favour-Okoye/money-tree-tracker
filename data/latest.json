@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-08-21T10:58:00Z",
-  "count": 895,
+  "generated_at": "2026-08-21T13:09:10Z",
+  "count": 896,
   "videos": [
+    {
+      "id": "5m-3Ezp2eyI",
+      "title": "Dubai untapped potential",
+      "published_at": "2026-08-21T12:00:19Z",
+      "first_seen_at": "2026-08-21T13:09:10Z",
+      "thumbnail": "https://i2.ytimg.com/vi/5m-3Ezp2eyI/hqdefault.jpg",
+      "description_snippet": "",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "-a3MdQLfbag",
       "title": "If you want to move your family to Dubai of sponsor them, you need to know this. #dubia #abroad",
@@ -352,18 +364,6 @@
       "description_snippet": "For more information, please reach out to +2349024841777\n\nGRACE OFURE WEALTH CREATION COMMUNITY:\nhttps://hubs.nestuge.com/graceofuregracewealthembassy\n\n10% CHALLENGE: https://selar.com/6phl6w?currency=XAF\n\n9-T0-5 COMPENDIUM: https://selar.com/66v7j4?currency=NGN\n\n1 YEAR WEALTH CREATION ACADEMY WITH ",
       "duration_s": 47,
       "is_short": true,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "N1eshccr-qg",
-      "title": "NEW MONEY SUMMIT CONFERENCE, LONDON 2026",
-      "published_at": "2026-07-20T11:00:41Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/N1eshccr-qg/mqdefault.jpg",
-      "description_snippet": "Due to the NSPPD event, we have made the strategic decision to bring the summit forward. To ensure everyone can attend without any scheduling conflicts, we are moving the date up from September 26th to Saturday, 5th September 2026.\n\nTo make this transition even better, we have some incredible news: ",
-      "duration_s": 157,
-      "is_short": false,
       "removed": false,
       "source": "api"
     }
