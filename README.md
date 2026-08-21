@@ -60,7 +60,8 @@ Personal tracking needs a Supabase project: see [SETUP.md](SETUP.md).
 ## Roadmap
 
 - [x] **P1** Video library, new-upload alerts, watch status, reflections
-- [ ] **P2** Books, chapter notes, action items with due dates
-- [ ] **P3** Social and community log, WhatsApp assignments with PDF storage
-- [ ] **P4** Her Moves: events and programmes with countdowns
-- [ ] **P5** Dashboard: money tree, streaks, badges, XP chart
+- [x] **P2** Books, chapter notes, action items with due dates
+- [x] **P3** Social and community log, assignments with private PDF storage
+- [x] **P4** Her Moves: events and programmes with countdowns
+- [x] **P5** Dashboard: growing money-tree mascot, streaks, 13 badges, XP chart, confetti, and an unskippable Saturday quiz built partly from the user's own watch history and notes, graded A to F
+- [ ] v2 parking lot: Facebook auto-check, guest-appearance radar, Telegram alerts, Power BI over the Postgres

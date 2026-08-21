@@ -11,3 +11,38 @@ body {
   background: var(--color-cream);
   color: #292524;
 }
+
+@keyframes tree-sway {
+  0%,
+  100% {
+    transform: rotate(-1.3deg);
+  }
+  50% {
+    transform: rotate(1.3deg);
+  }
+}
+.tree-sway {
+  animation: tree-sway 5s ease-in-out infinite;
+  transform-origin: 50% 92%;
+}
+
+@keyframes tree-pop {
+  from {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.tree-pop {
+  animation: tree-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-sway,
+  .tree-pop {
+    animation: none;
+  }
+}

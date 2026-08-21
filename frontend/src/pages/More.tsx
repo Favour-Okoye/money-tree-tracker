@@ -23,6 +23,20 @@ export function More() {
         <span className="text-xl">📸</span> My social log — posts I saw &amp; what I learned
         <span className="ml-auto">→</span>
       </Link>
+      <Link
+        to="/moves"
+        className="mt-2 flex items-center gap-3 rounded-2xl bg-green-700 p-3 text-sm font-black text-white shadow-md transition hover:bg-green-600"
+      >
+        <span className="text-xl">🚀</span> Her Moves — events, programmes &amp; countdowns
+        <span className="ml-auto">→</span>
+      </Link>
+      <Link
+        to="/progress"
+        className="mt-2 flex items-center gap-3 rounded-2xl bg-amber-400 p-3 text-sm font-black text-green-900 shadow-md transition hover:bg-amber-300"
+      >
+        <span className="text-xl">🏆</span> Progress — badges, streaks &amp; quiz grades
+        <span className="ml-auto">→</span>
+      </Link>
 
       <section className="mt-3">
         <h2 className="text-xs font-black uppercase tracking-wide text-stone-400">

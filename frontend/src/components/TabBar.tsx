@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 
 const TABS = [
+  { to: "/", label: "Home", icon: "🌳" },
   { to: "/library", label: "Library", icon: "🎬" },
   { to: "/books", label: "Books", icon: "📗" },
   { to: "/tasks", label: "Tasks", icon: "✅" },
-  { to: "/moves", label: "Her Moves", icon: "🚀" },
   { to: "/more", label: "More", icon: "🌱" },
 ];
 
@@ -16,6 +16,7 @@ export function TabBar() {
           <NavLink
             key={tab.to}
             to={tab.to}
+            end={tab.to === "/"}
             className={({ isActive }) =>
               `flex flex-col items-center gap-0.5 px-3 py-2 text-[11px] font-bold transition ${
                 isActive ? "text-green-700" : "text-stone-400 hover:text-stone-600"

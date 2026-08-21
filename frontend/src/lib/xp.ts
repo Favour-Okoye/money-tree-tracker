@@ -12,6 +12,8 @@ export const XP_POINTS = {
   complete_action_item: 15,
   attend_move: 30,
   daily_streak_tick: 5,
+  streak_bonus_7: 50,
+  streak_bonus_30: 200,
 } as const;
 
 export type XpAction = keyof typeof XP_POINTS;
@@ -45,6 +47,29 @@ export async function award(action: XpAction, refType: string, refId: string): P
       ref_id: day,
       happened_on: day,
     });
+  }
+  return !error;
+}
+
+/** Ledger insert with computed points (quiz scores, streak bonuses).
+ *  Same dedupe rule: one row per (action, refType, refId). */
+export async function awardCustom(
+  action: string,
+  refType: string,
+  refId: string,
+  points: number
+): Promise<boolean> {
+  if (!supabase) return false;
+  const { error } = await supabase.from("xp_events").insert({
+    action,
+    points,
+    ref_type: refType,
+    ref_id: refId,
+    happened_on: brusselsDay(),
+  });
+  if (error && error.code !== "23505") {
+    console.warn("xp awardCustom failed:", error.message);
+    return false;
   }
   return !error;
 }

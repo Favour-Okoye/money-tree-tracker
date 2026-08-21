@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { TabBar } from "./TabBar";
+import { QuizGate } from "./QuizGate";
 import { useAuth } from "../lib/auth";
 import { supabase, supabaseConfigured } from "../lib/supabase";
 
@@ -34,6 +35,7 @@ export function AppShell() {
         <Outlet />
       </main>
       <TabBar />
+      <QuizGate />
     </div>
   );
 }

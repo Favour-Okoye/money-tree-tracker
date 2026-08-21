@@ -11,6 +11,8 @@ import { BookDetail } from "./pages/BookDetail";
 import { Tasks } from "./pages/Tasks";
 import { Social } from "./pages/Social";
 import { Moves } from "./pages/Moves";
+import { Dashboard } from "./pages/Dashboard";
+import { Progress } from "./pages/Progress";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +23,8 @@ export default function App() {
         <HashRouter>
           <Routes>
             <Route element={<AppShell />}>
-              <Route path="/" element={<Navigate to="/library" replace />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/progress" element={<Progress />} />
               <Route path="/library" element={<Library />} />
               <Route path="/library/:mediaType/:id" element={<VideoDetail />} />
               <Route path="/login" element={<Login />} />
