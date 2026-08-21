@@ -2,6 +2,7 @@ const LINKS = [
   { emoji: "▶️", label: "YouTube — Grace Ofure Zone", url: "https://www.youtube.com/@graceofure" },
   { emoji: "📸", label: "Instagram — @grace_ofure", url: "https://www.instagram.com/grace_ofure" },
   { emoji: "📘", label: "Facebook", url: "https://www.facebook.com/gracedofure" },
+  { emoji: "🏛️", label: "Wealth Embassy hub — resources & events", url: "https://hubs.nestuge.com/graceofuregracewealthembassy/resources" },
   { emoji: "🏫", label: "Skool — All Access community (free)", url: "https://www.skool.com/grace-ofure-all-access-1598" },
   { emoji: "📚", label: "Her books", url: "https://www.graceofure.com/grace-ofure-my-books" },
   { emoji: "🔗", label: "Linktree — all her offers", url: "https://linktr.ee/graceofure" },
