@@ -274,7 +274,7 @@ export function canBuy(def: AssetDef, state: FarmState, learned: Set<string>): {
 }
 
 export function buyAsset(state: FarmState, def: AssetDef, learned: Set<string> = new Set()): FarmState {
-  if (!canBuy(def, state, learned).ok && (state.cash < def.price)) return state;
+  if (!canBuy(def, state, learned).ok) return state;
   const asset: OwnedAsset = {
     id: newId(def.kind),
     kind: def.kind,
