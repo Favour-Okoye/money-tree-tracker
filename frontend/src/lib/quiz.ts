@@ -5,12 +5,13 @@ import { useAuth } from "./auth";
 import { awardCustom } from "./xp";
 import { brusselsDay } from "./format";
 import { QUIZ_BANK, type BankQuestion } from "./quizBank";
+import { WEALTH_TERMS, TERM_BY_ID } from "./wealthTerms";
 import type { Catalog } from "./types";
 import type { StatusMap } from "./queries";
 
 export interface QuizQuestion {
   id: string;
-  kind: "recall_watch" | "recall_note" | "knowledge";
+  kind: "recall_watch" | "recall_note" | "recall_term" | "knowledge";
   question: string;
   context?: string;
   options: string[];
@@ -112,7 +113,8 @@ export function buildQuiz(
   weekKey: string,
   catalog: Catalog,
   statuses: StatusMap,
-  weekNotes: WeekNote[]
+  weekNotes: WeekNote[],
+  learnedTermIds: string[] = []
 ): QuizQuestion[] {
   const rnd = seededRandom(weekKey);
   const questions: QuizQuestion[] = [];
@@ -173,6 +175,23 @@ export function buildQuiz(
       options,
       correct: options.indexOf(correctTitle),
       explain: "Your own words, your own lesson ✍️",
+    });
+  }
+
+  // Up to 2: Wealth Words you marked as learned (definitions as options)
+  const learnedTerms = learnedTermIds.map((id) => TERM_BY_ID.get(id)).filter((t): t is NonNullable<typeof t> => !!t);
+  for (const term of shuffle(learnedTerms, rnd).slice(0, 2)) {
+    const distractors = shuffle(WEALTH_TERMS.filter((t) => t.id !== term.id), rnd)
+      .slice(0, 3)
+      .map((t) => t.short);
+    const options = shuffle([term.short, ...distractors], rnd);
+    questions.push({
+      id: `term-${term.id}`,
+      kind: "recall_term",
+      question: `What does “${term.term}” mean?`,
+      options,
+      correct: options.indexOf(term.short),
+      explain: `${term.explain} (You learned this as a Wealth Word.)`,
     });
   }
 

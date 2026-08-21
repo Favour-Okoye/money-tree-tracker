@@ -65,4 +65,6 @@ Personal tracking needs a Supabase project: see [SETUP.md](SETUP.md).
 - [x] **P4** Her Moves: events and programmes with countdowns
 - [x] **P5** Dashboard: growing money-tree mascot, streaks, 13 badges, XP chart, confetti, and an unskippable Saturday quiz built partly from the user's own watch history and notes, graded A to F
 - [x] **Guest radar** `pipeline/radar.py` searches YouTube for her appearances on other channels (API in CI, yt-dlp locally) and merges them into the catalogue monthly
+- [x] **Wealth Word** one curated finance or real-estate term a day (72 in the bank), marked as learned, fed back into the Saturday quiz, and used as the farm's tech tree
+- [x] **Money Farm** a pure-function idle economy in `frontend/src/lib/farm.ts`: learning mints the salary (XP x €10), assets with real cash-flow and appreciation behaviour, loans, temptations, weekly Market Day with events and deal cards carrying hidden title, seller and flood risks that due diligence reveals; win = passive income covers living costs
 - [ ] v2 parking lot: Facebook auto-check, Telegram alerts, Power BI over the Postgres

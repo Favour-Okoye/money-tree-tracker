@@ -14,6 +14,8 @@ import { Moves } from "./pages/Moves";
 import { Dashboard } from "./pages/Dashboard";
 import { Progress } from "./pages/Progress";
 import { Hub } from "./pages/Hub";
+import { Farm } from "./pages/Farm";
+import { WealthWord } from "./pages/WealthWord";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ export default function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/hub" element={<Hub />} />
+              <Route path="/farm" element={<Farm />} />
+              <Route path="/words" element={<WealthWord />} />
               <Route path="/library" element={<Library />} />
               <Route path="/library/:mediaType/:id" element={<VideoDetail />} />
               <Route path="/login" element={<Login />} />

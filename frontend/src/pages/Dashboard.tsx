@@ -10,6 +10,7 @@ import { useAssignments } from "../lib/socialQueries";
 import { useQuizResults, lastSaturday } from "../lib/quiz";
 import { MoneyTree, TREE_STAGES, stageForXp } from "../components/MoneyTree";
 import { SetupBanner } from "../components/SetupBanner";
+import { DailyCards } from "../components/DailyCards";
 import { brusselsDay, daysUntil, fmtDate } from "../lib/format";
 
 function StatChip({ emoji, label }: { emoji: string; label: string }) {
@@ -104,6 +105,8 @@ export function Dashboard() {
           <StatChip emoji="⭐" label={`${xp} XP`} />
         </div>
       </div>
+
+      <DailyCards />
 
       <div className="mt-3 rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-green-100">
         <MoneyTree xp={xp} />

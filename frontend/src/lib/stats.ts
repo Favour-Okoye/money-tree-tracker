@@ -69,6 +69,7 @@ export interface ProgressCounts {
   postsCount: number;
   movesRegistered: boolean;
   earnedBadges: string[];
+  termsLearned: number;
 }
 
 export function useProgressCounts() {
@@ -78,7 +79,7 @@ export function useProgressCounts() {
     enabled: !!supabase && !!session,
     queryFn: async (): Promise<ProgressCounts> => {
       const sb = supabase!;
-      const [notes, chapters, books, assigns, posts, moves, badges] = await Promise.all([
+      const [notes, chapters, books, assigns, posts, moves, badges, terms] = await Promise.all([
         sb.from("notes").select("id", { count: "exact", head: true }),
         sb.from("book_chapters").select("id", { count: "exact", head: true }).eq("status", "done"),
         sb.from("book_progress").select("book_slug", { count: "exact", head: true }).eq("status", "finished"),
@@ -89,6 +90,7 @@ export function useProgressCounts() {
           .select("id", { count: "exact", head: true })
           .in("my_status", ["registered", "attended"]),
         sb.from("badges").select("badge_id"),
+        sb.from("learned_terms").select("term_id", { count: "exact", head: true }),
       ]);
       return {
         notesCount: notes.count ?? 0,
@@ -98,6 +100,7 @@ export function useProgressCounts() {
         postsCount: posts.count ?? 0,
         movesRegistered: (moves.count ?? 0) > 0,
         earnedBadges: ((badges.data ?? []) as { badge_id: string }[]).map((b) => b.badge_id),
+        termsLearned: terms.count ?? 0,
       };
     },
   });
@@ -164,6 +167,7 @@ export function useGrowth() {
         movesRegistered: countsQ.data!.movesRegistered,
         longestStreak: streak.longest,
         quizzesDone,
+        termsLearned: countsQ.data!.termsLearned,
       }
     : null;
 

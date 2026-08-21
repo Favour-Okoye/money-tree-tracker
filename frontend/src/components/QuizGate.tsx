@@ -4,6 +4,7 @@ import { useCatalog } from "../lib/catalog";
 import { useProfile, useStatuses } from "../lib/queries";
 import { buildQuiz, useQuizDue, useSubmitQuiz, useWeekNotes, gradeFor } from "../lib/quiz";
 import { useAuth } from "../lib/auth";
+import { useLearnedTerms } from "../lib/termQueries";
 import { fmtDate } from "../lib/format";
 
 const GRADE_LINES: Record<string, string> = {
@@ -21,6 +22,7 @@ export function QuizGate() {
   const catalogQ = useCatalog();
   const statusesQ = useStatuses();
   const weekNotesQ = useWeekNotes(due ? dueWeek : null);
+  const learnedQ = useLearnedTerms();
   const submit = useSubmitQuiz();
 
   const [stage, setStage] = useState<"intro" | "quiz" | "result" | "hidden">("intro");
@@ -30,9 +32,9 @@ export function QuizGate() {
   const [result, setResult] = useState<{ score: number; total: number } | null>(null);
 
   const questions = useMemo(() => {
-    if (!due || !catalogQ.data || !statusesQ.data || !weekNotesQ.data) return null;
-    return buildQuiz(dueWeek, catalogQ.data, statusesQ.data, weekNotesQ.data);
-  }, [due, dueWeek, catalogQ.data, statusesQ.data, weekNotesQ.data]);
+    if (!due || !catalogQ.data || !statusesQ.data || !weekNotesQ.data || !learnedQ.isSuccess) return null;
+    return buildQuiz(dueWeek, catalogQ.data, statusesQ.data, weekNotesQ.data, (learnedQ.data ?? []).map((r) => r.term_id));
+  }, [due, dueWeek, catalogQ.data, statusesQ.data, weekNotesQ.data, learnedQ.isSuccess, learnedQ.data]);
 
   if (!session || stage === "hidden") return null;
   const showingResult = stage === "result" && result;
@@ -115,7 +117,7 @@ export function QuizGate() {
             </div>
             <p className="text-[10px] font-black uppercase tracking-wide text-stone-400">
               {qIndex + 1} / {questions!.length}
-              {q.kind !== "knowledge" ? " · from your week" : " · wealth knowledge"}
+              {q.kind === "recall_term" ? " · your Wealth Word" : q.kind !== "knowledge" ? " · from your week" : " · wealth knowledge"}
             </p>
             <h2 className="mt-1 text-base font-black leading-snug text-stone-800">{q.question}</h2>
             {q.context && (

@@ -12,6 +12,7 @@ export const XP_POINTS = {
   complete_action_item: 15,
   attend_move: 30,
   complete_training: 20,
+  learn_term: 5,
   daily_streak_tick: 5,
   streak_bonus_7: 50,
   streak_bonus_30: 200,

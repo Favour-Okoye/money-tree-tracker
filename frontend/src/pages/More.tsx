@@ -23,6 +23,20 @@ export function More() {
         <span className="ml-auto">→</span>
       </Link>
       <Link
+        to="/farm"
+        className="mt-2 flex items-center gap-3 rounded-2xl bg-amber-400 p-3 text-sm font-black text-green-900 shadow-md transition hover:bg-amber-300"
+      >
+        <span className="text-xl">🌳</span> Money Farm — the game
+        <span className="ml-auto">→</span>
+      </Link>
+      <Link
+        to="/words"
+        className="mt-2 flex items-center gap-3 rounded-2xl bg-amber-400 p-3 text-sm font-black text-green-900 shadow-md transition hover:bg-amber-300"
+      >
+        <span className="text-xl">📖</span> Wealth Word — one term a day
+        <span className="ml-auto">→</span>
+      </Link>
+      <Link
         to="/hub"
         className="mt-2 flex items-center gap-3 rounded-2xl bg-green-700 p-3 text-sm font-black text-white shadow-md transition hover:bg-green-600"
       >

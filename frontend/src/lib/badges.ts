@@ -11,6 +11,7 @@ export interface BadgeContext {
   movesRegistered: boolean;
   longestStreak: number;
   quizzesDone: number;
+  termsLearned: number;
 }
 
 export interface BadgeDef {
@@ -35,4 +36,7 @@ export const BADGES: BadgeDef[] = [
   { id: "summit_bound", name: "Summit Bound", emoji: "🎟️", desc: "Register for one of her moves", earned: (c) => c.movesRegistered },
   { id: "quiz_rookie", name: "Quiz Rookie", emoji: "🧠", desc: "Complete your first Saturday quiz", earned: (c) => c.quizzesDone >= 1 },
   { id: "century_club", name: "Century Club", emoji: "💯", desc: "Watch 100 videos", earned: (c) => c.watchedCount >= 100 },
+  { id: "word_collector", name: "Word Collector", emoji: "📖", desc: "Learn 10 Wealth Words", earned: (c) => c.termsLearned >= 10 },
+  { id: "first_asset", name: "Landlord in Training", emoji: "🏠", desc: "Buy your first farm asset", earned: () => false },
+  { id: "financially_free", name: "Financially Free", emoji: "🗽", desc: "Farm passive income covers living costs", earned: () => false },
 ];
