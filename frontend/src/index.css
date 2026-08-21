@@ -13,17 +13,18 @@ body {
 }
 
 @keyframes tree-sway {
-  0%   { transform: rotate(-1.8deg); }
-  16%  { transform: rotate(1.6deg); }
-  30%  { transform: rotate(-0.9deg); }
-  44%  { transform: rotate(3.4deg); }   /* a gust */
-  56%  { transform: rotate(-2.4deg); }
-  70%  { transform: rotate(1.1deg); }
-  84%  { transform: rotate(-1.3deg); }
-  100% { transform: rotate(-1.8deg); }
+  /* --amp is the gust angle in degrees; smaller plants get bigger --amp so the motion reads */
+  0%   { transform: rotate(calc(var(--amp, 4) * -0.55deg)); }
+  16%  { transform: rotate(calc(var(--amp, 4) * 0.5deg)); }
+  30%  { transform: rotate(calc(var(--amp, 4) * -0.3deg)); }
+  44%  { transform: rotate(calc(var(--amp, 4) * 1deg)); }
+  56%  { transform: rotate(calc(var(--amp, 4) * -0.7deg)); }
+  70%  { transform: rotate(calc(var(--amp, 4) * 0.35deg)); }
+  84%  { transform: rotate(calc(var(--amp, 4) * -0.4deg)); }
+  100% { transform: rotate(calc(var(--amp, 4) * -0.55deg)); }
 }
 .tree-sway {
-  animation: tree-sway 9s ease-in-out infinite;
+  animation: tree-sway 8s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: 50% 100%;
 }

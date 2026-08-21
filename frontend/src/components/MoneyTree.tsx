@@ -1,3 +1,5 @@
+import type React from "react";
+
 export const TREE_STAGES = [
   { min: 0, name: "Seed", emoji: "🫘" },
   { min: 100, name: "Sprout", emoji: "🌱" },
@@ -50,6 +52,8 @@ export function MoneyTree({ xp }: { xp: number }) {
   const canopyMain = golden ? "#facc15" : "#22c55e";
   const canopyLight = golden ? "#fde047" : "#34d873";
   const canopyDark = golden ? "#eab308" : "#1fae52";
+  const amp = [6, 10, 6, 4.5, 4, 4, 3][stage] ?? 4;
+  const sway = { className: "tree-sway", style: { ["--amp" as string]: amp } as React.CSSProperties };
 
   return (
     <svg key={stage} viewBox="0 0 200 175" className="tree-pop mx-auto w-52">
@@ -58,7 +62,7 @@ export function MoneyTree({ xp }: { xp: number }) {
       <ellipse cx="100" cy="158" rx="60" ry="8" fill="#b9e8c8" />
 
       {stage === 0 && (
-        <g className="tree-sway">
+        <g {...sway}>
           <ellipse cx="100" cy="150" rx="14" ry="7" fill="#8a5a2b" />
           <ellipse cx="100" cy="146" rx="7" ry="9" fill="#a16207" />
           <path d="M96 142 q4 -7 8 0" stroke="#78350f" strokeWidth="1.5" fill="none" />
@@ -67,7 +71,7 @@ export function MoneyTree({ xp }: { xp: number }) {
       )}
 
       {stage === 1 && (
-        <g className="tree-sway">
+        <g {...sway}>
           <path d="M100 152 C100 140 100 132 100 124" stroke="#16a34a" strokeWidth="4" fill="none" strokeLinecap="round" />
           <path d="M100 132 C88 128 84 116 88 110 C98 112 102 122 100 132" fill="#22c55e" />
           <path d="M100 126 C112 122 116 110 112 104 C102 106 98 116 100 126" fill="#34d873" />
@@ -75,7 +79,7 @@ export function MoneyTree({ xp }: { xp: number }) {
       )}
 
       {stage === 2 && (
-        <g className="tree-sway">
+        <g {...sway}>
           <path d="M96 155 L104 155 L102 118 L98 118 Z" fill="#8a5a2b" />
           <circle className="leaf" cx="100" cy="102" r="26" fill={canopyMain} />
           <circle className="leaf" cx="83" cy="112" r="16" fill={canopyLight} />
@@ -84,7 +88,7 @@ export function MoneyTree({ xp }: { xp: number }) {
       )}
 
       {stage >= 3 && stage <= 5 && (
-        <g className="tree-sway">
+        <g {...sway}>
           <path d="M93 158 C93 132 90 118 85 104 L100 96 L115 104 C110 118 107 132 107 158 Z" fill="#8a5a2b" />
           <circle className="leaf" cx="100" cy="78" r={stage >= 4 ? 42 : 36} fill={canopyMain} />
           <circle className="leaf" cx="70" cy="94" r={stage >= 4 ? 27 : 22} fill={canopyLight} />
@@ -109,7 +113,7 @@ export function MoneyTree({ xp }: { xp: number }) {
       )}
 
       {stage === 6 && (
-        <g className="tree-sway">
+        <g {...sway}>
           <path d="M94 158 C94 134 91 122 86 110 L100 102 L114 110 C109 122 106 134 106 158 Z" fill="#8a5a2b" />
           <circle className="leaf" cx="100" cy="84" r="36" fill={canopyMain} />
           <circle className="leaf" cx="74" cy="98" r="22" fill={canopyLight} />
