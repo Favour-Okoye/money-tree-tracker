@@ -16,7 +16,7 @@ export function stageForXp(xp: number): number {
 
 function Coin({ x, y, r = 11 }: { x: number; y: number; r?: number }) {
   return (
-    <g>
+    <g className="coin" style={{ animationDelay: `${-((x * 7) % 23) / 10}s` }}>
       <circle cx={x} cy={y} r={r} fill="#fbbf24" stroke="#b45309" strokeWidth="2.5" />
       <text
         x={x}
@@ -36,9 +36,9 @@ function SmallTree({ x, golden }: { x: number; golden: boolean }) {
   return (
     <g>
       <path d={`M${x - 3} 158 L${x + 3} 158 L${x + 1} 132 L${x - 1} 132 Z`} fill="#8a5a2b" />
-      <circle cx={x} cy={124} r={17} fill={golden ? "#fbbf24" : "#22c55e"} />
-      <circle cx={x - 11} cy={131} r={11} fill={golden ? "#f59e0b" : "#2fd06b"} />
-      <circle cx={x + 11} cy={131} r={11} fill={golden ? "#fcd34d" : "#1fae52"} />
+      <circle className="leaf" cx={x} cy={124} r={17} fill={golden ? "#fbbf24" : "#22c55e"} />
+      <circle className="leaf" cx={x - 11} cy={131} r={11} fill={golden ? "#f59e0b" : "#2fd06b"} />
+      <circle className="leaf" cx={x + 11} cy={131} r={11} fill={golden ? "#fcd34d" : "#1fae52"} />
     </g>
   );
 }
@@ -77,9 +77,9 @@ export function MoneyTree({ xp }: { xp: number }) {
       {stage === 2 && (
         <g className="tree-sway">
           <path d="M96 155 L104 155 L102 118 L98 118 Z" fill="#8a5a2b" />
-          <circle cx="100" cy="102" r="26" fill={canopyMain} />
-          <circle cx="83" cy="112" r="16" fill={canopyLight} />
-          <circle cx="117" cy="112" r="16" fill={canopyDark} />
+          <circle className="leaf" cx="100" cy="102" r="26" fill={canopyMain} />
+          <circle className="leaf" cx="83" cy="112" r="16" fill={canopyLight} />
+          <circle className="leaf" cx="117" cy="112" r="16" fill={canopyDark} />
         </g>
       )}
 
@@ -111,10 +111,10 @@ export function MoneyTree({ xp }: { xp: number }) {
       {stage === 6 && (
         <g className="tree-sway">
           <path d="M94 158 C94 134 91 122 86 110 L100 102 L114 110 C109 122 106 134 106 158 Z" fill="#8a5a2b" />
-          <circle cx="100" cy="84" r="36" fill={canopyMain} />
-          <circle cx="74" cy="98" r="22" fill={canopyLight} />
-          <circle cx="126" cy="98" r="22" fill={canopyDark} />
-          <circle cx="100" cy="64" r="24" fill={canopyLight} />
+          <circle className="leaf" cx="100" cy="84" r="36" fill={canopyMain} />
+          <circle className="leaf" cx="74" cy="98" r="22" fill={canopyLight} />
+          <circle className="leaf" cx="126" cy="98" r="22" fill={canopyDark} />
+          <circle className="leaf" cx="100" cy="64" r="24" fill={canopyLight} />
           <Coin x={82} y={86} />
           <Coin x={120} y={78} />
           <Coin x={101} y={104} r={9} />
