@@ -254,7 +254,9 @@ export function livingCost(state: FarmState): number {
 /** Old saves predate some courses / the exam flow. */
 export function normalizeFarm(raw: FarmState): FarmState {
   const legacy = raw.skills as unknown as { salary?: number };
-  const skills: Skills = { ...EMPTY_SKILLS, ...raw.skills, career: raw.skills.career ?? legacy.salary ?? 0 };
+  const { salary: _legacySalary, ...rawSkills } = raw.skills as Skills & { salary?: number };
+  void _legacySalary;
+  const skills: Skills = { ...EMPTY_SKILLS, ...rawSkills, career: raw.skills.career ?? legacy.salary ?? 0 };
   const prepaid: Partial<Record<CourseId, number>> = { ...(raw.prepaid ?? {}) };
   let log = raw.log;
   // Levels bought under the old one-tap system become prepaid exams:
