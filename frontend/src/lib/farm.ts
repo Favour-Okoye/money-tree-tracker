@@ -2,6 +2,8 @@
  *  takes state and returns new state, so the whole game is testable and the
  *  UI is just buttons calling these. One real week = one farm month. */
 import { brusselsDay } from "./format";
+import { COURSE_QUESTIONS, type CourseId, type CourseQuestion } from "./courseBank";
+export type { CourseId, CourseQuestion };
 
 export const LIVING_COST = 800;
 export const XP_TO_EUR = 10;
@@ -41,17 +43,28 @@ export const CATALOG: AssetDef[] = [
 export const ASSET_BY_KIND = new Map(CATALOG.map((a) => [a.kind, a]));
 
 export interface CourseDef {
-  id: "sales" | "salary";
+  id: CourseId;
   name: string;
   emoji: string;
   price: number;
   max: number;
-  desc: string;
+  effect: string;
 }
 export const COURSES: CourseDef[] = [
-  { id: "sales", name: "Sales course", emoji: "🗣️", price: 300, max: 4, desc: "+25% business income per level" },
-  { id: "salary", name: "Career course", emoji: "🎓", price: 400, max: 5, desc: "+10% salary minting per level" },
+  { id: "sales", name: "Sales Mastery", emoji: "🗣️", price: 300, max: 4, effect: "+25% business income per level" },
+  { id: "career", name: "Career Growth", emoji: "🎓", price: 400, max: 4, effect: "+10% salary minting per level" },
+  { id: "realestate", name: "Real Estate Fundamentals", emoji: "🏠", price: 350, max: 4, effect: "+5% rental income per level" },
+  { id: "budgeting", name: "Money Management", emoji: "🧮", price: 250, max: 3, effect: "−€25 monthly living costs per level" },
+  { id: "law", name: "Law & Due Diligence", emoji: "📜", price: 350, max: 3, effect: "deals reveal papers, then seller, then site — free" },
+  { id: "negotiation", name: "Negotiation", emoji: "🤝", price: 300, max: 3, effect: "−5% deal prices per level" },
 ];
+export type Skills = Record<CourseId, number>;
+export const EMPTY_SKILLS: Skills = { sales: 0, career: 0, realestate: 0, budgeting: 0, law: 0, negotiation: 0 };
+export interface PendingExam {
+  course: CourseId;
+  level: number;
+  attempts: number;
+}
 
 export interface OwnedAsset {
   id: string;
@@ -135,7 +148,8 @@ export interface FarmState {
   totalMinted: number;
   assets: OwnedAsset[];
   loans: Loan[];
-  skills: { sales: number; salary: number };
+  skills: Skills;
+  pendingExam: PendingExam | null;
   creditScore: number;
   marketMood: number;
   history: MonthReport[];
@@ -186,7 +200,8 @@ export function newFarm(today = brusselsDay()): FarmState {
     totalMinted: 0,
     assets: [],
     loans: [],
-    skills: { sales: 0, salary: 0 },
+    skills: { ...EMPTY_SKILLS },
+    pendingExam: null,
     creditScore: 70,
     marketMood: 1,
     history: [],
@@ -210,7 +225,7 @@ export function assetIncome(asset: OwnedAsset, state: FarmState): number {
     case "room":
     case "dubai":
     case "coinvest":
-      return def.income * state.marketMood;
+      return def.income * state.marketMood * (1 + 0.05 * state.skills.realestate);
     case "shop":
       return def.income * (1 + 0.25 * state.skills.sales);
     case "savings":
@@ -228,13 +243,26 @@ export function passiveIncome(state: FarmState): number {
   const instalments = state.loans.reduce((s, l) => s + l.monthly, 0);
   return round(income - upkeep - instalments);
 }
+/** Money Management lowers the monthly living cost. */
+export function livingCost(state: FarmState): number {
+  return LIVING_COST - 25 * state.skills.budgeting;
+}
+/** Old saves predate some courses / the exam flow. */
+export function normalizeFarm(raw: FarmState): FarmState {
+  const legacy = raw.skills as unknown as { salary?: number };
+  return {
+    ...raw,
+    skills: { ...EMPTY_SKILLS, ...raw.skills, career: raw.skills.career ?? legacy.salary ?? 0 },
+    pendingExam: raw.pendingExam ?? null,
+  };
+}
 export function netWorth(state: FarmState): number {
   return round(
     state.cash + state.assets.reduce((s, a) => s + a.value, 0) - state.loans.reduce((s, l) => s + l.balance, 0)
   );
 }
 export function salaryMultiplier(state: FarmState): number {
-  return 1 + 0.1 * state.skills.salary;
+  return 1 + 0.1 * state.skills.career;
 }
 
 // ---------- daily minting ----------
@@ -308,13 +336,37 @@ export function sellAsset(state: FarmState, assetId: string): FarmState {
   };
 }
 
-export function buyCourse(state: FarmState, course: CourseDef): FarmState {
-  if (state.cash < course.price || state.skills[course.id] >= course.max) return state;
+export function enrolCourse(state: FarmState, course: CourseDef): FarmState {
+  if (state.pendingExam) return state;
+  const level = state.skills[course.id] + 1;
+  if (level > course.max || state.cash < course.price) return state;
   return {
     ...state,
     cash: state.cash - course.price,
-    skills: { ...state.skills, [course.id]: state.skills[course.id] + 1 },
-    log: [{ month: state.month, text: `Completed ${course.name} (level ${state.skills[course.id] + 1})`, amount: -course.price }, ...state.log].slice(0, 40),
+    pendingExam: { course: course.id, level, attempts: 0 },
+    log: [{ month: state.month, text: `Enrolled: ${course.name} level ${level} — pass the exam to level up`, amount: -course.price }, ...state.log].slice(0, 40),
+  };
+}
+
+/** The question for the exam in progress; wrong answers rotate variants. */
+export function currentExamQuestion(state: FarmState): CourseQuestion | null {
+  const p = state.pendingExam;
+  if (!p) return null;
+  const levels = COURSE_QUESTIONS[p.course];
+  const variants = levels[Math.min(p.level, levels.length) - 1];
+  return variants[p.attempts % variants.length];
+}
+
+export function answerExam(state: FarmState, correct: boolean): FarmState {
+  const p = state.pendingExam;
+  if (!p) return state;
+  if (!correct) return { ...state, pendingExam: { ...p, attempts: p.attempts + 1 } };
+  const course = COURSES.find((c) => c.id === p.course)!;
+  return {
+    ...state,
+    skills: { ...state.skills, [p.course]: p.level },
+    pendingExam: null,
+    log: [{ month: state.month, text: `${course.name} level ${p.level} passed ✓ (${p.attempts + 1} attempt${p.attempts ? "s" : ""})` }, ...state.log].slice(0, 40),
   };
 }
 
@@ -460,7 +512,8 @@ function drawDeals(state: FarmState, rnd: () => number, learned: Set<string>, co
   const out: Deal[] = [];
   for (let i = 0; i < count && pool.length; i++) {
     const t = pool[Math.floor(rnd() * pool.length)];
-    const price = round((t.price[0] + rnd() * (t.price[1] - t.price[0])) / 50) * 50;
+    const base = t.price[0] + rnd() * (t.price[1] - t.price[0]);
+    const price = round((base * (1 - 0.05 * state.skills.negotiation)) / 50) * 50;
     const income = round(t.income[0] + rnd() * (t.income[1] - t.income[0]));
     out.push({
       id: `${t.title}-${state.month}-${i}`,
@@ -472,7 +525,11 @@ function drawDeals(state: FarmState, rnd: () => number, learned: Set<string>, co
       income,
       appreciation: t.appreciation,
       hidden: { papers: rnd() < t.badPapers ? "bad" : "ok", scam: rnd() < t.scam, flood: rnd() < t.flood },
-      revealed: {},
+      revealed: {
+        papers: state.skills.law >= 1 ? true : undefined,
+        seller: state.skills.law >= 2 ? true : undefined,
+        site: state.skills.law >= 3 ? true : undefined,
+      },
     });
   }
   return out;
@@ -509,7 +566,7 @@ export function resolveEvent(state: FarmState, eventIdx: number, choiceIdx: numb
   if (!p || p.eventResult[eventIdx]) return state;
   const choice = p.events[eventIdx].choices[choiceIdx];
   let next: FarmState = { ...state, cash: state.cash + (choice.cash ?? 0) };
-  if (choice.salaryLevel) next.skills = { ...next.skills, salary: Math.min(5, next.skills.salary + choice.salaryLevel) };
+  if (choice.salaryLevel) next.skills = { ...next.skills, career: Math.min(4, next.skills.career + choice.salaryLevel) };
   if (choice.salesLevel) next.skills = { ...next.skills, sales: Math.min(4, next.skills.sales + choice.salesLevel) };
   if (choice.moodDelta) next.marketMood = Math.min(1.3, next.marketMood + choice.moodDelta);
   const eventResult = [...p.eventResult];
@@ -624,7 +681,8 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     else notes.push("A loan was fully repaid 🎉");
   }
   rent = round(rent);
-  const net = round(rent - upkeep - instalments - LIVING_COST);
+  const living = livingCost(working);
+  const net = round(rent - upkeep - instalments - living);
   let cash = working.cash + net;
   if (cash < 0) {
     credit = Math.max(0, credit - 10);
@@ -648,7 +706,7 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     rent,
     upkeep,
     instalments,
-    living: LIVING_COST,
+    living,
     eventNet: p.eventNet,
     net,
     netWorth: netWorth(closed),
@@ -657,7 +715,7 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
   const passive = passiveIncome(closed);
   const badges = [...closed.badges];
   let freedomOn = closed.freedomOn;
-  if (passive >= LIVING_COST && !freedomOn) {
+  if (passive >= livingCost(closed) && !freedomOn) {
     freedomOn = today;
     badges.push("financially_free");
     notes.push("🗽 FINANCIAL FREEDOM: passive income now covers your living costs.");
@@ -667,7 +725,7 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     freedomOn,
     badges,
     history: [report, ...closed.history].slice(0, 60),
-    log: [{ month: p.month, text: `Month ${p.month} closed: rent €${rent}, costs €${upkeep + instalments + LIVING_COST}`, amount: net }, ...closed.log].slice(0, 40),
+    log: [{ month: p.month, text: `Month ${p.month} closed: rent €${rent}, costs €${upkeep + instalments + living}`, amount: net }, ...closed.log].slice(0, 40),
   };
 }
 

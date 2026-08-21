@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import confetti from "canvas-confetti";
 import { useAuth } from "../lib/auth";
@@ -8,12 +8,15 @@ import {
   CATALOG,
   COURSES,
   INSPECT_COST,
-  LIVING_COST,
   MOOD_BY_GRADE,
+  answerExam,
   assetIncome,
   buyAsset,
-  buyCourse,
   canBuy,
+  currentExamQuestion,
+  enrolCourse,
+  livingCost,
+  seededRandom,
   decideDeal,
   dueSunday,
   finalizeMarket,
@@ -217,7 +220,7 @@ function MarketDay({
             <p className="text-stone-500">Expected rent &amp; income</p><p className="text-right font-black text-green-700">+{eur(state.assets.reduce((s, a) => s + assetIncome(a, state), 0))}</p>
             <p className="text-stone-500">Upkeep</p><p className="text-right font-bold">−{eur(state.assets.reduce((s, a) => s + (CATALOG.find((c) => c.kind === a.kind)?.upkeep ?? 0), 0))}</p>
             <p className="text-stone-500">Loan instalments</p><p className="text-right font-bold">−{eur(state.loans.reduce((s, l) => s + l.monthly, 0))}</p>
-            <p className="text-stone-500">Living costs</p><p className="text-right font-bold">−{eur(LIVING_COST)}</p>
+            <p className="text-stone-500">Living costs</p><p className="text-right font-bold">−{eur(livingCost(state))}</p>
             {p.quizGrade && (<><p className="text-stone-500">Market mood (quiz {p.quizGrade})</p><p className="text-right font-bold">×{MOOD_BY_GRADE[p.quizGrade] ?? 1}</p></>)}
           </div>
           <p className="mt-2 text-[11px] text-stone-400">Appreciation, flood checks and title risks are applied when you close.</p>
@@ -238,6 +241,98 @@ function MarketDay({
   );
 }
 
+function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => void }) {
+  const exam = state.pendingExam;
+  const question = currentExamQuestion(state);
+  const [flash, setFlash] = useState<{ kind: "pass" | "fail"; text: string } | null>(null);
+
+  const shuffled = useMemo(() => {
+    if (!exam || !question) return null;
+    const rnd = seededRandom(`${exam.course}-${exam.level}-${exam.attempts}`);
+    const order = [0, 1, 2, 3].map((i) => ({ i, r: rnd() })).sort((a, b) => a.r - b.r).map((x) => x.i);
+    return { order, correctIdx: order.indexOf(question.correct) };
+  }, [exam, question]);
+
+  const answer = (idx: number) => {
+    if (!exam || !question || !shuffled) return;
+    if (idx === shuffled.correctIdx) {
+      setFlash({ kind: "pass", text: `✅ Correct — level ${exam.level} unlocked. ${question.why}` });
+      void confetti({ particleCount: 50, spread: 55, origin: { y: 0.7 }, colors: ["#fbbf24", "#22c55e"] });
+      save(answerExam(state, true));
+    } else {
+      setFlash({ kind: "fail", text: "❌ Not quite. No charge — think it through and try again." });
+      save(answerExam(state, false));
+    }
+    window.setTimeout(() => setFlash(null), 4500);
+  };
+
+  return (
+    <>
+      <h3 className="mt-2 text-xs font-black uppercase tracking-wide text-stone-400">Invest in yourself</h3>
+      <p className="-mt-1 text-[11px] text-stone-400">Pay once per level, then pass the exam. Wrong answers are free — but the bar only moves when you get it right.</p>
+      {COURSES.map((c) => {
+        const level = state.skills[c.id];
+        const mine = exam?.course === c.id;
+        const maxed = level >= c.max;
+        return (
+          <div key={c.id} className={`rounded-2xl p-3 shadow-sm ring-1 ${mine ? "bg-amber-50 ring-amber-300" : "bg-white ring-green-100"}`}>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{c.emoji}</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-stone-800">{c.name}</p>
+                <p className="text-[11px] text-stone-500">{c.effect}</p>
+                <div className="mt-1.5 flex gap-1">
+                  {Array.from({ length: c.max }, (_, i) => (
+                    <span
+                      key={i}
+                      className={`h-2 flex-1 rounded-full ${i < level ? "bg-green-600" : mine && i === level ? "animate-pulse bg-amber-400" : "bg-stone-200"}`}
+                    />
+                  ))}
+                </div>
+                <p className="mt-1 text-[10px] font-bold text-stone-400">level {level} of {c.max}{maxed ? " · mastered 🎓" : ""}</p>
+              </div>
+              {maxed ? null : mine ? (
+                <span className="rounded-full bg-amber-400 px-3 py-1 text-[11px] font-black text-green-900">exam ↓</span>
+              ) : (
+                <button
+                  disabled={!!exam || state.cash < c.price}
+                  onClick={() => save(enrolCourse(state, c))}
+                  title={exam ? "Finish your current exam first" : ""}
+                  className="rounded-full bg-green-700 px-3 py-1 text-xs font-black text-white disabled:opacity-40"
+                >
+                  Enrol · {eur(c.price)}
+                </button>
+              )}
+            </div>
+            {mine && question && shuffled && (
+              <div className="mt-3 rounded-2xl bg-white p-3 ring-1 ring-amber-200">
+                <p className="text-[10px] font-black uppercase tracking-wide text-amber-600">
+                  Exam · level {exam.level}{exam.attempts ? ` · attempt ${exam.attempts + 1}` : ""}
+                </p>
+                <p className="mt-1 text-sm font-black text-stone-800">{question.q}</p>
+                <div className="mt-2 flex flex-col gap-1.5">
+                  {shuffled.order.map((optIdx, i) => (
+                    <button
+                      key={`${exam.attempts}-${i}`}
+                      onClick={() => answer(i)}
+                      className="rounded-xl bg-stone-50 p-2 text-left text-xs font-bold text-stone-700 ring-1 ring-stone-200 transition hover:ring-green-400"
+                    >
+                      {question.options[optIdx]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {flash && (mine || (!exam && flash.kind === "pass")) && (
+              <p className={`mt-2 rounded-xl p-2 text-xs font-bold ${flash.kind === "pass" ? "bg-green-50 text-green-800" : "bg-rose-50 text-rose-700"}`}>{flash.text}</p>
+            )}
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 export function Farm() {
   const { session } = useAuth();
   const farm = useFarm();
@@ -249,7 +344,7 @@ export function Farm() {
 
   const s = farm.state;
   const passive = passiveIncome(s);
-  const freedomPct = Math.min(100, Math.max(0, Math.round((passive / LIVING_COST) * 100)));
+  const freedomPct = Math.min(100, Math.max(0, Math.round((passive / livingCost(s)) * 100)));
   const loanCap = maxLoan(s);
   const canLoan = farm.learned.has("leverage");
   const latestMint = s.log.find((l) => l.text.startsWith("Salary minted"));
@@ -273,7 +368,7 @@ export function Farm() {
       <div className="mt-3 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-green-100">
         <div className="flex items-center justify-between text-xs font-black">
           <span className="text-green-900">{s.freedomOn ? "🗽 Financially free" : "Road to freedom"}</span>
-          <span className="text-stone-400">{eur(passive)} / {eur(LIVING_COST)} living costs</span>
+          <span className="text-stone-400">{eur(passive)} / {eur(livingCost(s))} living costs</span>
         </div>
         <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-stone-100">
           <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-amber-400 transition-all" style={{ width: `${freedomPct}%` }} />
@@ -341,17 +436,7 @@ export function Farm() {
               </div>
             );
           })}
-          <h3 className="mt-2 text-xs font-black uppercase tracking-wide text-stone-400">Invest in yourself</h3>
-          {COURSES.map((c) => (
-            <div key={c.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-green-100">
-              <span className="text-2xl">{c.emoji}</span>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-stone-800">{c.name} <span className="text-green-800">{eur(c.price)}</span></p>
-                <p className="text-[11px] text-stone-500">{c.desc} · level {s.skills[c.id]}/{c.max}</p>
-              </div>
-              <button disabled={s.cash < c.price || s.skills[c.id] >= c.max} onClick={() => farm.save(buyCourse(s, c))} className="rounded-full bg-green-700 px-3 py-1 text-xs font-black text-white disabled:opacity-40">Enrol</button>
-            </div>
-          ))}
+          <Courses state={s} save={farm.save} />
         </div>
       )}
 

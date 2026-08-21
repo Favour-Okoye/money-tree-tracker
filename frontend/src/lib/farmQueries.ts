@@ -5,7 +5,7 @@ import { useAuth } from "./auth";
 import { useXpDays } from "./stats";
 import { useLearnedTerms, learnedIdSet } from "./termQueries";
 import { useQuizResults, lastSaturday } from "./quiz";
-import { autoCloseMissed, mintSalary, newFarm, type FarmState } from "./farm";
+import { autoCloseMissed, mintSalary, newFarm, normalizeFarm, type FarmState } from "./farm";
 
 export function useFarmState() {
   const { session } = useAuth();
@@ -16,7 +16,7 @@ export function useFarmState() {
       const { data, error } = await supabase!.from("game_state").select("state").maybeSingle();
       if (error) throw error;
       const raw = data?.state as Partial<FarmState> | undefined;
-      return raw && raw.version === 1 ? (raw as FarmState) : null;
+      return raw && raw.version === 1 ? normalizeFarm(raw as FarmState) : null;
     },
   });
 }
