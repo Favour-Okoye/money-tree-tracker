@@ -86,10 +86,10 @@ export function MoneyTree({ xp }: { xp: number }) {
       {stage >= 3 && stage <= 5 && (
         <g className="tree-sway">
           <path d="M93 158 C93 132 90 118 85 104 L100 96 L115 104 C110 118 107 132 107 158 Z" fill="#8a5a2b" />
-          <circle cx="100" cy="78" r={stage >= 4 ? 42 : 36} fill={canopyMain} />
-          <circle cx="70" cy="94" r={stage >= 4 ? 27 : 22} fill={canopyLight} />
-          <circle cx="130" cy="94" r={stage >= 4 ? 27 : 22} fill={canopyDark} />
-          <circle cx="100" cy="58" r={stage >= 4 ? 28 : 23} fill={canopyLight} />
+          <circle className="leaf" cx="100" cy="78" r={stage >= 4 ? 42 : 36} fill={canopyMain} />
+          <circle className="leaf" cx="70" cy="94" r={stage >= 4 ? 27 : 22} fill={canopyLight} />
+          <circle className="leaf" cx="130" cy="94" r={stage >= 4 ? 27 : 22} fill={canopyDark} />
+          <circle className="leaf" cx="100" cy="58" r={stage >= 4 ? 28 : 23} fill={canopyLight} />
           {stage >= 4 && (
             <>
               <Coin x={78} y={80} />
