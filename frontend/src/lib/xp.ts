@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 import { brusselsDay } from "./format";
 
 export const XP_POINTS = {
-  watch_video: 10,
+  watch_video: 15, // default tier; see watchPoints()
   engage_video: 5,
   write_note: 15,
   finish_chapter: 20,
@@ -19,6 +19,15 @@ export const XP_POINTS = {
 } as const;
 
 export type XpAction = keyof typeof XP_POINTS;
+
+/** Watching rewards effort: a short, a normal video, or a podcast-length one. */
+export const WATCH_XP = { short: 10, video: 15, podcast: 30 } as const;
+
+export function watchPoints(durationS: number | null | undefined, isShort: boolean | null | undefined): number {
+  if (isShort || (durationS != null && durationS <= 62)) return WATCH_XP.short;
+  if (durationS != null && durationS > 3600) return WATCH_XP.podcast;
+  return WATCH_XP.video;
+}
 
 /**
  * Append to the XP ledger. The DB's partial unique index on

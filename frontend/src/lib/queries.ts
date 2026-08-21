@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./supabase";
 import { useAuth } from "./auth";
-import { award } from "./xp";
+import { award, awardCustom, watchPoints } from "./xp";
 import type { MediaStatusRow, MediaType, NoteRow, WatchStatus } from "./types";
 
 export type StatusMap = Record<string, MediaStatusRow>;
@@ -34,6 +34,8 @@ export interface StatusPatch {
   liked?: boolean;
   commented?: boolean;
   rating?: number | null;
+  durationS?: number | null;
+  isShort?: boolean | null;
 }
 
 function mergePatch(existing: MediaStatusRow | undefined, patch: StatusPatch): MediaStatusRow {
@@ -68,11 +70,11 @@ export function useUpdateStatus() {
       if (error) throw error;
 
       if (patch.status === "watched" && existing?.status !== "watched") {
-        await award(
-          patch.mediaType === "hub_resource" ? "complete_training" : "watch_video",
-          patch.mediaType,
-          patch.mediaId
-        );
+        if (patch.mediaType === "hub_resource") {
+          await award("complete_training", patch.mediaType, patch.mediaId);
+        } else {
+          await awardCustom("watch_video", patch.mediaType, patch.mediaId, watchPoints(patch.durationS, patch.isShort));
+        }
       }
       if ((patch.liked && !existing?.liked) || (patch.commented && !existing?.commented)) {
         await award("engage_video", patch.mediaType, patch.mediaId);

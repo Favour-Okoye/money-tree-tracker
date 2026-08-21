@@ -5,6 +5,7 @@ import { useAddNote, useNotes, useStatuses, useUpdateStatus, statusKey } from ".
 import { useAddActionItem } from "../lib/bookQueries";
 import { useAuth } from "../lib/auth";
 import { brusselsDay } from "../lib/format";
+import { watchPoints } from "../lib/xp";
 import { supabaseConfigured } from "../lib/supabase";
 import { fmtDate, fmtDuration } from "../lib/format";
 import { EmptyState } from "../components/EmptyState";
@@ -58,7 +59,11 @@ export function VideoDetail() {
 
   const patch = (p: Parameters<typeof updateStatus.mutate>[0]) => {
     if (!canTrack) return;
-    updateStatus.mutate(p);
+    updateStatus.mutate({
+      durationS: video?.duration_s ?? appearance?.duration_s ?? null,
+      isShort: video?.is_short ?? false,
+      ...p,
+    });
   };
 
   const saveAction = (e: FormEvent) => {
@@ -168,7 +173,9 @@ export function VideoDetail() {
                     : "bg-white text-stone-500 ring-1 ring-green-100"
                 }`}
               >
-                {opt.label}
+                {opt.value === "watched" && status?.status !== "watched"
+                  ? `${opt.label} (+${watchPoints(video?.duration_s ?? appearance?.duration_s ?? null, video?.is_short ?? false)} XP)`
+                  : opt.label}
               </button>
             ))}
           </div>
