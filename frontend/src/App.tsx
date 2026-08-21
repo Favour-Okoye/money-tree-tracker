@@ -6,11 +6,11 @@ import { Library } from "./pages/Library";
 import { VideoDetail } from "./pages/VideoDetail";
 import { Login } from "./pages/Login";
 import { More } from "./pages/More";
-import { ComingSoon } from "./pages/ComingSoon";
 import { Books } from "./pages/Books";
 import { BookDetail } from "./pages/BookDetail";
 import { Tasks } from "./pages/Tasks";
 import { Social } from "./pages/Social";
+import { Moves } from "./pages/Moves";
 
 const queryClient = new QueryClient();
 
@@ -29,10 +29,7 @@ export default function App() {
               <Route path="/books/:slug" element={<BookDetail />} />
               <Route path="/tasks" element={<Tasks />} />
               <Route path="/social" element={<Social />} />
-              <Route
-                path="/moves"
-                element={<ComingSoon emoji="🚀" title="Her Moves & events" phase="Phase 4" />}
-              />
+              <Route path="/moves" element={<Moves />} />
               <Route path="/more" element={<More />} />
               <Route path="*" element={<Navigate to="/library" replace />} />
             </Route>

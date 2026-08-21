@@ -56,9 +56,6 @@ export function More() {
       <section className="mt-4 rounded-2xl bg-white p-4 text-xs text-stone-500 ring-1 ring-green-100">
         <h2 className="font-black text-stone-600">🗺️ Coming next</h2>
         <ul className="mt-1 list-inside list-disc space-y-0.5">
-          <li>📗 Books &amp; chapter notes with action items (Phase 2)</li>
-          <li>✅ WhatsApp assignments &amp; due dates (Phase 3)</li>
-          <li>🚀 Her Moves — events &amp; programs with countdowns (Phase 4)</li>
           <li>🌳 Money tree, XP, streaks &amp; badges dashboard (Phase 5)</li>
         </ul>
       </section>

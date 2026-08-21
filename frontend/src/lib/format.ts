@@ -21,3 +21,10 @@ export function fmtDate(iso: string | null | undefined): string {
 export function brusselsDay(date = new Date()): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Brussels" }).format(date);
 }
+
+/** Whole days from today (Brussels) until a YYYY-MM-DD date; negative = past. */
+export function daysUntil(dateStr: string): number {
+  const target = Date.parse(`${dateStr}T00:00:00Z`);
+  const today = Date.parse(`${brusselsDay()}T00:00:00Z`);
+  return Math.round((target - today) / 86_400_000);
+}
