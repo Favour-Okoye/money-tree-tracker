@@ -7,6 +7,9 @@ import { VideoDetail } from "./pages/VideoDetail";
 import { Login } from "./pages/Login";
 import { More } from "./pages/More";
 import { ComingSoon } from "./pages/ComingSoon";
+import { Books } from "./pages/Books";
+import { BookDetail } from "./pages/BookDetail";
+import { Actions } from "./pages/Actions";
 
 const queryClient = new QueryClient();
 
@@ -21,14 +24,9 @@ export default function App() {
               <Route path="/library" element={<Library />} />
               <Route path="/library/:mediaType/:id" element={<VideoDetail />} />
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/books"
-                element={<ComingSoon emoji="📗" title="Books & reading tracker" phase="Phase 2" />}
-              />
-              <Route
-                path="/tasks"
-                element={<ComingSoon emoji="✅" title="Assignments & action items" phase="Phases 2–3" />}
-              />
+              <Route path="/books" element={<Books />} />
+              <Route path="/books/:slug" element={<BookDetail />} />
+              <Route path="/tasks" element={<Actions />} />
               <Route
                 path="/moves"
                 element={<ComingSoon emoji="🚀" title="Her Moves & events" phase="Phase 4" />}

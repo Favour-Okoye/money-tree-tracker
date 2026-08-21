@@ -2,7 +2,9 @@ import { useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppearances, useCatalog } from "../lib/catalog";
 import { useAddNote, useNotes, useStatuses, useUpdateStatus, statusKey } from "../lib/queries";
+import { useAddActionItem } from "../lib/bookQueries";
 import { useAuth } from "../lib/auth";
+import { brusselsDay } from "../lib/format";
 import { supabaseConfigured } from "../lib/supabase";
 import { fmtDate, fmtDuration } from "../lib/format";
 import { EmptyState } from "../components/EmptyState";
@@ -29,6 +31,9 @@ export function VideoDetail() {
 
   const [body, setBody] = useState("");
   const [takeaways, setTakeaways] = useState("");
+  const addAction = useAddActionItem();
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionDue, setActionDue] = useState("");
 
   const video =
     mediaType === "appearance"
@@ -54,6 +59,25 @@ export function VideoDetail() {
   const patch = (p: Parameters<typeof updateStatus.mutate>[0]) => {
     if (!canTrack) return;
     updateStatus.mutate(p);
+  };
+
+  const saveAction = (e: FormEvent) => {
+    e.preventDefault();
+    if (!actionTitle.trim()) return;
+    addAction.mutate(
+      {
+        title: actionTitle.trim(),
+        dueOn: actionDue || null,
+        sourceType: mediaType,
+        sourceId: id,
+      },
+      {
+        onSuccess: () => {
+          setActionTitle("");
+          setActionDue("");
+        },
+      }
+    );
   };
 
   const saveNote = (e: FormEvent) => {
@@ -187,6 +211,33 @@ export function VideoDetail() {
               ))}
             </span>
           </div>
+
+          <form
+            onSubmit={saveAction}
+            className="mt-4 flex flex-wrap items-center gap-1.5 rounded-2xl bg-amber-50 p-2.5 ring-1 ring-amber-200"
+          >
+            <span className="text-sm">🎯</span>
+            <input
+              value={actionTitle}
+              onChange={(e) => setActionTitle(e.target.value)}
+              placeholder="After this video, I will…"
+              className="min-w-0 flex-1 rounded-xl bg-white px-2.5 py-1.5 text-sm ring-1 ring-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            />
+            <input
+              type="date"
+              value={actionDue}
+              onChange={(e) => setActionDue(e.target.value)}
+              min={brusselsDay()}
+              className="rounded-xl bg-white px-2 py-1.5 text-xs ring-1 ring-amber-100"
+            />
+            <button
+              type="submit"
+              disabled={addAction.isPending || !actionTitle.trim()}
+              className="rounded-full bg-amber-400 px-3 py-1.5 text-xs font-black text-green-900 disabled:opacity-40"
+            >
+              Add
+            </button>
+          </form>
 
           <section className="mt-6">
             <h2 className="text-sm font-black text-green-900">✍️ What did I learn?</h2>
