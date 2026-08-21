@@ -36,7 +36,7 @@ function ResourceNotes({ resource }: { resource: HubResource }) {
           disabled={addNote.isPending || !body.trim()}
           className="mt-1.5 rounded-full bg-green-700 px-3 py-1 text-xs font-black text-white disabled:opacity-40"
         >
-          Save note (+15 XP)
+          {(notesQ.data?.length ?? 0) === 0 ? "Save note (+15 XP)" : "Save another note"}
         </button>
       </form>
       {(notesQ.data ?? []).map((note) => (

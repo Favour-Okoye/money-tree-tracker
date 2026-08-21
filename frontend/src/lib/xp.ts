@@ -49,6 +49,7 @@ export async function award(action: XpAction, refType: string, refId: string): P
     console.warn("xp award failed:", error.message);
     return false;
   }
+  if (!error) announce(XP_POINTS[action]);
   if (action !== "daily_streak_tick") {
     // one activity tick per Brussels-local day, fuels streaks later
     await supabase.from("xp_events").insert({
@@ -82,5 +83,13 @@ export async function awardCustom(
     console.warn("xp awardCustom failed:", error.message);
     return false;
   }
+  if (!error) announce(points);
   return !error;
+}
+
+/** Tell the UI a fresh award landed (XpToast listens). */
+function announce(points: number) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("mt:xp", { detail: { points } }));
+  }
 }

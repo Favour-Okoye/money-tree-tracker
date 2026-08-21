@@ -142,7 +142,7 @@ export function useAddNote() {
         .select("id")
         .single();
       if (error) throw error;
-      await award("write_note", "note", (data as { id: string }).id);
+      await award("write_note", "note_source", `${input.sourceType}:${input.sourceId}`);
       return data;
     },
     onSuccess: (_data, input) => {

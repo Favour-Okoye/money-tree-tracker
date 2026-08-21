@@ -268,7 +268,7 @@ export function VideoDetail() {
                 disabled={addNote.isPending || !body.trim()}
                 className="mt-2 rounded-full bg-green-700 px-4 py-1.5 text-sm font-black text-white shadow transition enabled:hover:bg-green-600 disabled:opacity-40"
               >
-                {addNote.isPending ? "Saving…" : "Save reflection (+15 XP) 🌱"}
+                {addNote.isPending ? "Saving…" : (notesQ.data?.length ?? 0) === 0 ? "Save reflection (+15 XP) 🌱" : "Save another note"}
               </button>
             </form>
 

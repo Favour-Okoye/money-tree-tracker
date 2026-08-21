@@ -119,7 +119,7 @@ export function Dashboard() {
               <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-amber-400" style={{ width: `${progressPct}%` }} />
             </div>
             <p className="mt-1 text-[11px] font-bold text-stone-400">
-              {nextStage.min - xp} XP to {nextStage.name} {nextStage.emoji}
+              {xp} / {nextStage.min} XP · {nextStage.min - xp} more to {nextStage.name} {nextStage.emoji}
             </p>
           </>
         ) : (
