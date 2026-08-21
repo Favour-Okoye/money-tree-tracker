@@ -1,8 +1,19 @@
 {
   "note": "Guest appearances on other channels. Hand-add entries or run `python -m pipeline.radar`.",
-  "generated_at": "2026-08-21T14:12:14Z",
-  "count": 12,
+  "generated_at": "2026-08-21T14:15:58Z",
+  "count": 19,
   "appearances": [
+    {
+      "id": "bb9E1nfuhd4",
+      "title": "WHEN POVERTY BECOMES A MINDSET",
+      "host_show": "Femi Lazarus",
+      "channel_id": "UCgXEDFzk3TwStyRnlUJrMVA",
+      "url": "https://www.youtube.com/watch?v=bb9E1nfuhd4",
+      "published_at": "2026-08-19T00:00:00Z",
+      "duration_s": 5013,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
+    },
     {
       "id": "EPSx_wo6pPY",
       "title": "Grace Ofure Reveals Why Many People Stay Broke and Never Build Wealth",
@@ -26,6 +37,39 @@
       "first_seen_at": "2026-08-21T14:11:00Z"
     },
     {
+      "id": "jtiEkScFfaU",
+      "title": "How I Brainwashed Myself to Be Rich",
+      "host_show": "MostBooked",
+      "channel_id": "UCt5aQ_B2NMhrOjDfTjfTcTg",
+      "url": "https://www.youtube.com/watch?v=jtiEkScFfaU",
+      "published_at": "2026-05-01T00:00:00Z",
+      "duration_s": 1853,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
+      "id": "q2tejiRdaf0",
+      "title": "The Lie Money Coaches Tells You About Investment",
+      "host_show": "KaaTruths",
+      "channel_id": "UCflF8HioIvtxyCiQ8EJWAfg",
+      "url": "https://www.youtube.com/watch?v=q2tejiRdaf0",
+      "published_at": "2026-04-07T00:00:00Z",
+      "duration_s": 6721,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
+      "id": "6qX3tFENnhY",
+      "title": "What Nobody tells you about 9-5",
+      "host_show": "Femi Lazarus",
+      "channel_id": "UCgXEDFzk3TwStyRnlUJrMVA",
+      "url": "https://www.youtube.com/watch?v=6qX3tFENnhY",
+      "published_at": "2026-03-28T00:00:00Z",
+      "duration_s": 4386,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
       "id": "jWPvDkd8o94",
       "title": "SHECAN DO MORE PODCAST WITH GRACE OFURE:MIND SHIFT",
       "host_show": "SheCan Nigeria",
@@ -35,6 +79,17 @@
       "duration_s": 3930,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "qpDgkE7oSME",
+      "title": "Demolitions in Nigeria A Consequence of Real Estate Missteps - Ibhakhomu",
+      "host_show": "Arise News",
+      "channel_id": "UCyEJX-kSj0kOOCS7Qlq2G7g",
+      "url": "https://www.youtube.com/watch?v=qpDgkE7oSME",
+      "published_at": "2026-02-20T00:00:00Z",
+      "duration_s": 785,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
     },
     {
       "id": "dSECZ4SMrLY",
@@ -57,6 +112,28 @@
       "duration_s": 1001,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "f1sov7sL0BQ",
+      "title": "This Nigerian Woman Bought 500 Acres and Built 100 Homes with NOTHING!",
+      "host_show": "WODE MAYA",
+      "channel_id": "UClwrpH_Np9zk8uMwnMwu8Nw",
+      "url": "https://www.youtube.com/watch?v=f1sov7sL0BQ",
+      "published_at": "2025-12-29T00:00:00Z",
+      "duration_s": 1343,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
+      "id": "hfqMKTE5bAY",
+      "title": "The Money Farmer Exposes Her Secrets to Wealth & Success + The Truth About Dubai Real Estate.",
+      "host_show": "Winnie's School of Excellence",
+      "channel_id": "UCeK9KfGZWMXp403ReCsJvUQ",
+      "url": "https://www.youtube.com/watch?v=hfqMKTE5bAY",
+      "published_at": "2025-10-26T00:00:00Z",
+      "duration_s": 3964,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:13:11Z"
     },
     {
       "id": "8gSOCos_QD4",
