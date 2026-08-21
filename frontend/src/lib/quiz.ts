@@ -11,7 +11,7 @@ import type { StatusMap } from "./queries";
 
 export interface QuizQuestion {
   id: string;
-  kind: "recall_watch" | "recall_note" | "recall_term" | "knowledge";
+  kind: "cloze_note" | "cloze_term" | "recall_term" | "knowledge";
   question: string;
   context?: string;
   options: string[];
@@ -109,90 +109,95 @@ export function gradeFor(score: number, total: number): string {
 
 // ---------- quiz construction ----------
 
+const STOPWORDS = new Set(("a about above after again against all also although always am among an and any are as at be because been before being below between both but by can cannot could did do does doing done down during each either enough especially even ever every few for from further had has have having he her here hers herself him himself his how however i if in into is it its itself just least less like many may me might more most much must my myself need neither never no nor not nothing now of off often on once one only onto or other others ought our ours ourselves out over own per perhaps quite rather really same several shall she should since so some something still such than that the their theirs them themselves then there therefore these they this those though through thus to too toward under until up upon us very was we were what whatever when whenever where whether which while who whom whose why will with within without would yes yet you your yours yourself yourselves video videos grace watched watch learned learn thing things people really think thought also going want wants make makes made say says said see seen seeing know knows knew get gets got take takes took give gives gave good great big small today week").split(" "));
+
+const FALLBACK_WORDS = ["asset", "liability", "leverage", "equity", "income", "yield", "capital", "inflation", "compounding", "budget", "discipline", "investment", "property", "business", "mindset", "freedom", "value", "problem", "systems", "patience"];
+
+function clozeFromText(text: string, rnd: () => number, extraPool: string[]): { blanked: string; answer: string; options: string[] } | null {
+  const sentences = text.split(/(?<=[.!?])\s+/).filter((x) => x.trim().length > 0);
+  const candidates: { sentence: string; word: string }[] = [];
+  for (const sentence of sentences) {
+    for (const raw of sentence.split(/\s+/)) {
+      const word = raw.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, "");
+      if (word.length >= 5 && !STOPWORDS.has(word.toLowerCase()) && /^[A-Za-z]+$/.test(word)) {
+        candidates.push({ sentence, word });
+      }
+    }
+  }
+  if (candidates.length === 0) return null;
+  const pick = candidates[Math.floor(rnd() * candidates.length)];
+  const blanked = pick.sentence.replace(new RegExp(`\\b${pick.word}\\b`), "______");
+  const answer = pick.word.toLowerCase();
+  const pool = Array.from(new Set([...extraPool, ...FALLBACK_WORDS].map((w) => w.toLowerCase()).filter((w) => w !== answer && w.length >= 4)));
+  const distractors = shuffle(pool, rnd).slice(0, 3);
+  if (distractors.length < 3) return null;
+  const options = shuffle([answer, ...distractors], rnd);
+  return { blanked: blanked.length > 220 ? `…${blanked.slice(0, 220)}…` : blanked, answer, options };
+}
+
 export function buildQuiz(
   weekKey: string,
-  catalog: Catalog,
-  statuses: StatusMap,
+  _catalog: Catalog,
+  _statuses: StatusMap,
   weekNotes: WeekNote[],
   learnedTermIds: string[] = []
 ): QuizQuestion[] {
   const rnd = seededRandom(weekKey);
   const questions: QuizQuestion[] = [];
-  const { from, to } = weekWindow(weekKey);
-  const videosById = new Map(catalog.videos.map((v) => [v.id, v]));
 
-  const allStatuses = Object.values(statuses);
-  const watchedSet = new Set(
-    allStatuses.filter((s) => s.status === "watched").map((s) => s.media_id)
-  );
-  const watchedThisWeek = allStatuses.filter(
-    (s) =>
-      s.status === "watched" &&
-      s.watched_at &&
-      s.watched_at.slice(0, 10) >= from &&
-      s.watched_at.slice(0, 10) <= to &&
-      videosById.has(s.media_id)
-  );
-  const unwatchedPool = catalog.videos.filter((v) => !watchedSet.has(v.id)).slice(0, 200);
+  // Word pool for distractors: meaningful words from all of this week's notes
+  const notePool = weekNotes
+    .flatMap((n) => n.body.split(/\s+/))
+    .map((w) => w.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, ""))
+    .filter((w) => w.length >= 5 && !STOPWORDS.has(w.toLowerCase()));
 
-  // Up to 2: "which of these did you actually watch?"
-  for (const s of shuffle(watchedThisWeek, rnd).slice(0, 2)) {
-    const title = videosById.get(s.media_id)!.title;
-    const distractors = shuffle(unwatchedPool, rnd)
-      .slice(0, 3)
-      .map((v) => v.title);
-    if (distractors.length < 3) break;
-    const options = shuffle([title, ...distractors], rnd);
+  // Up to 2: fill the blank in YOUR OWN reflection (no titles needed)
+  const richNotes = weekNotes.filter((n) => n.body.split(/\s+/).length >= 8);
+  for (const note of shuffle(richNotes, rnd).slice(0, 2)) {
+    const cloze = clozeFromText(note.body, rnd, notePool);
+    if (!cloze) continue;
     questions.push({
-      id: `watch-${s.media_id}`,
-      kind: "recall_watch",
-      question: "Which of these videos did you ACTUALLY watch this week?",
-      options,
-      correct: options.indexOf(title),
-      explain: "Straight from your own watch history 👀",
+      id: `cloze-${note.id}`,
+      kind: "cloze_note",
+      question: "Fill the blank in your own reflection:",
+      context: `“${cloze.blanked}”`,
+      options: cloze.options,
+      correct: cloze.options.indexOf(cloze.answer),
+      explain: "Your own words from this week — the idea matters, not the video title ✍️",
     });
   }
 
-  // Up to 2: "you wrote this — which video was it about?"
-  const videoNotes = weekNotes.filter(
-    (n) => n.source_type === "video" && n.source_id && videosById.has(n.source_id)
-  );
-  for (const note of shuffle(videoNotes, rnd).slice(0, 2)) {
-    const correctTitle = videosById.get(note.source_id!)!.title;
-    const distractors = shuffle(
-      catalog.videos.filter((v) => v.id !== note.source_id),
-      rnd
-    )
-      .slice(0, 3)
-      .map((v) => v.title);
-    const options = shuffle([correctTitle, ...distractors], rnd);
-    const snippet = note.body.length > 110 ? `${note.body.slice(0, 110)}…` : note.body;
-    questions.push({
-      id: `note-${note.id}`,
-      kind: "recall_note",
-      question: "You wrote this reflection — which video was it about?",
-      context: `“${snippet}”`,
-      options,
-      correct: options.indexOf(correctTitle),
-      explain: "Your own words, your own lesson ✍️",
-    });
-  }
-
-  // Up to 2: Wealth Words you marked as learned (definitions as options)
+  // Up to 2 Wealth Words: blank the term inside its own explanation when it appears there,
+  // otherwise ask for its definition.
   const learnedTerms = learnedTermIds.map((id) => TERM_BY_ID.get(id)).filter((t): t is NonNullable<typeof t> => !!t);
   for (const term of shuffle(learnedTerms, rnd).slice(0, 2)) {
-    const distractors = shuffle(WEALTH_TERMS.filter((t) => t.id !== term.id), rnd)
-      .slice(0, 3)
-      .map((t) => t.short);
-    const options = shuffle([term.short, ...distractors], rnd);
-    questions.push({
-      id: `term-${term.id}`,
-      kind: "recall_term",
-      question: `What does “${term.term}” mean?`,
-      options,
-      correct: options.indexOf(term.short),
-      explain: `${term.explain} (You learned this as a Wealth Word.)`,
-    });
+    const headword = term.term.split(" (")[0];
+    const prose = `${term.explain} ${term.example} ${term.why}`;
+    const sentence = prose.split(/(?<=[.!?])\s+/).find((x) => new RegExp(`\\b${headword}\\b`, "i").test(x));
+    const otherNames = shuffle(WEALTH_TERMS.filter((t) => t.id !== term.id), rnd).slice(0, 3).map((t) => t.term.split(" (")[0]);
+    if (sentence) {
+      const options = shuffle([headword, ...otherNames], rnd);
+      questions.push({
+        id: `term-cloze-${term.id}`,
+        kind: "cloze_term",
+        question: "Which Wealth Word completes this?",
+        context: `“${sentence.replace(new RegExp(`\\b${headword}\\b`, "i"), "______")}”`,
+        options,
+        correct: options.indexOf(headword),
+        explain: `${term.term}: ${term.short}.`,
+      });
+    } else {
+      const distractors = shuffle(WEALTH_TERMS.filter((t) => t.id !== term.id), rnd).slice(0, 3).map((t) => t.short);
+      const options = shuffle([term.short, ...distractors], rnd);
+      questions.push({
+        id: `term-${term.id}`,
+        kind: "recall_term",
+        question: `What does “${term.term}” mean?`,
+        options,
+        correct: options.indexOf(term.short),
+        explain: `${term.explain} (You learned this as a Wealth Word.)`,
+      });
+    }
   }
 
   // 5 knowledge questions, rotating through the bank by ISO week
