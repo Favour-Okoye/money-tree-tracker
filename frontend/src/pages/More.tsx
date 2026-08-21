@@ -2,7 +2,6 @@ const LINKS = [
   { emoji: "▶️", label: "YouTube — Grace Ofure Zone", url: "https://www.youtube.com/@graceofure" },
   { emoji: "📸", label: "Instagram — @grace_ofure", url: "https://www.instagram.com/grace_ofure" },
   { emoji: "📘", label: "Facebook", url: "https://www.facebook.com/gracedofure" },
-  { emoji: "🏛️", label: "Wealth Embassy hub — resources & events", url: "https://hubs.nestuge.com/graceofuregracewealthembassy/resources" },
   { emoji: "🏫", label: "Skool — All Access community (free)", url: "https://www.skool.com/grace-ofure-all-access-1598" },
   { emoji: "📚", label: "Her books", url: "https://www.graceofure.com/grace-ofure-my-books" },
   { emoji: "🔗", label: "Linktree — all her offers", url: "https://linktr.ee/graceofure" },
@@ -21,6 +20,13 @@ export function More() {
         className="mt-3 flex items-center gap-3 rounded-2xl bg-green-700 p-3 text-sm font-black text-white shadow-md transition hover:bg-green-600"
       >
         <span className="text-xl">📸</span> My social log — posts I saw &amp; what I learned
+        <span className="ml-auto">→</span>
+      </Link>
+      <Link
+        to="/hub"
+        className="mt-2 flex items-center gap-3 rounded-2xl bg-green-700 p-3 text-sm font-black text-white shadow-md transition hover:bg-green-600"
+      >
+        <span className="text-xl">🏛️</span> Wealth Embassy hub — trainings &amp; replays
         <span className="ml-auto">→</span>
       </Link>
       <Link

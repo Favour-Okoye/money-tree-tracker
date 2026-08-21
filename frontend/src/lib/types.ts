@@ -39,7 +39,7 @@ export interface AppearancesFile {
   appearances: Appearance[];
 }
 
-export type MediaType = "video" | "appearance" | "podcast_episode";
+export type MediaType = "video" | "appearance" | "podcast_episode" | "hub_resource";
 export type WatchStatus = "queued" | "watching" | "watched" | "skipped";
 
 export interface MediaStatusRow {

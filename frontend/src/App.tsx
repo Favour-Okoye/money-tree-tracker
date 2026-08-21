@@ -13,6 +13,7 @@ import { Social } from "./pages/Social";
 import { Moves } from "./pages/Moves";
 import { Dashboard } from "./pages/Dashboard";
 import { Progress } from "./pages/Progress";
+import { Hub } from "./pages/Hub";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ export default function App() {
             <Route element={<AppShell />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/progress" element={<Progress />} />
+              <Route path="/hub" element={<Hub />} />
               <Route path="/library" element={<Library />} />
               <Route path="/library/:mediaType/:id" element={<VideoDetail />} />
               <Route path="/login" element={<Login />} />

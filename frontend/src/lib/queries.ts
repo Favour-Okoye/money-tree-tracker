@@ -68,7 +68,11 @@ export function useUpdateStatus() {
       if (error) throw error;
 
       if (patch.status === "watched" && existing?.status !== "watched") {
-        await award("watch_video", patch.mediaType, patch.mediaId);
+        await award(
+          patch.mediaType === "hub_resource" ? "complete_training" : "watch_video",
+          patch.mediaType,
+          patch.mediaId
+        );
       }
       if ((patch.liked && !existing?.liked) || (patch.commented && !existing?.commented)) {
         await award("engage_video", patch.mediaType, patch.mediaId);
