@@ -29,6 +29,26 @@ body {
   transform-origin: 50% 100%;
 }
 
+@keyframes seed-bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  35% { transform: translateY(-3px) rotate(3deg); }
+  65% { transform: translateY(-1px) rotate(-2deg); }
+}
+.seed-bob {
+  animation: seed-bob 2.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.twinkle {
+  animation: twinkle 1.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
 @keyframes leaf-rustle {
   0%, 100% { transform: translate(0, 0); }
   28% { transform: translate(1.4px, -0.7px); }
@@ -70,7 +90,9 @@ body {
   .tree-sway,
   .tree-pop,
   .leaf,
-  .coin {
+  .coin,
+  .seed-bob,
+  .twinkle {
     animation: none;
   }
 }

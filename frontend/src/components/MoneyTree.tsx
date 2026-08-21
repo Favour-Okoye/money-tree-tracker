@@ -62,11 +62,14 @@ export function MoneyTree({ xp }: { xp: number }) {
       <ellipse cx="100" cy="158" rx="60" ry="8" fill="#b9e8c8" />
 
       {stage === 0 && (
-        <g {...sway}>
+        <g>
           <ellipse cx="100" cy="150" rx="14" ry="7" fill="#8a5a2b" />
-          <ellipse cx="100" cy="146" rx="7" ry="9" fill="#a16207" />
-          <path d="M96 142 q4 -7 8 0" stroke="#78350f" strokeWidth="1.5" fill="none" />
-          <path d="M128 118 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fde68a" />
+          <g className="seed-bob">
+            <ellipse cx="100" cy="146" rx="7" ry="9" fill="#a16207" />
+            <path d="M96 142 q4 -7 8 0" stroke="#78350f" strokeWidth="1.5" fill="none" />
+          </g>
+          <path className="twinkle" d="M128 118 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fde68a" />
+          <path className="twinkle" style={{ animationDelay: "-0.9s" }} d="M70 128 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" fill="#fde68a" />
         </g>
       )}
 
@@ -105,8 +108,8 @@ export function MoneyTree({ xp }: { xp: number }) {
             <>
               <Coin x={58} y={100} r={9} />
               <Coin x={142} y={98} r={9} />
-              <path d="M146 34 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fef3c7" />
-              <path d="M52 44 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" fill="#fef3c7" />
+              <path className="twinkle" d="M146 34 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fef3c7" />
+              <path className="twinkle" style={{ animationDelay: "-0.7s" }} d="M52 44 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" fill="#fef3c7" />
             </>
           )}
         </g>
@@ -124,7 +127,7 @@ export function MoneyTree({ xp }: { xp: number }) {
           <Coin x={101} y={104} r={9} />
           <SmallTree x={38} golden />
           <SmallTree x={162} golden />
-          <path d="M148 30 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fef3c7" />
+          <path className="twinkle" d="M148 30 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z" fill="#fef3c7" />
         </g>
       )}
     </svg>
