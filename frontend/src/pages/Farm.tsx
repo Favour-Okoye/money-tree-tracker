@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import confetti from "canvas-confetti";
 import { useAuth } from "../lib/auth";
@@ -244,7 +244,8 @@ function MarketDay({
 function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => void }) {
   const exam = state.pendingExam;
   const question = currentExamQuestion(state);
-  const [flash, setFlash] = useState<{ kind: "pass" | "fail"; text: string } | null>(null);
+  const [flash, setFlash] = useState<{ kind: "pass" | "fail"; text: string; course: string } | null>(null);
+  const flashTimer = useRef<number | null>(null);
 
   const shuffled = useMemo(() => {
     if (!exam || !question) return null;
@@ -256,14 +257,15 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
   const answer = (idx: number) => {
     if (!exam || !question || !shuffled) return;
     if (idx === shuffled.correctIdx) {
-      setFlash({ kind: "pass", text: `✅ Correct — level ${exam.level} unlocked. ${question.why}` });
+      setFlash({ kind: "pass", course: exam.course, text: `✅ Correct — level ${exam.level} unlocked. ${question.why}` });
       void confetti({ particleCount: 50, spread: 55, origin: { y: 0.7 }, colors: ["#fbbf24", "#22c55e"] });
       save(answerExam(state, true));
     } else {
-      setFlash({ kind: "fail", text: "❌ Not quite. No charge — think it through and try again." });
+      setFlash({ kind: "fail", course: exam.course, text: "❌ Not quite. No charge — think it through and try again." });
       save(answerExam(state, false));
     }
-    window.setTimeout(() => setFlash(null), 4500);
+    if (flashTimer.current) window.clearTimeout(flashTimer.current);
+    flashTimer.current = window.setTimeout(() => setFlash(null), 60_000);
   };
 
   return (
@@ -324,8 +326,11 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
                 </div>
               </div>
             )}
-            {flash && (mine || (!exam && flash.kind === "pass")) && (
-              <p className={`mt-2 rounded-xl p-2 text-xs font-bold ${flash.kind === "pass" ? "bg-green-50 text-green-800" : "bg-rose-50 text-rose-700"}`}>{flash.text}</p>
+            {flash && flash.course === c.id && (
+              <div className={`mt-2 flex items-start gap-2 rounded-xl p-2 text-xs font-bold ${flash.kind === "pass" ? "bg-green-50 text-green-800" : "bg-rose-50 text-rose-700"}`}>
+                <p className="flex-1">{flash.text}</p>
+                <button onClick={() => setFlash(null)} className="shrink-0 text-stone-400 hover:text-stone-600" aria-label="Dismiss">✕</button>
+              </div>
             )}
           </div>
         );
