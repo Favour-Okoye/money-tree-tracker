@@ -11,6 +11,7 @@ import { useQuizResults, lastSaturday } from "../lib/quiz";
 import { MoneyTree, TREE_STAGES, stageForXp } from "../components/MoneyTree";
 import { SetupBanner } from "../components/SetupBanner";
 import { DailyCards } from "../components/DailyCards";
+import { useFarmState } from "../lib/farmQueries";
 import { brusselsDay, daysUntil, fmtDate } from "../lib/format";
 
 function StatChip({ emoji, label }: { emoji: string; label: string }) {
@@ -31,6 +32,7 @@ export function Dashboard() {
   const actionsQ = useActionItems();
   const assignmentsQ = useAssignments();
   const quizzesQ = useQuizResults();
+  const farmQ = useFarmState();
 
   const catalog = catalogQ.data;
   const latest = (catalog?.videos ?? []).slice(0, 6);
@@ -69,7 +71,8 @@ export function Dashboard() {
   }
 
   const xp = growth.totalXp;
-  const stage = stageForXp(xp);
+  const free = !!farmQ.data?.freedomOn;
+  const stage = stageForXp(xp, free);
   const stageDef = TREE_STAGES[stage];
   const nextStage = TREE_STAGES[stage + 1];
   const progressPct = nextStage
@@ -109,7 +112,7 @@ export function Dashboard() {
       <DailyCards />
 
       <div className="mt-3 rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-green-100">
-        <MoneyTree xp={xp} />
+        <MoneyTree xp={xp} free={free} />
         <p className="text-sm font-black text-green-900">
           {stageDef.emoji} {stageDef.name}
         </p>
@@ -123,7 +126,7 @@ export function Dashboard() {
             </p>
           </>
         ) : (
-          <p className="mt-1 text-[11px] font-bold text-amber-500">Fully grown. Legendary. 🏆</p>
+          <p className="mt-1 text-[11px] font-bold text-amber-500">{free ? "🗽 Financially free — the Orchard is yours." : "Fully grown. Legendary. 🏆"}</p>
         )}
       </div>
 

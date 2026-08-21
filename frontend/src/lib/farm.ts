@@ -158,6 +158,7 @@ export interface FarmState {
   pending: PendingMarket | null;
   freedomOn: string | null;
   badges: string[];
+  pops?: Record<string, string>; // day -> result text, once resolved
 }
 
 // ---------- helpers ----------
@@ -754,6 +755,48 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     badges,
     history: [report, ...closed.history].slice(0, 60),
     log: [{ month: p.month, text: `Month ${p.month} closed: rent €${rent}, costs €${upkeep + instalments + living}`, amount: net }, ...closed.log].slice(0, 40),
+  };
+}
+
+// ---------- daily pops: tiny moments, at most one per day, ~40% of days ----------
+
+export interface DailyPop {
+  id: string;
+  emoji: string;
+  text: string;
+  choices: { label: string; cash: number; result: string }[];
+}
+const POPS: DailyPop[] = [
+  { id: "cab", emoji: "🚕", text: "Colleague suggests splitting a cab home instead of the bus.", choices: [{ label: "Cab — €15", cash: -15, result: "Comfortable. €15 gone." }, { label: "Bus", cash: 0, result: "Forty minutes of podcast. Free." }] },
+  { id: "found", emoji: "💶", text: "You find €20 in an old jacket.", choices: [{ label: "Into the farm", cash: 20, result: "Found money invests best: it was never in your budget." }] },
+  { id: "coffee", emoji: "☕", text: "Daily coffee out is €4. Make it at home this week?", choices: [{ label: "Home brew", cash: 12, result: "€12 kept this week. Tiny, repeated, real." }, { label: "Café", cash: -12, result: "Good coffee. €12 lighter." }] },
+  { id: "data", emoji: "📶", text: "Your phone plan auto-renews at €30. A €18 plan does the same.", choices: [{ label: "Switch", cash: 12, result: "€12 a month, forever. Subscriptions are silent landlords." }, { label: "Leave it", cash: 0, result: "Convenience has a price." }] },
+  { id: "aunt", emoji: "📱", text: "An auntie sends a 'small gift' of €50 for your graduation.", choices: [{ label: "Thank her, invest it", cash: 50, result: "Gifts planted grow into gifts given." }] },
+  { id: "delivery", emoji: "🍔", text: "Tired. Delivery is €22; there are ingredients in the fridge.", choices: [{ label: "Cook", cash: 0, result: "Twenty minutes, €22 saved, better sleep." }, { label: "Order", cash: -22, result: "Hot food, €22 gone." }] },
+  { id: "refund", emoji: "🧾", text: "A duplicate charge from last month gets refunded.", choices: [{ label: "Nice", cash: 35, result: "€35 back. Checking statements pays." }] },
+  { id: "sale", emoji: "🛍️", text: "'70% off' on shoes you did not plan to buy.", choices: [{ label: "Buy — €45", cash: -45, result: "A discount on something you did not need is not a saving." }, { label: "Walk past", cash: 0, result: "The best discount is 100%." }] },
+  { id: "tutoring", emoji: "📊", text: "A classmate offers €40 for an hour of Power BI help.", choices: [{ label: "Do it", cash: 40, result: "Skills you own pay without a boss." }] },
+  { id: "parking", emoji: "🅿️", text: "Parking fine in the post: €35.", choices: [{ label: "Pay it", cash: -35, result: "Annoying. Budgeted surprises hurt less." }] },
+  { id: "tenant", emoji: "💬", text: "Your tenant texts: a small repair, €25, or it gets worse.", choices: [{ label: "Fix it now", cash: -25, result: "Small repairs stay small when handled early." }, { label: "Wait", cash: 0, result: "Nothing broke today. Yet." }] },
+  { id: "gig", emoji: "🎤", text: "A friend needs a logo and flyer by tomorrow. €60.", choices: [{ label: "Take the gig", cash: 60, result: "Side income from existing skills. The farm approves." }, { label: "Too busy", cash: 0, result: "Protecting your time is also a choice." }] },
+];
+
+export function todaysPop(state: FarmState, today = brusselsDay()): DailyPop | null {
+  if (state.pops?.[today] !== undefined) return null;
+  const rnd = seededRandom(`${state.startedOn}:pop:${today}`);
+  if (rnd() > 0.4) return null;
+  return POPS[Math.floor(rnd() * POPS.length)];
+}
+
+export function resolvePop(state: FarmState, choiceIdx: number, today = brusselsDay()): FarmState {
+  const pop = todaysPop(state, today);
+  if (!pop) return state;
+  const choice = pop.choices[Math.min(choiceIdx, pop.choices.length - 1)];
+  return {
+    ...state,
+    cash: state.cash + choice.cash,
+    pops: { ...(state.pops ?? {}), [today]: choice.result },
+    log: [{ month: state.month, text: `${pop.emoji} ${choice.label}: ${choice.result}`, amount: choice.cash || undefined }, ...state.log].slice(0, 40),
   };
 }
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { todaysTerm, useLearnedTerms } from "../lib/termQueries";
 import { useFarmState } from "../lib/farmQueries";
-import { livingCost, marketIsDue, passiveIncome } from "../lib/farm";
+import { livingCost, marketIsDue, passiveIncome, todaysPop } from "../lib/farm";
 
 const eur = (n: number) => `€${Math.round(n).toLocaleString("en-GB")}`;
 
@@ -25,7 +25,7 @@ export function DailyCards() {
           <>
             <p className="mt-1 text-sm font-black">{eur(farm.cash)} cash</p>
             <p className={`text-[11px] font-bold ${marketIsDue(farm) ? "text-amber-300" : "text-stone-400"}`}>
-              {marketIsDue(farm) ? "Market Day waiting! →" : `${eur(passiveIncome(farm))}/${eur(livingCost(farm))} passive`}
+              {marketIsDue(farm) ? "Market Day waiting! →" : todaysPop(farm) ? "something happened today →" : `${eur(passiveIncome(farm))}/${eur(livingCost(farm))} passive`}
             </p>
           </>
         ) : (

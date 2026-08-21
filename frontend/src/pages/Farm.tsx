@@ -28,8 +28,10 @@ import {
   passiveIncome,
   prepareMarket,
   resolveEvent,
+  resolvePop,
   sellAsset,
   takeLoan,
+  todaysPop,
   type FarmState,
   type MonthReport,
 } from "../lib/farm";
@@ -379,6 +381,7 @@ export function Farm() {
   const loanCap = maxLoan(s);
   const canLoan = farm.learned.has("leverage");
   const latestMint = s.log.find((l) => l.text.startsWith("Salary minted"));
+  const pop = todaysPop(s);
 
   return (
     <div>
@@ -409,6 +412,28 @@ export function Farm() {
           Credit score {s.creditScore} · market mood ×{s.marketMood.toFixed(2)}
         </p>
       </div>
+
+      {s.freedomOn && (
+        <div className="mt-3 rounded-3xl bg-gradient-to-r from-amber-300 to-green-500 p-4 text-center shadow-md">
+          <p className="text-3xl">🗽</p>
+          <p className="text-sm font-black text-green-950">Financially free since {fmtDate(s.freedomOn)}</p>
+          <p className="text-[11px] font-bold text-green-900/80">Passive income covers your living costs. Work is optional. The Orchard is growing.</p>
+        </div>
+      )}
+
+      {pop && (
+        <div className="mt-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-amber-200">
+          <p className="text-[10px] font-black uppercase tracking-wide text-amber-600">Today</p>
+          <p className="mt-0.5 text-sm font-bold text-stone-800">{pop.emoji} {pop.text}</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {pop.choices.map((c, i) => (
+              <button key={i} onClick={() => farm.save(resolvePop(s, i))} className="rounded-full bg-green-700 px-3 py-1 text-xs font-black text-white">
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-3">
         <MarketDay state={s} learned={farm.learned} quizGrade={farm.quizGrade} save={farm.save} />

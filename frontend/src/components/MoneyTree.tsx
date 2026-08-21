@@ -10,7 +10,8 @@ export const TREE_STAGES = [
   { min: 6000, name: "Orchard", emoji: "🌳🌳" },
 ] as const;
 
-export function stageForXp(xp: number): number {
+export function stageForXp(xp: number, financiallyFree = false): number {
+  if (financiallyFree) return TREE_STAGES.length - 1; // the Orchard is earned by freedom, not XP
   let stage = 0;
   for (let i = 0; i < TREE_STAGES.length; i++) if (xp >= TREE_STAGES[i].min) stage = i;
   return stage;
@@ -46,8 +47,8 @@ function SmallTree({ x, golden }: { x: number; golden: boolean }) {
 }
 
 /** The mascot. Grows through 7 stages as lifetime XP accumulates. */
-export function MoneyTree({ xp }: { xp: number }) {
-  const stage = stageForXp(xp);
+export function MoneyTree({ xp, free = false }: { xp: number; free?: boolean }) {
+  const stage = stageForXp(xp, free);
   const golden = stage >= 5;
   const canopyMain = golden ? "#facc15" : "#22c55e";
   const canopyLight = golden ? "#fde047" : "#34d873";
