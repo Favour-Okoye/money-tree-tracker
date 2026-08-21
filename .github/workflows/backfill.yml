@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "backfill (initial) or enrich (refresh dates/durations, heal gaps)"
+        description: "enrich (dates/durations + guest radar), backfill (initial), or radar only"
         type: choice
-        options: [enrich, backfill]
+        options: [enrich, backfill, radar]
         default: enrich
   schedule:
     - cron: "0 6 1 * *" # monthly: exact dates/durations, removed flags, gap-heal
@@ -34,8 +34,11 @@ jobs:
         run: |
           if [ "${{ inputs.mode || 'enrich' }}" = "backfill" ]; then
             python -m pipeline.backfill_api
+          elif [ "${{ inputs.mode || 'enrich' }}" = "radar" ]; then
+            python -m pipeline.radar
           else
             python -m pipeline.enrich
+            python -m pipeline.radar
           fi
 
       - name: Commit
@@ -43,4 +46,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
-          git diff --cached --quiet || (git commit -m "data: API enrich (dates, durations, removed flags)" && git push)
+          git diff --cached --quiet || (git commit -m "data: API enrich + guest radar" && git push)

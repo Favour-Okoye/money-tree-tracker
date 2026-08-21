@@ -30,6 +30,9 @@ export interface Appearance {
   host_show: string;
   url: string;
   published_at: string | null;
+  duration_s?: number | null;
+  source?: string;          // 'manual' | 'radar'
+  first_seen_at?: string;
 }
 
 export interface AppearancesFile {

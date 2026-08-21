@@ -1,19 +1,139 @@
 {
-  "note": "Guest appearances on other channels. Hand-maintained: add entries here and commit.",
+  "note": "Guest appearances on other channels. Hand-add entries or run `python -m pipeline.radar`.",
+  "generated_at": "2026-08-21T14:12:14Z",
+  "count": 12,
   "appearances": [
+    {
+      "id": "EPSx_wo6pPY",
+      "title": "Grace Ofure Reveals Why Many People Stay Broke and Never Build Wealth",
+      "host_show": "Morayo Afolabi-Brown",
+      "channel_id": "UCoUAfKw7z7zMRfZG5WqZLZA",
+      "url": "https://www.youtube.com/watch?v=EPSx_wo6pPY",
+      "published_at": "2026-07-21T00:00:00Z",
+      "duration_s": 1078,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "460tkhElT2E",
+      "title": "9-5 IS NOT A SCAM || APOSTLE FEMI LAZARUS AND GRACE OFURE",
+      "host_show": "LIGHT BEARER'S TV",
+      "channel_id": "UCHR1dVLPXtrTAp5aXO0E3Lw",
+      "url": "https://www.youtube.com/watch?v=460tkhElT2E",
+      "published_at": "2026-07-03T00:00:00Z",
+      "duration_s": 2166,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "jWPvDkd8o94",
+      "title": "SHECAN DO MORE PODCAST WITH GRACE OFURE:MIND SHIFT",
+      "host_show": "SheCan Nigeria",
+      "channel_id": "UCmz7k8UCxndcj-ngr7KWmZw",
+      "url": "https://www.youtube.com/watch?v=jWPvDkd8o94",
+      "published_at": "2026-02-26T00:00:00Z",
+      "duration_s": 3930,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "dSECZ4SMrLY",
+      "title": "Grace Ofure’s Opinion on Value, Building Wealth & Sustaining Relationships | Dear Ife Series Podcast",
+      "host_show": "Diary of A Naija Girl",
+      "channel_id": "UCdyPRnlJk9HEddUFBHILLdw",
+      "url": "https://www.youtube.com/watch?v=dSECZ4SMrLY",
+      "published_at": "2026-01-23T00:00:00Z",
+      "duration_s": 4905,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "Uml4M0nNOco",
+      "title": "You Need To Change Your Mindset Before You Can Be Successful - Grace Ofure",
+      "host_show": "Morayo Afolabi-Brown",
+      "channel_id": "UCoUAfKw7z7zMRfZG5WqZLZA",
+      "url": "https://www.youtube.com/watch?v=Uml4M0nNOco",
+      "published_at": "2026-01-20T00:00:00Z",
+      "duration_s": 1001,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
     {
       "id": "8gSOCos_QD4",
       "title": "Grace Ofure Gets Real on Money, Men & Power",
       "host_show": "The Honest Bunch Podcast",
+      "channel_id": null,
       "url": "https://www.youtube.com/watch?v=8gSOCos_QD4",
-      "published_at": "2025-10-13T00:00:00Z"
+      "published_at": "2025-10-13T00:00:00Z",
+      "duration_s": null,
+      "source": "manual",
+      "first_seen_at": null
     },
     {
       "id": "HhTSlxHttMU",
       "title": "Is Wealth Really This Simple? Grace Ofure Breaks It Down",
       "host_show": "Jay On Air",
+      "channel_id": null,
       "url": "https://www.youtube.com/watch?v=HhTSlxHttMU",
-      "published_at": "2025-10-11T00:00:00Z"
+      "published_at": "2025-10-11T00:00:00Z",
+      "duration_s": null,
+      "source": "manual",
+      "first_seen_at": null
+    },
+    {
+      "id": "KfKjFqpIv_k",
+      "title": "Bishop Funke Adejumo & Grace Ofure Q&A | SheCan DoMore 6.0",
+      "host_show": "SheCan Nigeria",
+      "channel_id": "UCmz7k8UCxndcj-ngr7KWmZw",
+      "url": "https://www.youtube.com/watch?v=KfKjFqpIv_k",
+      "published_at": "2025-08-13T00:00:00Z",
+      "duration_s": 1140,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "z3RvywzhAfg",
+      "title": "\"How I Make MILLIONS Every Week!\" - GRACE OFURE UNPACKS Women Can Build & Sustain Wealth | YourView",
+      "host_show": "TVC",
+      "channel_id": "UCdjXk1U6hmVpdLNkVrwe_gw",
+      "url": "https://www.youtube.com/watch?v=z3RvywzhAfg",
+      "published_at": "2025-03-31T00:00:00Z",
+      "duration_s": 1402,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "vo5KTzaamns",
+      "title": "Secrets To Building Wealth, Success, And Mastering Sales With Grace Ofure – Selahmeditate Podcast",
+      "host_show": "SelahMeditate",
+      "channel_id": "UCnUmEbZMY-quWrBDBIfxbdQ",
+      "url": "https://www.youtube.com/watch?v=vo5KTzaamns",
+      "published_at": "2024-12-28T00:00:00Z",
+      "duration_s": 4673,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "DnADnhR901M",
+      "title": "How This Real Estate Guru Helps People Build Transgenerational Wealth | Grace Ofure & Omon Odike",
+      "host_show": "Omon's Couch",
+      "channel_id": "UCyJbIvfzLtXZQvE2MF31vXg",
+      "url": "https://www.youtube.com/watch?v=DnADnhR901M",
+      "published_at": "2024-06-20T00:00:00Z",
+      "duration_s": 2813,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "NeO0VaSWjdA",
+      "title": "\"I started a business from the Okrika Shop\" | Grace Ofure",
+      "host_show": "SheCan Nigeria",
+      "channel_id": "UCmz7k8UCxndcj-ngr7KWmZw",
+      "url": "https://www.youtube.com/watch?v=NeO0VaSWjdA",
+      "published_at": "2024-06-03T00:00:00Z",
+      "duration_s": 2476,
+      "source": "radar",
+      "first_seen_at": "2026-08-21T14:11:00Z"
     }
   ]
 }

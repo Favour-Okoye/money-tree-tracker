@@ -32,7 +32,7 @@ Design details worth noting:
 - The poller is **idempotent**: no new videos means a byte-identical file, no commit, no email. Tested in `pipeline/tests/test_diff.py`.
 - `first_seen_at` (pipeline stamp), not `published_at`, drives NEW badges, so a backfill can never explode into 895 false alerts.
 - The XP ledger is append-only with a partial unique index, so the same video can never award points twice.
-- Keyless fallbacks everywhere: yt-dlp backfill when there is no API key, bundled data snapshot when offline, localStorage watermark when signed out.
+- Keyless fallbacks everywhere: yt-dlp backfill and radar when there is no API key, bundled data snapshot when offline, localStorage watermark when signed out.
 
 ## Stack
 
@@ -64,4 +64,5 @@ Personal tracking needs a Supabase project: see [SETUP.md](SETUP.md).
 - [x] **P3** Social and community log, assignments with private PDF storage
 - [x] **P4** Her Moves: events and programmes with countdowns
 - [x] **P5** Dashboard: growing money-tree mascot, streaks, 13 badges, XP chart, confetti, and an unskippable Saturday quiz built partly from the user's own watch history and notes, graded A to F
-- [ ] v2 parking lot: Facebook auto-check, guest-appearance radar, Telegram alerts, Power BI over the Postgres
+- [x] **Guest radar** `pipeline/radar.py` searches YouTube for her appearances on other channels (API in CI, yt-dlp locally) and merges them into the catalogue monthly
+- [ ] v2 parking lot: Facebook auto-check, Telegram alerts, Power BI over the Postgres
