@@ -46,10 +46,22 @@ export function useLearnTerm() {
   });
 }
 
-/** One new word per Brussels day, in curated order. */
+const PIN_KEY = "mt_pinned_term";
+/** The word the user chose to study next, instead of the curated order. */
+export function getPinnedTerm(): string | null {
+  try { return localStorage.getItem(PIN_KEY); } catch { return null; }
+}
+export function setPinnedTerm(id: string | null): void {
+  try {
+    if (id) localStorage.setItem(PIN_KEY, id);
+    else localStorage.removeItem(PIN_KEY);
+  } catch { /* storage unavailable */ }
+}
+
+/** One new word per Brussels day — curated order, unless the user pinned one. */
 export function todaysTerm(
   learned: LearnedTermRow[]
-): { term: WealthTerm; doneToday: boolean } | null {
+): { term: WealthTerm; doneToday: boolean; pinned?: boolean } | null {
   const today = brusselsDay();
   const doneToday = learned.find((r) => r.learned_on === today);
   if (doneToday) {
@@ -57,6 +69,16 @@ export function todaysTerm(
     if (term) return { term, doneToday: true };
   }
   const known = new Set(learned.map((r) => r.term_id));
+  const pinned = getPinnedTerm();
+  if (pinned) {
+    if (known.has(pinned)) {
+      setPinnedTerm(null); // already learned; back to the curated order
+    } else {
+      const term = TERM_BY_ID.get(pinned);
+      if (term) return { term, doneToday: false, pinned: true };
+      setPinnedTerm(null);
+    }
+  }
   const next = WEALTH_TERMS.find((t) => !known.has(t.id));
   return next ? { term: next, doneToday: false } : null;
 }
