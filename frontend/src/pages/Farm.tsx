@@ -32,10 +32,21 @@ import {
   sellAsset,
   takeLoan,
   todaysPop,
+  buyUpgrade,
+  decideFlash,
+  inspectFlash,
+  joinAjo,
+  marketPhase,
+  nextPhaseIn,
+  nextUpgrade,
+  setGoals,
+  AJO_CONTRIBUTION,
+  AJO_MEMBERS,
+  GOALS,
   type FarmState,
   type MonthReport,
 } from "../lib/farm";
-import { fmtDate } from "../lib/format";
+import { brusselsDay as brusselsDayToday, fmtDate } from "../lib/format";
 import { COURSE_TIERS, courseMaxLevel, locateLevel, tiersCompleted } from "../lib/courseBank";
 import { EmptyState } from "../components/EmptyState";
 
@@ -55,11 +66,13 @@ function MarketDay({
   learned,
   quizGrade,
   save,
+  weekData,
 }: {
   state: FarmState;
   learned: Set<string>;
   quizGrade: string | null;
   save: (s: FarmState) => void;
+  weekData: { xp: number; words: number };
 }) {
   const [report, setReport] = useState<MonthReport | null>(null);
   const p = state.pending;
@@ -229,7 +242,7 @@ function MarketDay({
           <p className="mt-2 text-[11px] text-stone-400">Appreciation, flood checks and title risks are applied when you close.</p>
           <button
             onClick={() => {
-              const next = finalizeMarket(state);
+              const next = finalizeMarket(state, undefined, weekData);
               setReport(next.history[0]);
               save(next);
               if (next.freedomOn && !state.freedomOn) void confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
@@ -366,6 +379,37 @@ function Courses({ state, save }: { state: FarmState; save: (s: FarmState) => vo
   );
 }
 
+function GoalPicker({ state, save }: { state: FarmState; save: (s: FarmState) => void }) {
+  const [picked, setPicked] = useState<string[]>([]);
+  const toggle = (id: string) =>
+    setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length < 2 ? [...p, id] : p));
+  return (
+    <div className="mt-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-green-100">
+      <p className="text-sm font-black text-stone-800">🎯 Pick 2 promises for this week</p>
+      <p className="text-[11px] text-stone-400">They settle at Market Day — kept promises pay cash bonuses.</p>
+      <div className="mt-2 flex flex-col gap-1.5">
+        {GOALS.map((g) => (
+          <button
+            key={g.id}
+            onClick={() => toggle(g.id)}
+            className={`flex items-center justify-between rounded-xl p-2 text-left text-xs font-bold ring-1 transition ${picked.includes(g.id) ? "bg-green-50 text-green-900 ring-green-400" : "bg-stone-50 text-stone-600 ring-stone-100"}`}
+          >
+            <span>{g.emoji} {g.label}</span>
+            <span className="shrink-0 text-green-700">+{"€"}{g.bonus}</span>
+          </button>
+        ))}
+      </div>
+      <button
+        disabled={picked.length === 0}
+        onClick={() => save(setGoals(state, picked))}
+        className="mt-2 w-full rounded-full bg-green-700 py-2 text-sm font-black text-white disabled:opacity-40"
+      >
+        Promise it 🤝
+      </button>
+    </div>
+  );
+}
+
 export function Farm() {
   const { session } = useAuth();
   const farm = useFarm();
@@ -382,6 +426,16 @@ export function Farm() {
   const canLoan = farm.learned.has("leverage");
   const latestMint = s.log.find((l) => l.text.startsWith("Salary minted"));
   const pop = todaysPop(s);
+  const sunday = dueSunday(s);
+  const weekFrom = (() => { const d = new Date(`${sunday}T00:00:00Z`); d.setUTCDate(d.getUTCDate() - 7); return d.toISOString().slice(0, 10); })();
+  const weekTo = (() => { const d = new Date(`${sunday}T00:00:00Z`); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
+  const weekData = {
+    xp: farm.xpDays.filter((d) => d.happened_on >= weekFrom && d.happened_on <= weekTo).reduce((n, d) => n + d.points, 0),
+    words: farm.learnedRows.filter((r) => r.learned_on >= weekFrom && r.learned_on <= weekTo).length,
+  };
+  const phase = marketPhase(s.month);
+  const coming = nextPhaseIn(s.month);
+  const flash = s.flash && s.flash.day === brusselsDayToday() && !s.flash.result ? s.flash : null;
 
   return (
     <div>
@@ -397,6 +451,11 @@ export function Farm() {
         <Stat label="cash" value={eur(s.cash)} tone={s.cash < 0 ? "text-rose-600" : "text-green-800"} />
         <Stat label="passive / month" value={eur(passive)} />
         <Stat label="net worth" value={eur(netWorth(s))} />
+      </div>
+
+      <div className="mt-2 flex items-center justify-between rounded-2xl bg-white px-3 py-2 text-[11px] font-bold ring-1 ring-green-100">
+        <span className="text-stone-700">{phase.emoji} {phase.name} season — {phase.blurb}</span>
+        <span className="shrink-0 text-stone-400">{coming.phase.emoji} {coming.phase.name} in {coming.inMonths}mo</span>
       </div>
 
       <div className="mt-3 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-green-100">
@@ -435,8 +494,46 @@ export function Farm() {
         </div>
       )}
 
+      {!s.goals && !s.pending && <GoalPicker state={s} save={farm.save} />}
+      {s.goals && (
+        <div className="mt-3 rounded-2xl bg-white p-3 text-[11px] font-bold text-stone-600 ring-1 ring-green-100">
+          🎯 This week's promises: {s.goals.picks.map((id) => GOALS.find((g) => g.id === id)?.label).filter(Boolean).join(" · ")}
+          <span className="text-stone-400"> — settle on Market Day</span>
+        </div>
+      )}
+
+      {flash && (
+        <div className="mt-3 rounded-2xl bg-amber-50 p-3 shadow-sm ring-2 ring-amber-300">
+          <p className="text-[10px] font-black uppercase tracking-wide text-amber-600">⚡ Flash deal — today only</p>
+          <div className="mt-1 flex items-start justify-between gap-2">
+            <div>
+              <p className="text-sm font-black text-stone-800">{flash.deal.emoji} {flash.deal.title}</p>
+              <p className="text-xs italic text-stone-500">{flash.deal.pitch}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-black text-green-800">{eur(flash.deal.price)}</p>
+              <p className="text-[10px] text-stone-400">{flash.deal.income ? `${eur(flash.deal.income)}/month` : "growth play"}</p>
+            </div>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-bold">
+            {flash.deal.revealed.papers && <span className={`rounded px-1.5 py-0.5 ${flash.deal.hidden.papers === "ok" ? "bg-green-100 text-green-700" : "bg-rose-100 text-rose-700"}`}>{flash.deal.hidden.papers === "ok" ? "📜 Title clean" : "📜 TITLE PROBLEM"}</span>}
+            {flash.deal.revealed.seller && <span className={`rounded px-1.5 py-0.5 ${!flash.deal.hidden.scam ? "bg-green-100 text-green-700" : "bg-rose-100 text-rose-700"}`}>{!flash.deal.hidden.scam ? "🪪 Seller verified" : "🪪 SELLER IS FAKE"}</span>}
+            {flash.deal.revealed.site && <span className={`rounded px-1.5 py-0.5 ${!flash.deal.hidden.flood ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{!flash.deal.hidden.flood ? "📍 Good ground" : "📍 Flood-prone"}</span>}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            <button disabled={!farm.learned.has("title-deed") || !!flash.deal.revealed.papers || s.cash < INSPECT_COST} onClick={() => farm.save(inspectFlash(s, "papers"))} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-stone-600 ring-1 ring-stone-200 disabled:opacity-40">📜 €{INSPECT_COST}</button>
+            <button disabled={!farm.learned.has("due-diligence") || !!flash.deal.revealed.seller || s.cash < INSPECT_COST} onClick={() => farm.save(inspectFlash(s, "seller"))} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-stone-600 ring-1 ring-stone-200 disabled:opacity-40">🪪 €{INSPECT_COST}</button>
+            <button disabled={!farm.learned.has("due-diligence") || !!flash.deal.revealed.site || s.cash < INSPECT_COST} onClick={() => farm.save(inspectFlash(s, "site"))} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-stone-600 ring-1 ring-stone-200 disabled:opacity-40">📍 €{INSPECT_COST}</button>
+            <span className="flex-1" />
+            <button onClick={() => farm.save(decideFlash(s, false))} className="rounded-full bg-stone-200 px-3 py-1 text-[11px] font-black text-stone-600">Pass</button>
+            <button disabled={s.cash < flash.deal.price} onClick={() => farm.save(decideFlash(s, true))} className="rounded-full bg-green-700 px-3 py-1 text-[11px] font-black text-white disabled:opacity-40">Buy</button>
+          </div>
+          <p className="mt-1 text-[10px] text-stone-400">Gone at midnight. Fast deals still deserve slow checks.</p>
+        </div>
+      )}
+
       <div className="mt-3">
-        <MarketDay state={s} learned={farm.learned} quizGrade={farm.quizGrade} save={farm.save} />
+        <MarketDay state={s} learned={farm.learned} quizGrade={farm.quizGrade} save={farm.save} weekData={weekData} />
       </div>
 
       <div className="mt-4 flex gap-2">
@@ -452,19 +549,31 @@ export function Farm() {
           {s.assets.length === 0 && <p className="text-sm text-stone-400">Nothing yet. Visit the shop — a rental room is the classic first move.</p>}
           {s.assets.map((a) => {
             const def = CATALOG.find((c) => c.kind === a.kind)!;
+            const up = nextUpgrade(a);
             return (
-              <div key={a.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-green-100">
-                <span className="text-2xl">{def.emoji}</span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold text-stone-800">{a.name}</p>
-                  <p className="text-[11px] text-stone-400">
-                    worth {eur(a.value)} · {assetIncome(a, s) > 0 ? `+${eur(assetIncome(a, s))}/mo` : def.liability ? `−${eur(def.upkeep)}/mo upkeep` : "no income"}
-                    {a.papers === "bad" && " · 📜 bad papers!"}
-                    {a.papers === "unverified" && " · 📜 unverified"}
-                    {a.flood && " · 🌧️ flood-prone"}
-                  </p>
+              <div key={a.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-green-100">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{def.emoji}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-stone-800">{a.name}{a.upgrades > 0 && <span className="ml-1 text-[10px] font-black text-amber-500">{"★".repeat(a.upgrades)}</span>}</p>
+                    <p className="text-[11px] text-stone-400">
+                      worth {eur(a.value)} · {assetIncome(a, s) > 0 ? `+${eur(assetIncome(a, s))}/mo` : def.liability ? `−${eur(def.upkeep)}/mo upkeep` : "no income"}
+                      {a.papers === "bad" && " · 📜 bad papers!"}
+                      {a.papers === "unverified" && " · 📜 unverified"}
+                      {a.flood && " · 🌧️ flood-prone"}
+                      {a.fenced && " · 🚧 fenced"}
+                    </p>
+                  </div>
+                  <button onClick={() => farm.save(sellAsset(s, a.id))} className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-bold text-stone-500">Sell</button>
                 </div>
-                <button onClick={() => farm.save(sellAsset(s, a.id))} className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-bold text-stone-500">Sell</button>
+                {up && (
+                  <div className="mt-2 flex items-center justify-between gap-2 rounded-xl bg-amber-50/70 p-2">
+                    <p className="text-[11px] font-bold text-stone-600">{up.emoji} {up.name} — {up.desc}</p>
+                    <button disabled={s.cash < up.price} onClick={() => farm.save(buyUpgrade(s, a.id))} className="shrink-0 rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-black text-green-900 disabled:opacity-40">
+                      {eur(up.price)}
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -529,6 +638,25 @@ export function Farm() {
               ))}
             </div>
           )}
+          <div className="mt-4 border-t border-green-50 pt-3">
+            <p className="text-sm font-black text-stone-800">🤲 Ajo circle</p>
+            {s.ajo && !s.ajo.done && !s.ajo.collapsed ? (
+              <p className="mt-1 text-xs text-stone-600">
+                Contributing {eur(AJO_CONTRIBUTION)}/month · month {s.ajo.paidMonths} of {AJO_MEMBERS} · your pot ({eur(AJO_CONTRIBUTION * AJO_MEMBERS)}) arrives in month {s.ajo.position}
+                {s.ajo.received ? " — collected ✓" : ""}
+              </p>
+            ) : (
+              <>
+                <p className="mt-1 text-[11px] text-stone-500">
+                  Six members, {eur(AJO_CONTRIBUTION)} each per month, and every month one member takes the whole {eur(AJO_CONTRIBUTION * AJO_MEMBERS)} pot. Your turn is drawn at random. If someone defaults before your turn… that is counterparty risk.
+                  {s.ajo?.collapsed ? " Your last circle collapsed — join a new one when ready." : s.ajo?.done ? " Your last circle completed — rejoin any time." : ""}
+                </p>
+                <button onClick={() => farm.save(joinAjo(s))} className="mt-2 rounded-full bg-green-700 px-3 py-1.5 text-xs font-black text-white">
+                  Join a circle
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
 

@@ -5,7 +5,7 @@ import { useAuth } from "./auth";
 import { useXpDays } from "./stats";
 import { useLearnedTerms, learnedIdSet } from "./termQueries";
 import { useQuizResults, lastSaturday } from "./quiz";
-import { autoCloseMissed, mintSalary, newFarm, normalizeFarm, type FarmState } from "./farm";
+import { autoCloseMissed, ensureFlash, mintSalary, newFarm, normalizeFarm, type FarmState } from "./farm";
 
 export function useFarmState() {
   const { session } = useAuth();
@@ -74,6 +74,7 @@ export function useFarm() {
     const minted = mintSalary(state, xpDaysQ.data ?? []);
     state = minted.state;
     state = autoCloseMissed(state, learned);
+    state = ensureFlash(state, learned);
     if (!farmQ.data || JSON.stringify(state) !== before) save.mutate(state);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, farmQ.data, xpDaysQ.data]);
@@ -83,6 +84,8 @@ export function useFarm() {
     state: farmQ.data ?? null,
     learned,
     quizGrade,
+    xpDays: xpDaysQ.data ?? [],
+    learnedRows: learnedQ.data ?? [],
     save: (s: FarmState) => save.mutate(s),
     saving: save.isPending,
   };

@@ -74,6 +74,8 @@ export interface OwnedAsset {
   value: number;
   papers: "verified" | "unverified" | "bad" | "n/a";
   flood: boolean;
+  upgrades: number;
+  fenced: boolean;
 }
 export interface Loan {
   id: string;
@@ -159,6 +161,29 @@ export interface FarmState {
   freedomOn: string | null;
   badges: string[];
   pops?: Record<string, string>; // day -> result text, once resolved
+  goals: WeekGoals | null;
+  ajo: AjoState | null;
+  flash: FlashState | null;
+}
+
+export interface WeekGoals {
+  picks: string[];
+  setOn: string;
+  skillsBaseline: number;
+  liabilityBaseline: number;
+}
+export interface AjoState {
+  joinedMonth: number;
+  position: number; // 1..6 — the month you collect the pot
+  paidMonths: number;
+  received: boolean;
+  done: boolean;
+  collapsed: boolean;
+}
+export interface FlashState {
+  day: string;
+  deal: Deal;
+  result: "bought" | "passed" | "scammed" | "expired" | null;
 }
 
 // ---------- helpers ----------
@@ -206,6 +231,9 @@ export function newFarm(today = brusselsDay()): FarmState {
     pendingExam: null,
     prepaid: {},
     examVersion: 2,
+    goals: null,
+    ajo: null,
+    flash: null,
     creditScore: 70,
     marketMood: 1,
     history: [],
@@ -223,15 +251,148 @@ export function marketIsDue(state: FarmState, today = brusselsDay()): boolean {
   return dueSunday(state) <= today;
 }
 
+// ---------- property upgrades ----------
+
+export interface UpgradeDef {
+  name: string;
+  emoji: string;
+  price: number;
+  income: number;
+  upkeep: number;
+  value: number;
+  special?: "fence" | "deflood";
+  desc: string;
+}
+export const UPGRADES: Partial<Record<AssetKind, UpgradeDef[]>> = {
+  room: [
+    { name: "Renovation", emoji: "🛠️", price: 1500, income: 25, upkeep: 0, value: 1000, desc: "Paint, plumbing, tiles — rent +€25/mo" },
+    { name: "Furnishing", emoji: "🛋️", price: 900, income: 15, upkeep: 0, value: 500, desc: "Furnished rooms rent higher — +€15/mo" },
+    { name: "Extra room", emoji: "🧱", price: 3500, income: 45, upkeep: 5, value: 2500, desc: "Build a second room — +€45/mo" },
+  ],
+  shop: [
+    { name: "Better stock", emoji: "📦", price: 800, income: 20, upkeep: 0, value: 400, desc: "+€20/mo" },
+    { name: "Storefront & signage", emoji: "🪧", price: 600, income: 15, upkeep: 0, value: 300, desc: "+€15/mo" },
+    { name: "Hire an assistant", emoji: "🧑‍💼", price: 1200, income: 30, upkeep: 10, value: 0, desc: "+€30/mo, +€10 upkeep — OPT in action" },
+  ],
+  dubai: [
+    { name: "Full furnishing", emoji: "🛋️", price: 4000, income: 120, upkeep: 0, value: 2500, desc: "+€120/mo" },
+    { name: "Short-let licence", emoji: "🔑", price: 2500, income: 180, upkeep: 40, value: 0, desc: "+€180/mo, +€40 upkeep" },
+  ],
+  land: [
+    { name: "Perimeter fence", emoji: "🚧", price: 700, income: 0, upkeep: 0, value: 400, special: "fence", desc: "Halves title-trouble risk" },
+    { name: "Sand-filling", emoji: "🏗️", price: 1200, income: 0, upkeep: 0, value: 800, special: "deflood", desc: "Removes flood risk" },
+  ],
+};
+export function nextUpgrade(asset: OwnedAsset): UpgradeDef | null {
+  return UPGRADES[asset.kind]?.[asset.upgrades] ?? null;
+}
+export function upgradeBonus(asset: OwnedAsset): { income: number; upkeep: number } {
+  const list = UPGRADES[asset.kind] ?? [];
+  let income = 0, upkeep = 0;
+  for (let i = 0; i < asset.upgrades && i < list.length; i++) {
+    income += list[i].income;
+    upkeep += list[i].upkeep;
+  }
+  return { income, upkeep };
+}
+export function buyUpgrade(state: FarmState, assetId: string): FarmState {
+  const asset = state.assets.find((a) => a.id === assetId);
+  const up = asset && nextUpgrade(asset);
+  if (!asset || !up || state.cash < up.price) return state;
+  const improved: OwnedAsset = {
+    ...asset,
+    upgrades: asset.upgrades + 1,
+    value: asset.value + up.value,
+    fenced: up.special === "fence" ? true : asset.fenced,
+    flood: up.special === "deflood" ? false : asset.flood,
+  };
+  return {
+    ...state,
+    cash: state.cash - up.price,
+    assets: state.assets.map((a) => (a.id === assetId ? improved : a)),
+    log: [{ month: state.month, text: `${up.emoji} ${up.name} on ${asset.name}`, amount: -up.price }, ...state.log].slice(0, 40),
+  };
+}
+
+// ---------- market seasons: 3 farm months per phase, cycling ----------
+
+export interface MarketPhase {
+  name: string;
+  emoji: string;
+  rentMult: number;
+  appreciationMult: number;
+  dealMult: number;
+  blurb: string;
+}
+const PHASES: MarketPhase[] = [
+  { name: "Steady", emoji: "⚖️", rentMult: 1, appreciationMult: 1, dealMult: 1, blurb: "Calm waters. Build." },
+  { name: "Boom", emoji: "📈", rentMult: 1.08, appreciationMult: 2, dealMult: 1.1, blurb: "Everything rises — including asking prices." },
+  { name: "Correction", emoji: "📉", rentMult: 0.94, appreciationMult: -0.5, dealMult: 0.85, blurb: "Values dip. Brave buyers go shopping." },
+  { name: "Recovery", emoji: "🌤️", rentMult: 1, appreciationMult: 1.4, dealMult: 0.95, blurb: "The dip is healing. Early buyers smile." },
+];
+export function marketPhase(month: number): MarketPhase {
+  return PHASES[Math.floor((month - 1) / 3) % PHASES.length];
+}
+export function nextPhaseIn(month: number): { phase: MarketPhase; inMonths: number } {
+  const idx = Math.floor((month - 1) / 3) % PHASES.length;
+  return { phase: PHASES[(idx + 1) % PHASES.length], inMonths: 3 - ((month - 1) % 3) };
+}
+
+// ---------- weekly goals: pick 2, settle at the next Market Day ----------
+
+export interface GoalDef {
+  id: string;
+  emoji: string;
+  label: string;
+  bonus: number;
+}
+export const GOALS: GoalDef[] = [
+  { id: "xp150", emoji: "⭐", label: "Earn 150+ XP of learning this week", bonus: 150 },
+  { id: "words5", emoji: "📖", label: "Learn 5 Wealth Words this week", bonus: 120 },
+  { id: "exams2", emoji: "🎓", label: "Pass 2 course exams", bonus: 150 },
+  { id: "quizB", emoji: "🧠", label: "Score B or better on the Saturday quiz", bonus: 120 },
+  { id: "notemptations", emoji: "🙅", label: "Buy no temptations all week", bonus: 80 },
+  { id: "cash500", emoji: "💶", label: "Arrive at Market Day holding €500+", bonus: 80 },
+];
+export function setGoals(state: FarmState, picks: string[], today = brusselsDay()): FarmState {
+  if (state.goals || picks.length === 0 || picks.length > 2) return state;
+  return {
+    ...state,
+    goals: {
+      picks,
+      setOn: today,
+      skillsBaseline: Object.values(state.skills).reduce((a, b) => a + b, 0),
+      liabilityBaseline: state.assets.filter((a) => ASSET_BY_KIND.get(a.kind)?.liability).length,
+    },
+    log: [{ month: state.month, text: `🎯 Goals set: ${picks.length} promise(s) for this week` }, ...state.log].slice(0, 40),
+  };
+}
+
+// ---------- ajo circle ----------
+
+export const AJO_CONTRIBUTION = 100;
+export const AJO_MEMBERS = 6;
+export function joinAjo(state: FarmState): FarmState {
+  if (state.ajo && !state.ajo.done && !state.ajo.collapsed) return state;
+  const rnd = seededRandom(`${state.startedOn}:ajo:${state.month}`);
+  const position = 1 + Math.floor(rnd() * AJO_MEMBERS);
+  return {
+    ...state,
+    ajo: { joinedMonth: state.month, position, paidMonths: 0, received: false, done: false, collapsed: false },
+    log: [{ month: state.month, text: `🤛 Joined an ajo circle: €${AJO_CONTRIBUTION}/month, ${AJO_MEMBERS} members, your turn is month ${position}` }, ...state.log].slice(0, 40),
+  };
+}
+
 export function assetIncome(asset: OwnedAsset, state: FarmState): number {
   const def = ASSET_BY_KIND.get(asset.kind)!;
+  const bonus = upgradeBonus(asset).income;
   switch (asset.kind) {
     case "room":
     case "dubai":
     case "coinvest":
-      return def.income * state.marketMood * (1 + 0.03 * state.skills.realestate);
+      return (def.income + bonus) * state.marketMood * (1 + 0.03 * state.skills.realestate);
     case "shop":
-      return def.income * (1 + 0.1 * state.skills.sales);
+      return (def.income + bonus) * (1 + 0.1 * state.skills.sales);
     case "savings":
       return asset.value * 0.0017;
     default:
@@ -239,7 +400,7 @@ export function assetIncome(asset: OwnedAsset, state: FarmState): number {
   }
 }
 export function assetUpkeep(asset: OwnedAsset): number {
-  return ASSET_BY_KIND.get(asset.kind)!.upkeep;
+  return ASSET_BY_KIND.get(asset.kind)!.upkeep + upgradeBonus(asset).upkeep;
 }
 export function passiveIncome(state: FarmState): number {
   const income = state.assets.reduce((s, a) => s + assetIncome(a, state), 0);
@@ -274,7 +435,18 @@ export function normalizeFarm(raw: FarmState): FarmState {
       log = [{ month: raw.month, text: `${converted} course level(s) converted to prepaid exams — pass them to earn the levels back` }, ...raw.log].slice(0, 40);
     }
   }
-  return { ...raw, skills, prepaid, examVersion: 2, pendingExam: raw.pendingExam ?? null, log };
+  return {
+    ...raw,
+    skills,
+    prepaid,
+    examVersion: 2,
+    pendingExam: raw.pendingExam ?? null,
+    log,
+    goals: raw.goals ?? null,
+    ajo: raw.ajo ?? null,
+    flash: raw.flash ?? null,
+    assets: raw.assets.map((a) => ({ ...a, upgrades: a.upgrades ?? 0, fenced: a.fenced ?? false })),
+  };
 }
 export function netWorth(state: FarmState): number {
   return round(
@@ -332,6 +504,8 @@ export function buyAsset(state: FarmState, def: AssetDef, learned: Set<string> =
     value: def.price,
     papers: def.kind === "land" || def.kind === "room" ? "verified" : "n/a",
     flood: false,
+    upgrades: 0,
+    fenced: false,
   };
   const badges = [...state.badges];
   if (!def.liability && !badges.includes("first_asset")) badges.push("first_asset");
@@ -542,7 +716,7 @@ function drawDeals(state: FarmState, rnd: () => number, learned: Set<string>, co
   for (let i = 0; i < count && pool.length; i++) {
     const t = pool[Math.floor(rnd() * pool.length)];
     const base = t.price[0] + rnd() * (t.price[1] - t.price[0]);
-    const price = round((base * (1 - 0.02 * state.skills.negotiation)) / 50) * 50;
+    const price = round((base * (1 - 0.02 * state.skills.negotiation) * marketPhase(state.month).dealMult) / 50) * 50;
     const income = round(t.income[0] + rnd() * (t.income[1] - t.income[0]));
     out.push({
       id: `${t.title}-${state.month}-${i}`,
@@ -644,6 +818,8 @@ export function decideDeal(state: FarmState, dealIdx: number, buy: boolean): Far
     value: deal.price,
     papers: deal.hidden.papers === "bad" ? "bad" : deal.revealed.papers ? "verified" : "unverified",
     flood: deal.hidden.flood,
+    upgrades: 0,
+    fenced: false,
   };
   dealResult[dealIdx] = "bought";
   const badges = [...state.badges];
@@ -659,11 +835,12 @@ export function decideDeal(state: FarmState, dealIdx: number, buy: boolean): Far
 }
 
 /** Close the month: income, costs, instalments, appreciation, title risks. */
-export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmState {
+export function finalizeMarket(state: FarmState, today = brusselsDay(), weekData: { xp: number; words: number } = { xp: 0, words: 0 }): FarmState {
   const p = state.pending;
   if (!p) return state;
   const rnd = seededRandom(`${state.startedOn}:${p.sunday}:close`);
-  const mood = p.quizGrade ? MOOD_BY_GRADE[p.quizGrade] ?? 1 : state.marketMood;
+  const phase = marketPhase(p.month);
+  const mood = (p.quizGrade ? MOOD_BY_GRADE[p.quizGrade] ?? 1 : 1) * phase.rentMult;
   const working: FarmState = { ...state, marketMood: mood };
   const notes: string[] = [];
 
@@ -675,12 +852,12 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     if (a.kind === "shop") inc = round(inc * (0.5 + rnd()));
     rent += inc;
     upkeep += assetUpkeep(a);
-    let value = round(a.value * (1 + ASSET_BY_KIND.get(a.kind)!.appreciation));
+    let value = round(a.value * (1 + ASSET_BY_KIND.get(a.kind)!.appreciation * phase.appreciationMult));
     if (a.flood && rnd() < 0.15) {
       value = round(value * 0.92);
       notes.push(`${a.name}: flood damage, value -8%`);
     }
-    if (a.papers === "bad" && rnd() < 0.2) {
+    if (a.papers === "bad" && rnd() < (a.fenced ? 0.1 : 0.2)) {
       if (rnd() < 0.5) {
         notes.push(`${a.name}: omo-onile came demanding fees — €300 paid to keep the peace`);
         working.cash -= 300;
@@ -689,7 +866,7 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
         continue;
       }
     }
-    if (a.papers === "unverified" && rnd() < 0.06) {
+    if (a.papers === "unverified" && rnd() < (a.fenced ? 0.03 : 0.06)) {
       notes.push(`${a.name}: a dispute surfaced — pay €200 for a lawyer to regularise the title`);
       working.cash -= 200;
       assets.push({ ...a, value, papers: "verified" });
@@ -711,7 +888,62 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
   }
   rent = round(rent);
   const living = livingCost(working);
-  const net = round(rent - upkeep - instalments - living);
+
+  // goals settle before the books close (cash target judged pre-close)
+  let goalBonus = 0;
+  let goals = working.goals;
+  if (goals) {
+    const skillsNow = Object.values(working.skills).reduce((x, y) => x + y, 0);
+    const liabilitiesNow = working.assets.filter((a) => ASSET_BY_KIND.get(a.kind)?.liability).length;
+    for (const id of goals.picks) {
+      const def = GOALS.find((g) => g.id === id);
+      if (!def) continue;
+      const met =
+        id === "xp150" ? weekData.xp >= 150 :
+        id === "words5" ? weekData.words >= 5 :
+        id === "exams2" ? skillsNow - goals.skillsBaseline >= 2 :
+        id === "quizB" ? p.quizGrade === "A" || p.quizGrade === "B" :
+        id === "notemptations" ? liabilitiesNow <= goals.liabilityBaseline :
+        id === "cash500" ? working.cash >= 500 :
+        false;
+      if (met) {
+        goalBonus += def.bonus;
+        notes.push(`🎯 Goal met — ${def.label}: +€${def.bonus}`);
+      } else {
+        notes.push(`🎯 Goal missed — ${def.label}`);
+      }
+    }
+    goals = null;
+  }
+
+  // ajo circle: contribute, collect on your month, survive the others
+  let ajo = working.ajo;
+  let ajoNet = 0;
+  if (ajo && !ajo.done && !ajo.collapsed) {
+    ajoNet -= AJO_CONTRIBUTION;
+    const paidMonths = ajo.paidMonths + 1;
+    let received = ajo.received;
+    if (paidMonths === ajo.position) {
+      ajoNet += AJO_CONTRIBUTION * AJO_MEMBERS;
+      received = true;
+      notes.push(`🤛 Ajo: your month! Pot collected: +€${AJO_CONTRIBUTION * AJO_MEMBERS} (contribution −€${AJO_CONTRIBUTION})`);
+    } else {
+      notes.push(`🤛 Ajo contribution: −€${AJO_CONTRIBUTION} (month ${paidMonths} of ${AJO_MEMBERS}, your turn: ${ajo.position})`);
+    }
+    if (paidMonths >= AJO_MEMBERS) {
+      ajo = { ...ajo, paidMonths, received, done: true };
+      notes.push("🤛 Ajo circle completed — everyone collected. Trust honoured.");
+    } else if (!received && rnd() < 0.04) {
+      const refund = round(paidMonths * AJO_CONTRIBUTION * 0.6);
+      ajoNet += refund;
+      ajo = { ...ajo, paidMonths, received, collapsed: true };
+      notes.push(`💔 Ajo collapsed — a member defaulted before your turn. Recovered €${refund} of €${paidMonths * AJO_CONTRIBUTION}. Counterparty risk is real.`);
+    } else {
+      ajo = { ...ajo, paidMonths, received };
+    }
+  }
+
+  const net = round(rent - upkeep - instalments - living + goalBonus + ajoNet);
   let cash = working.cash + net;
   if (cash < 0) {
     credit = Math.max(0, credit - 10);
@@ -729,6 +961,8 @@ export function finalizeMarket(state: FarmState, today = brusselsDay()): FarmSta
     month: working.month + 1,
     lastClosedSunday: p.sunday,
     pending: null,
+    goals,
+    ajo,
   };
   const report: MonthReport = {
     month: p.month,
@@ -797,6 +1031,84 @@ export function resolvePop(state: FarmState, choiceIdx: number, today = brussels
     cash: state.cash + choice.cash,
     pops: { ...(state.pops ?? {}), [today]: choice.result },
     log: [{ month: state.month, text: `${pop.emoji} ${choice.label}: ${choice.result}`, amount: choice.cash || undefined }, ...state.log].slice(0, 40),
+  };
+}
+
+// ---------- flash deals: a 24h opportunity on ~1 weekday in 5 ----------
+
+export function ensureFlash(state: FarmState, learned: Set<string>, today = brusselsDay()): FarmState {
+  if (state.flash?.day === today) return state;
+  const dow = new Date(`${today}T00:00:00Z`).getUTCDay();
+  const rnd = seededRandom(`${state.startedOn}:flash:${today}`);
+  if (dow === 0 || dow === 6 || rnd() > 0.2) {
+    return state.flash === null ? state : { ...state, flash: null };
+  }
+  const deal = drawDealsForFlash(state, rnd, learned);
+  if (!deal) return { ...state, flash: null };
+  return {
+    ...state,
+    flash: { day: today, deal, result: null },
+    log: [{ month: state.month, text: `⚡ Flash deal today only: ${deal.title} at €${deal.price.toLocaleString()}` }, ...state.log].slice(0, 40),
+  };
+}
+
+function drawDealsForFlash(state: FarmState, rnd: () => number, learned: Set<string>): Deal | null {
+  const drawn = drawDeals(state, rnd, learned, 1)[0];
+  if (!drawn) return null;
+  return {
+    ...drawn,
+    id: `flash-${drawn.id}`,
+    pitch: `⚡ Today only: ${drawn.pitch}`,
+    price: Math.round((drawn.price * 0.85) / 50) * 50,
+    hidden: { ...drawn.hidden, scam: rnd() < 0.08 },
+  };
+}
+
+export function inspectFlash(state: FarmState, what: "papers" | "seller" | "site"): FarmState {
+  const f = state.flash;
+  if (!f || f.result || state.cash < INSPECT_COST || f.deal.revealed[what]) return state;
+  return {
+    ...state,
+    cash: state.cash - INSPECT_COST,
+    flash: { ...f, deal: { ...f.deal, revealed: { ...f.deal.revealed, [what]: true } } },
+  };
+}
+
+export function decideFlash(state: FarmState, buy: boolean): FarmState {
+  const f = state.flash;
+  if (!f || f.result) return state;
+  if (!buy) return { ...state, flash: { ...f, result: "passed" } };
+  if (state.cash < f.deal.price) return state;
+  if (f.deal.hidden.scam) {
+    return {
+      ...state,
+      cash: state.cash - f.deal.price,
+      creditScore: Math.max(0, state.creditScore - 5),
+      flash: { ...f, result: "scammed" },
+      log: [{ month: state.month, text: `SCAM: flash deal "${f.deal.title}" — too fast, too good. Money gone.`, amount: -f.deal.price }, ...state.log].slice(0, 40),
+    };
+  }
+  const asset: OwnedAsset = {
+    id: `flash-${Date.now().toString(36)}`,
+    kind: f.deal.kind,
+    name: f.deal.title,
+    boughtMonth: state.month,
+    paid: f.deal.price,
+    value: Math.round(f.deal.price / 0.85 / 50) * 50,
+    papers: f.deal.hidden.papers === "bad" ? "bad" : f.deal.revealed.papers ? "verified" : "unverified",
+    flood: f.deal.hidden.flood,
+    upgrades: 0,
+    fenced: false,
+  };
+  const badges = [...state.badges];
+  if (!badges.includes("first_asset")) badges.push("first_asset");
+  return {
+    ...state,
+    cash: state.cash - f.deal.price,
+    assets: [...state.assets, asset],
+    badges,
+    flash: { ...f, result: "bought" },
+    log: [{ month: state.month, text: `⚡ Bought flash deal: ${f.deal.title}`, amount: -f.deal.price }, ...state.log].slice(0, 40),
   };
 }
 
