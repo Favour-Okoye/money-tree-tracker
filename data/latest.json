@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-08-29T01:44:22Z",
-  "count": 901,
+  "generated_at": "2026-08-31T20:49:09Z",
+  "count": 902,
   "videos": [
+    {
+      "id": "_Nk6jBKnYRY",
+      "title": "WHY COUPLES SHOULD INVEST TOGETHER",
+      "published_at": "2026-08-31T17:00:36Z",
+      "first_seen_at": "2026-08-31T20:49:09Z",
+      "thumbnail": "https://i4.ytimg.com/vi/_Nk6jBKnYRY/hqdefault.jpg",
+      "description_snippet": "Building wealth isn't just about making money — it's about investing wisely, protecting your investments, and creating multiple streams of income.\n\nIn this video, Grace Ofure discusses why couples should take investing seriously, why putting investments in a trust can be important for protecting fam",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "zEt7X-rSrOc",
       "title": "Will Nigeria’s New Real Estate License Kill Small Developers? Here’s the Truth",
@@ -352,18 +364,6 @@
       "description_snippet": "Everything you create in life begins with what you consistently see in your mind.\n\nYour future isn’t built on wishful thinking, it is built on a clear vision, the right knowledge, intentional action, and unwavering consistency. The life you desire starts long before you see the results. It begins wi",
       "duration_s": 60,
       "is_short": true,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "_Jcv8N1Kwnc",
-      "title": "WATCH THIS IF YOU WANT TO GET RICH ",
-      "published_at": "2026-07-25T16:28:01Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/_Jcv8N1Kwnc/mqdefault.jpg",
-      "description_snippet": "",
-      "duration_s": 956,
-      "is_short": false,
       "removed": false,
       "source": "api"
     }
