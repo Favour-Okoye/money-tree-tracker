@@ -1,8 +1,74 @@
 {
   "note": "Guest appearances on other channels. Hand-add entries or run `python -m pipeline.radar`.",
-  "generated_at": "2026-08-21T14:15:58Z",
-  "count": 19,
+  "generated_at": "2026-09-01T11:00:20Z",
+  "count": 51,
   "appearances": [
+    {
+      "id": "No5tCmL3Jcw",
+      "title": "You don’t need to be seen everywhere to be impactful 2- @Grace Ofure Ibhakhomu #short",
+      "host_show": "DGreatMindset | Int'l Clips",
+      "channel_id": "UCfezLX7X7KIQqxe1CTRufNw",
+      "url": "https://www.youtube.com/watch?v=No5tCmL3Jcw",
+      "published_at": "2026-08-26T17:13:16Z",
+      "duration_s": 131,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "7ynon1ZPp_0",
+      "title": "You don’t need to be seen everywhere to be impactful - @Grace Ofure. #businessstrategist",
+      "host_show": "DGreatMindset | Int'l Clips",
+      "channel_id": "UCfezLX7X7KIQqxe1CTRufNw",
+      "url": "https://www.youtube.com/watch?v=7ynon1ZPp_0",
+      "published_at": "2026-08-26T16:12:24Z",
+      "duration_s": 151,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "oBVhKvBqofE",
+      "title": "You’re a product of WORTH, be in the right environment. #mypurpose",
+      "host_show": "DGreatMindset | Int'l Clips",
+      "channel_id": "UCfezLX7X7KIQqxe1CTRufNw",
+      "url": "https://www.youtube.com/watch?v=oBVhKvBqofE",
+      "published_at": "2026-08-26T06:00:14Z",
+      "duration_s": 114,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "WI75TVrDurs",
+      "title": "In this powerful episode of Declassified, Femi Lazarus sits down with Grace Ofure",
+      "host_show": "made by God",
+      "channel_id": "UCxzRDJOL8RxabrCBBwmFcgw",
+      "url": "https://www.youtube.com/watch?v=WI75TVrDurs",
+      "published_at": "2026-08-22T11:43:20Z",
+      "duration_s": 41,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "dPNdaIvrCIA",
+      "title": "When poverty becomes a mindset by Declassified podcast Apostle Femi Lazarus with Grace ofure",
+      "host_show": "ANAMNESIS (The Active presence channel).",
+      "channel_id": "UCtXh0MzWFIY3HpUb8ePQ0zg",
+      "url": "https://www.youtube.com/watch?v=dPNdaIvrCIA",
+      "published_at": "2026-08-20T01:54:47Z",
+      "duration_s": 5014,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "PvHerSlLeIw",
+      "title": "You Cannot Be Wealthy Without This One Thing | Grace Ofure — The Money Farmer",
+      "host_show": "Rasheedat Ajibade",
+      "channel_id": "UCNhk6g3pYhf-iOgQE2vF9yw",
+      "url": "https://www.youtube.com/watch?v=PvHerSlLeIw",
+      "published_at": "2026-08-19T17:35:12Z",
+      "duration_s": 65,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
     {
       "id": "bb9E1nfuhd4",
       "title": "WHEN POVERTY BECOMES A MINDSET",
@@ -13,6 +79,28 @@
       "duration_s": 5013,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
+      "id": "of8CQroZPV4",
+      "title": "This conversation with Grace Ofure is a must-listen. Available this Wednesday.",
+      "host_show": "Femi Lazarus",
+      "channel_id": "UCgXEDFzk3TwStyRnlUJrMVA",
+      "url": "https://www.youtube.com/watch?v=of8CQroZPV4",
+      "published_at": "2026-08-17T17:40:42Z",
+      "duration_s": 181,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "NFEGtXwaNkc",
+      "title": "The Money Farmer | Nigerian Woman Reveals the Real Secret to Building Wealth from Zero | R4C Podcast",
+      "host_show": "Rasheedat Ajibade",
+      "channel_id": "UCNhk6g3pYhf-iOgQE2vF9yw",
+      "url": "https://www.youtube.com/watch?v=NFEGtXwaNkc",
+      "published_at": "2026-08-17T17:00:06Z",
+      "duration_s": 5566,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "EPSx_wo6pPY",
@@ -26,6 +114,17 @@
       "first_seen_at": "2026-08-21T14:11:00Z"
     },
     {
+      "id": "AxTEpnEyXaE",
+      "title": "9-5 IS NOT A SCAM PT 2 || APOSTLE FEMI LAZARUS AND GRACE OFURE",
+      "host_show": "LIGHT BEARER'S TV",
+      "channel_id": "UCHR1dVLPXtrTAp5aXO0E3Lw",
+      "url": "https://www.youtube.com/watch?v=AxTEpnEyXaE",
+      "published_at": "2026-07-07T07:00:05Z",
+      "duration_s": 2111,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "460tkhElT2E",
       "title": "9-5 IS NOT A SCAM || APOSTLE FEMI LAZARUS AND GRACE OFURE",
       "host_show": "LIGHT BEARER'S TV",
@@ -35,6 +134,28 @@
       "duration_s": 2166,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "g95aC2c7j_A",
+      "title": "Grace Ofure lbhakhomu,a real estate investment strategist and CEO life card investment company",
+      "host_show": "ablemedia productions",
+      "channel_id": "UCl_fgFYYl0hvx_2zVx4yRzw",
+      "url": "https://www.youtube.com/watch?v=g95aC2c7j_A",
+      "published_at": "2026-06-16T22:10:12Z",
+      "duration_s": 1411,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "OPYJ9lFLHI0",
+      "title": "Some FORMAL steps with Grace Ofure #morayoafolabibrown #themorayoshow #queenoftalk",
+      "host_show": "Morayo Afolabi-Brown",
+      "channel_id": "UCoUAfKw7z7zMRfZG5WqZLZA",
+      "url": "https://www.youtube.com/watch?v=OPYJ9lFLHI0",
+      "published_at": "2026-05-24T11:49:08Z",
+      "duration_s": 54,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "jtiEkScFfaU",
@@ -48,6 +169,28 @@
       "first_seen_at": "2026-08-21T14:13:11Z"
     },
     {
+      "id": "YQ9EJNA9pEk",
+      "title": "You are not wealthy because you’re praying wrong m. Mrs Grace Ofure on the Honest-bunch podcast",
+      "host_show": "The wealthy woman",
+      "channel_id": "UC16uQvUGeHwHnH0M2Lb24zA",
+      "url": "https://www.youtube.com/watch?v=YQ9EJNA9pEk",
+      "published_at": "2026-04-16T22:46:01Z",
+      "duration_s": 85,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "_evukNjpyCQ",
+      "title": "The laws of wealth creation by Grace Ofure #monetizewithdaniel #femilazarus #declassifiedpodcast",
+      "host_show": "Daniel Binchang Bako",
+      "channel_id": "UC_s6x8S5n4HFwKT9DMsENLg",
+      "url": "https://www.youtube.com/watch?v=_evukNjpyCQ",
+      "published_at": "2026-04-13T16:50:01Z",
+      "duration_s": 97,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "q2tejiRdaf0",
       "title": "The Lie Money Coaches Tells You About Investment",
       "host_show": "KaaTruths",
@@ -59,6 +202,17 @@
       "first_seen_at": "2026-08-21T14:13:11Z"
     },
     {
+      "id": "Pqi5aZKEpcA",
+      "title": "Apostle Femi lazarus reaction to Mrs. Grace Ofure!!!😲🤔😂😲💵💵",
+      "host_show": "Christian_clips",
+      "channel_id": "UC-0zUqyPuW6Cv-AHyWspGCQ",
+      "url": "https://www.youtube.com/watch?v=Pqi5aZKEpcA",
+      "published_at": "2026-04-03T17:00:00Z",
+      "duration_s": 77,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "6qX3tFENnhY",
       "title": "What Nobody tells you about 9-5",
       "host_show": "Femi Lazarus",
@@ -68,6 +222,17 @@
       "duration_s": 4386,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:13:11Z"
+    },
+    {
+      "id": "K5AInRKcoBo",
+      "title": "21 Days Routine - Grace Ofure",
+      "host_show": "Lifecard University",
+      "channel_id": "UCa2nPB5_1zikxvK1L5z28hA",
+      "url": "https://www.youtube.com/watch?v=K5AInRKcoBo",
+      "published_at": "2026-03-22T06:05:33Z",
+      "duration_s": 468,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "jWPvDkd8o94",
@@ -103,6 +268,17 @@
       "first_seen_at": "2026-08-21T14:11:00Z"
     },
     {
+      "id": "Sm5gNDpAWqo",
+      "title": "The Morayo Show with Grace Ofure  (S1:EP10)",
+      "host_show": "Morayo Afolabi-Brown",
+      "channel_id": "UCoUAfKw7z7zMRfZG5WqZLZA",
+      "url": "https://www.youtube.com/watch?v=Sm5gNDpAWqo",
+      "published_at": "2026-01-20T11:35:43Z",
+      "duration_s": 4788,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "Uml4M0nNOco",
       "title": "You Need To Change Your Mindset Before You Can Be Successful - Grace Ofure",
       "host_show": "Morayo Afolabi-Brown",
@@ -136,6 +312,39 @@
       "first_seen_at": "2026-08-21T14:13:11Z"
     },
     {
+      "id": "QFQdV03gGbQ",
+      "title": "One lesson I learnt from GRACE OFURE on the Honest bunch podcast @graceofure @glitchafricastudios",
+      "host_show": "Safari Bobo",
+      "channel_id": "UCoVB61CovhU6sO4ET_dgD_Q",
+      "url": "https://www.youtube.com/watch?v=QFQdV03gGbQ",
+      "published_at": "2025-10-25T14:15:54Z",
+      "duration_s": 266,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "G83dQmpnFKE",
+      "title": "“This is why men don’t want to date you”~ Grace Ofure teaches women how to behave #relationship",
+      "host_show": "Real Oga Wife",
+      "channel_id": "UCLWcQSFvEKmu_UK_HCvQ_Qg",
+      "url": "https://www.youtube.com/watch?v=G83dQmpnFKE",
+      "published_at": "2025-10-23T19:51:52Z",
+      "duration_s": 58,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "v56zgbGRB_s",
+      "title": "“9—5 is not a scam” Grace Ofure",
+      "host_show": "Trend TV media",
+      "channel_id": "UCHMGKouN7HsySx7H6xX1WVw",
+      "url": "https://www.youtube.com/watch?v=v56zgbGRB_s",
+      "published_at": "2025-10-14T07:42:28Z",
+      "duration_s": 136,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "8gSOCos_QD4",
       "title": "Grace Ofure Gets Real on Money, Men & Power",
       "host_show": "The Honest Bunch Podcast",
@@ -145,6 +354,39 @@
       "duration_s": null,
       "source": "manual",
       "first_seen_at": null
+    },
+    {
+      "id": "a09yOfKuCCE",
+      "title": "UPNEXT - Grace ofure | Honest Bunch Podcast",
+      "host_show": "Glitch Africa Studios",
+      "channel_id": "UCjzMxK80T1QVR7SbJ5iuC7Q",
+      "url": "https://www.youtube.com/watch?v=a09yOfKuCCE",
+      "published_at": "2025-10-12T15:00:00Z",
+      "duration_s": 118,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "vyVCpZgGGTg",
+      "title": "From Okrika Business to Real Estate Empire | Grace Ofure on the Mindset for Wealth on Jay On Air",
+      "host_show": "Jay On-air TV",
+      "channel_id": "UCsTENPa13UvW0D7HvXQ_DZQ",
+      "url": "https://www.youtube.com/watch?v=vyVCpZgGGTg",
+      "published_at": "2025-10-11T17:19:39Z",
+      "duration_s": 119,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "f5D6VqtQqtg",
+      "title": "GUEST INTERVIEW WITH GRACE OFURE",
+      "host_show": "88.5 UFM",
+      "channel_id": "UCD1RLQtm0ewUMR5-coOMeRg",
+      "url": "https://www.youtube.com/watch?v=f5D6VqtQqtg",
+      "published_at": "2025-10-11T06:04:56Z",
+      "duration_s": 3228,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "HhTSlxHttMU",
@@ -158,6 +400,28 @@
       "first_seen_at": null
     },
     {
+      "id": "awavQjG11DA",
+      "title": "How Grace Ofure Changed My Finances",
+      "host_show": "Lifecard University",
+      "channel_id": "UCa2nPB5_1zikxvK1L5z28hA",
+      "url": "https://www.youtube.com/watch?v=awavQjG11DA",
+      "published_at": "2025-09-18T19:04:59Z",
+      "duration_s": 171,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "mlorsSCgPBY",
+      "title": "She Went From Selling Palm Oil to a Real Estate Billionaire | The Success Story of Grace Ofure",
+      "host_show": "Adeyemi Emmanuel",
+      "channel_id": "UCLObrt515d7MscrgKUMz2ng",
+      "url": "https://www.youtube.com/watch?v=mlorsSCgPBY",
+      "published_at": "2025-08-17T16:34:50Z",
+      "duration_s": 559,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "KfKjFqpIv_k",
       "title": "Bishop Funke Adejumo & Grace Ofure Q&A | SheCan DoMore 6.0",
       "host_show": "SheCan Nigeria",
@@ -167,6 +431,17 @@
       "duration_s": 1140,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "YWrykiwOTwc",
+      "title": "\"I've Never Seen a Powerful Woman with a Powerful Husband!\" – Grace on Wealth & Power in Marriage",
+      "host_show": "TVC",
+      "channel_id": "UCdjXk1U6hmVpdLNkVrwe_gw",
+      "url": "https://www.youtube.com/watch?v=YWrykiwOTwc",
+      "published_at": "2025-03-31T12:53:06Z",
+      "duration_s": 260,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "z3RvywzhAfg",
@@ -180,6 +455,28 @@
       "first_seen_at": "2026-08-21T14:11:00Z"
     },
     {
+      "id": "43je6nDqsOs",
+      "title": "Education Key To Women’s Wealth-building Journey – Grace Ofure + Oler Oladele",
+      "host_show": "Arise News",
+      "channel_id": "UCyEJX-kSj0kOOCS7Qlq2G7g",
+      "url": "https://www.youtube.com/watch?v=43je6nDqsOs",
+      "published_at": "2025-03-08T13:56:24Z",
+      "duration_s": 1273,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "wArQfkRRD9E",
+      "title": "Persistence is the Key to Success | Grace Ofure's Inspiring Journey",
+      "host_show": "SheCan Nigeria",
+      "channel_id": "UCmz7k8UCxndcj-ngr7KWmZw",
+      "url": "https://www.youtube.com/watch?v=wArQfkRRD9E",
+      "published_at": "2025-01-17T12:40:29Z",
+      "duration_s": 125,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
       "id": "vo5KTzaamns",
       "title": "Secrets To Building Wealth, Success, And Mastering Sales With Grace Ofure – Selahmeditate Podcast",
       "host_show": "SelahMeditate",
@@ -189,6 +486,28 @@
       "duration_s": 4673,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "j2uwfwC8Hhw",
+      "title": "This Real Life RAGS TO RICHES Story Will Inspire You + Practical Tips to ACQUIRE WEALTH FAST! #money",
+      "host_show": "Winnie's School of Excellence",
+      "channel_id": "UCeK9KfGZWMXp403ReCsJvUQ",
+      "url": "https://www.youtube.com/watch?v=j2uwfwC8Hhw",
+      "published_at": "2024-12-08T14:00:43Z",
+      "duration_s": 3385,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "Qp6tr-h9GJk",
+      "title": "Wish I learnt this before 30..... Grace Ofure",
+      "host_show": "Conversations With Marvel",
+      "channel_id": "UCd1X0-zjtWYL_WWVg68r6kw",
+      "url": "https://www.youtube.com/watch?v=Qp6tr-h9GJk",
+      "published_at": "2024-10-01T10:26:59Z",
+      "duration_s": 42,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     },
     {
       "id": "DnADnhR901M",
@@ -211,6 +530,39 @@
       "duration_s": 2476,
       "source": "radar",
       "first_seen_at": "2026-08-21T14:11:00Z"
+    },
+    {
+      "id": "GRXT4oNMqu0",
+      "title": "How Grace Ofure is helping Africans in Diaspora to invest in Africa",
+      "host_show": "Lifecard TV",
+      "channel_id": "UCSTchoRcXyEEI0rr84Gv9kw",
+      "url": "https://www.youtube.com/watch?v=GRXT4oNMqu0",
+      "published_at": "2022-03-03T06:30:21Z",
+      "duration_s": 252,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "8lUyhJ0oxxA",
+      "title": "How Grace Ofure is helping Africans in Diaspora to invest back home",
+      "host_show": "Lifecard TV",
+      "channel_id": "UCSTchoRcXyEEI0rr84Gv9kw",
+      "url": "https://www.youtube.com/watch?v=8lUyhJ0oxxA",
+      "published_at": "2022-03-02T10:34:45Z",
+      "duration_s": 319,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
+    },
+    {
+      "id": "4nxe8HqwngE",
+      "title": "How A Nigerian Became A Millionaire In US; Kenyan KFC Potato Drama; Nigeria Missing Weapons; Zambia",
+      "host_show": "Adeola Fayehun",
+      "channel_id": "UCLbiHTTFeFBTvcU_D98PCYw",
+      "url": "https://www.youtube.com/watch?v=4nxe8HqwngE",
+      "published_at": "2022-01-21T18:23:42Z",
+      "duration_s": 1181,
+      "source": "radar",
+      "first_seen_at": "2026-09-01T11:00:13Z"
     }
   ]
 }
