@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-09-04T23:02:19Z",
-  "count": 904,
+  "generated_at": "2026-09-08T16:35:52Z",
+  "count": 905,
   "videos": [
+    {
+      "id": "pmBW_mAzb4Q",
+      "title": "Check description for Registration link",
+      "published_at": "2026-09-08T12:45:59Z",
+      "first_seen_at": "2026-09-08T16:35:52Z",
+      "thumbnail": "https://i1.ytimg.com/vi/pmBW_mAzb4Q/hqdefault.jpg",
+      "description_snippet": "🔥 THE PRAYER CHALLENGE IS BACK!\n\nTestimonies have been pouring in from the last one, and we’re excited to gather again for another powerful time of prayer, sacrifice, and fellowship with God.\n\nThis 12th of September, we’re setting everything else aside to seek God, put Him first, and pray together.\n",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "v9uDtFNj5m8",
       "title": "If You Want to Become Wealthy, Follow These Rules",
@@ -352,18 +364,6 @@
       "description_snippet": "A good salary is great, but earning more doesn’t automatically mean becoming wealthy.\n\nAt New Money Summit 2026 – London Edition, we’re going beyond earning to explore how professionals can think, invest, and build lasting wealth.\n\nYou’ll learn:\n✨ Why high-income earners can still feel financially s",
       "duration_s": 98,
       "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "RCChDZncwUM",
-      "title": "FROM POVERTY TO INFLUENCE",
-      "published_at": "2026-07-28T16:12:28Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/RCChDZncwUM/mqdefault.jpg",
-      "description_snippet": "What if poverty isn’t your identity but your starting point?\n\nIn this powerful message, Grace Ofure shares her journey from wondering where her next meal would come from to becoming influential and financially successful. She explains why wealth begins within, how every person is born with the seed ",
-      "duration_s": 47,
-      "is_short": true,
       "removed": false,
       "source": "api"
     }
