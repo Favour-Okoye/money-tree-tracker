@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-09-08T16:35:52Z",
-  "count": 905,
+  "generated_at": "2026-09-09T20:54:03Z",
+  "count": 906,
   "videos": [
+    {
+      "id": "Eofyg2xKktk",
+      "title": "Fake it till you make it: My opinion",
+      "published_at": "2026-09-09T18:00:10Z",
+      "first_seen_at": "2026-09-09T20:54:03Z",
+      "thumbnail": "https://i2.ytimg.com/vi/Eofyg2xKktk/hqdefault.jpg",
+      "description_snippet": "What does “fake it till you make it” really mean?\n\nIn this powerful conversation, Grace Fay shares her honest opinion on the popular idea of “faking it till you make it” and explains why she believes the phrase is often misunderstood.\n\nFrom sitting in a bank to visualize financial abundance, staying",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "pmBW_mAzb4Q",
       "title": "Check description for Registration link",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/AGY22_Y5Mf4/mqdefault.jpg",
       "description_snippet": "What if the final 60 seconds before you sleep could become an opportunity to change the way you think about yourself, money, and your future?\n\nBefore you go to bed tonight, stop repeating the identity that keeps you stuck. Stop telling yourself that nothing is working, that you are behind, or that y",
       "duration_s": 101,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "aBYLrK2Ihy8",
-      "title": "YOU’RE EARNING. BUT ARE YOU REALLY BUILDING WEALTH?",
-      "published_at": "2026-07-29T09:19:05Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/aBYLrK2Ihy8/mqdefault.jpg",
-      "description_snippet": "A good salary is great, but earning more doesn’t automatically mean becoming wealthy.\n\nAt New Money Summit 2026 – London Edition, we’re going beyond earning to explore how professionals can think, invest, and build lasting wealth.\n\nYou’ll learn:\n✨ Why high-income earners can still feel financially s",
-      "duration_s": 98,
       "is_short": false,
       "removed": false,
       "source": "api"
