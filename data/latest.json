@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-09-09T20:54:03Z",
-  "count": 906,
+  "generated_at": "2026-09-11T16:25:44Z",
+  "count": 907,
   "videos": [
+    {
+      "id": "r3yHcPTZtN4",
+      "title": "Your Timing Could Make All the Difference",
+      "published_at": "2026-09-11T12:23:25Z",
+      "first_seen_at": "2026-09-11T16:25:44Z",
+      "thumbnail": "https://i3.ytimg.com/vi/r3yHcPTZtN4/hqdefault.jpg",
+      "description_snippet": "SOMETHING JUST HAPPENED IN DUBAI AND TIMING MATTERS.\n\nIn wealth creation, when you enter an opportunity can be just as important as the opportunity itself.\n\nI’m hosting an exclusive 30-minute Dubai Property Investment Training for individuals who are serious about exploring property ownership and in",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "Eofyg2xKktk",
       "title": "Fake it till you make it: My opinion",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/CP5bHyG67xg/mqdefault.jpg",
       "description_snippet": "Making money is only the beginning. The real question is: Can you preserve it, multiply it, and transfer it?\n\nIn this powerful conversation, we go beyond the usual conversations about money and motivation to explore the mindset, knowledge, and principles that contribute to building lasting wealth.\n\n",
       "duration_s": 813,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "AGY22_Y5Mf4",
-      "title": "NEVER GO TO SLEEP WITHOUT SAYING THIS TO YOURSELF",
-      "published_at": "2026-07-29T11:36:09Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/AGY22_Y5Mf4/mqdefault.jpg",
-      "description_snippet": "What if the final 60 seconds before you sleep could become an opportunity to change the way you think about yourself, money, and your future?\n\nBefore you go to bed tonight, stop repeating the identity that keeps you stuck. Stop telling yourself that nothing is working, that you are behind, or that y",
-      "duration_s": 101,
       "is_short": false,
       "removed": false,
       "source": "api"
