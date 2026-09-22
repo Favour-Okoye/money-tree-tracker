@@ -4,8 +4,8 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-09-22T11:33:39Z",
-  "count": 912,
+  "generated_at": "2026-09-22T16:54:39Z",
+  "count": 913,
   "videos": [
     {
       "id": "oTpCTrNVuaU",
@@ -14,6 +14,18 @@
       "first_seen_at": "2026-09-22T11:33:39Z",
       "thumbnail": "https://i4.ytimg.com/vi/oTpCTrNVuaU/hqdefault.jpg",
       "description_snippet": "Instead of only asking, “What’s the cheapest property in Dubai?” consider asking, “What’s the smartest way to structure the payment?”\n\nIn this video, Chris discusses payment plans, down payments, and how buyers may structure their funds while a property is being developed.\n\nInterested in learning mo",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
+    {
+      "id": "3C4eknlF_gc",
+      "title": "You Can Be Highly Qualified and Still Struggle at Work, Here’s Why",
+      "published_at": "2026-09-21T19:27:45Z",
+      "first_seen_at": "2026-09-22T16:54:39Z",
+      "thumbnail": "https://i4.ytimg.com/vi/3C4eknlF_gc/hqdefault.jpg",
+      "description_snippet": "Technical skills, qualifications, and experience matter—but so does your ability to understand and manage your emotions and relate effectively with others.\n\nIn this session, discover the five key components of emotional intelligence and how they can transform the way you communicate, handle pressure",
       "duration_s": null,
       "is_short": null,
       "removed": false,
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/O9Aw2XN6kTE/mqdefault.jpg",
       "description_snippet": "A simple \"thank you\" can mean more than words.\n\nThis is the story of someone who came back to share how applying the principles from The Hidden Secrets in Co-Investing transformed her financial journey. She went from owning no land to owning multiple plots in her home country, not by chance, but by ",
       "duration_s": 119,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "wWL8NbooB-0",
-      "title": "THE BIGGEST LIE YOU'VE BEEN TOLD ABOUT REAL ESTATE",
-      "published_at": "2026-08-04T10:19:17Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/wWL8NbooB-0/mqdefault.jpg",
-      "description_snippet": "Can buying one property make you a billionaire?\n\nThe answer may surprise you.\n\nThis video explains the critical difference between investing in real estate and building a business in real estate, a distinction many aspiring investors overlook.\n\nIf you've ever believed that buying a few properties is",
-      "duration_s": 176,
       "is_short": false,
       "removed": false,
       "source": "api"
