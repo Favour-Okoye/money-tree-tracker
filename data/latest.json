@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-10-20T19:12:15Z",
-  "count": 920,
+  "generated_at": "2026-10-21T17:07:50Z",
+  "count": 921,
   "videos": [
+    {
+      "id": "jfqNyaTtmDQ",
+      "title": "How to build a fortune in real estate #realestate #money #business",
+      "published_at": "2026-10-21T17:00:25Z",
+      "first_seen_at": "2026-10-21T17:07:50Z",
+      "thumbnail": "https://i3.ytimg.com/vi/jfqNyaTtmDQ/hqdefault.jpg",
+      "description_snippet": "True wealth creation starts by mastering your mindset regardless of your environment.\n\nI share my personal journey from poverty to success to prove that financial independence is a replicable strategy. Learn why your external circumstances matter less than your internal drive to build lasting assets",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "dVAhGpkAoCo",
       "title": "Why your time is your most valuable currency #timemanagement #success",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/lpSAPtXMADM/mqdefault.jpg",
       "description_snippet": "What if your financial future is determined by more than just how much you earn?\n\nIn this powerful conversation, we explore the mindset and practical principles that can help you move from simply earning money to intentionally building wealth.\n\nYour income is important, but what you do with that inc",
       "duration_s": 103,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "pFleoFU-B8k",
-      "title": "New Money Summit Event",
-      "published_at": "2026-08-13T09:00:36Z",
-      "first_seen_at": "2026-08-20T20:58:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/pFleoFU-B8k/mqdefault.jpg",
-      "description_snippet": "One room. Powerful speakers. High value connections. Join ambitious entrepreneurs, professionals, and investors from around the world at New Money Summit 2026 and build the relationships that can open new opportunities.",
-      "duration_s": 157,
       "is_short": false,
       "removed": false,
       "source": "api"
