@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-10-26T20:27:19Z",
-  "count": 925,
+  "generated_at": "2026-10-27T15:19:12Z",
+  "count": 926,
   "videos": [
+    {
+      "id": "6YZa1hk8wzc",
+      "title": "The Truth About Investing in Lagos Real Estate: A Personal Experience",
+      "published_at": "2026-10-27T10:20:05Z",
+      "first_seen_at": "2026-10-27T15:19:12Z",
+      "thumbnail": "https://i3.ytimg.com/vi/6YZa1hk8wzc/hqdefault.jpg",
+      "description_snippet": "Learn how to approach real estate investments to build a successful property portfolio. See why my personal process remains smooth.\n\nInvesting in property requires a clear strategy and consistent execution. I share my journey of purchasing multiple properties to demonstrate how careful planning lead",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "8OjHJoqjEhg",
       "title": "The Truth About Wealth Creation in Today’s Market",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/SQxhSVN5cBY/mqdefault.jpg",
       "description_snippet": "Welcome to Grace Ofure Zone Channel where i discuss everything Real Estate Investments and Business.\nEnjoy expert takes from the number one real estate investment and business expert in Nigeria.",
       "duration_s": 67,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "5m-3Ezp2eyI",
-      "title": "Dubai untapped potential",
-      "published_at": "2026-08-21T12:00:19Z",
-      "first_seen_at": "2026-08-21T13:09:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/5m-3Ezp2eyI/mqdefault.jpg",
-      "description_snippet": "",
-      "duration_s": 125,
       "is_short": false,
       "removed": false,
       "source": "api"
