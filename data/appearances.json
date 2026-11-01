@@ -1,8 +1,195 @@
 {
   "note": "Guest appearances on other channels. Hand-add entries or run `python -m pipeline.radar`.",
-  "generated_at": "2026-10-01T12:20:00Z",
-  "count": 69,
+  "generated_at": "2026-11-01T12:35:51Z",
+  "count": 88,
   "appearances": [
+    {
+      "id": "NzfaPlK7s8w",
+      "title": "IS GRACE OFURE A SCAM? what really happened - PART 2",
+      "host_show": "Moving To Abuja by Abuja Realty",
+      "channel_id": "UCYc4RfbeE7P2wY2kxFtHjCg",
+      "url": "https://www.youtube.com/watch?v=NzfaPlK7s8w",
+      "published_at": "2026-10-29T08:53:33Z",
+      "duration_s": 2962,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "YsWEmjZqq3o",
+      "title": "Before You Send Another Naira Home: Grace Ofure’s Lifecard Allegations",
+      "host_show": "Sassy Funke",
+      "channel_id": "UCUJB5jUIJcucWe5dTpjvuvQ",
+      "url": "https://www.youtube.com/watch?v=YsWEmjZqq3o",
+      "published_at": "2026-10-26T15:56:37Z",
+      "duration_s": 891,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "0sNJaQHpLbc",
+      "title": "Real Estate Scam in Nigeria | Grace Ofure LifeCard International",
+      "host_show": "Let's Talk About Us with Uche",
+      "channel_id": "UCXuSDM7T--N3yE8dQCfZ7Sw",
+      "url": "https://www.youtube.com/watch?v=0sNJaQHpLbc",
+      "published_at": "2026-10-26T15:11:28Z",
+      "duration_s": 180,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "zJOGNuTTB1U",
+      "title": "Grace Ofure on Her Come-Up, Real Estate, Faith & Everything In Between | EverydayWoman Podcast",
+      "host_show": "Hunter Digital Tv",
+      "channel_id": "UCaLo8EQ-X4sEJQoZcFcGUoA",
+      "url": "https://www.youtube.com/watch?v=zJOGNuTTB1U",
+      "published_at": "2026-10-26T13:26:23Z",
+      "duration_s": 49,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "dzLp00mktVQ",
+      "title": "Customers Share Experience With Grace Ofure's LifeCard",
+      "host_show": "Adeola Fayehun",
+      "channel_id": "UCLbiHTTFeFBTvcU_D98PCYw",
+      "url": "https://www.youtube.com/watch?v=dzLp00mktVQ",
+      "published_at": "2026-10-25T22:13:56Z",
+      "duration_s": 10797,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "bS8tg4Y1-Zo",
+      "title": "GRACE OFURE might be dealing with internal theft issues",
+      "host_show": "Victoria Otakwu",
+      "channel_id": "UC4d-IVj0lo2yV4t5rp_CBBg",
+      "url": "https://www.youtube.com/watch?v=bS8tg4Y1-Zo",
+      "published_at": "2026-10-25T02:45:00Z",
+      "duration_s": 517,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "vwuPFNG4KKI",
+      "title": "Grace ofure is accused of scamming people is this true",
+      "host_show": "Time out with Blessing",
+      "channel_id": "UCxrBiF_0q5bFHNoSWhwePbQ",
+      "url": "https://www.youtube.com/watch?v=vwuPFNG4KKI",
+      "published_at": "2026-10-24T08:19:04Z",
+      "duration_s": 181,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "xCH9JecTws8",
+      "title": "Don’t do business with Grace Ofure, she’s a tiff big one for that matter using church to steal.",
+      "host_show": "Ebere Modestus",
+      "channel_id": "UCgJ6GgKKjLnibICf8wOsD4w",
+      "url": "https://www.youtube.com/watch?v=xCH9JecTws8",
+      "published_at": "2026-10-23T17:47:42Z",
+      "duration_s": 313,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "jSzJXXrOmgw",
+      "title": "Adeola Fayehun & Solomon Buchi speak on their experience with Grace Ofure's Lifecard International.",
+      "host_show": "Theresa Media",
+      "channel_id": "UC1d20asPZ6LTVAdWlVeh6BQ",
+      "url": "https://www.youtube.com/watch?v=jSzJXXrOmgw",
+      "published_at": "2026-10-23T12:47:38Z",
+      "duration_s": 1112,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "2OKcW7leIQ4",
+      "title": "Grace ofure is a tiff and nobody should invest with her",
+      "host_show": "Ebere Modestus",
+      "channel_id": "UCgJ6GgKKjLnibICf8wOsD4w",
+      "url": "https://www.youtube.com/watch?v=2OKcW7leIQ4",
+      "published_at": "2026-10-23T12:07:02Z",
+      "duration_s": 463,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "shwVkVqzcL0",
+      "title": "My Public Disassociation from Mrs. Grace Ofure. I hope that all her victims get justice.",
+      "host_show": "Solomon Buchi Clips",
+      "channel_id": "UCYY5Pjf_XkXCpmnEbvMf6Rw",
+      "url": "https://www.youtube.com/watch?v=shwVkVqzcL0",
+      "published_at": "2026-10-23T08:53:21Z",
+      "duration_s": 169,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "GlAO_mb79d8",
+      "title": "How You Can Get The Attention Of People In Higher Caliber",
+      "host_show": "Jubril Akintunde",
+      "channel_id": "UCb223g7F85bU9cqFqw1AXEg",
+      "url": "https://www.youtube.com/watch?v=GlAO_mb79d8",
+      "published_at": "2026-10-21T18:08:54Z",
+      "duration_s": 300,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "kZCCEh5jb5I",
+      "title": "You Don't Need More Money. You Need This First! | Grace Ofure  #ceedacademy #howtomakemoney",
+      "host_show": "CEED Academy",
+      "channel_id": "UCE93wft-7tRnD7_jkDoE2IQ",
+      "url": "https://www.youtube.com/watch?v=kZCCEh5jb5I",
+      "published_at": "2026-10-19T09:48:35Z",
+      "duration_s": 54,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "nSWZdj5m_qM",
+      "title": "My Experience With Grace Ofure's Lifecard",
+      "host_show": "Adeola Fayehun",
+      "channel_id": "UCLbiHTTFeFBTvcU_D98PCYw",
+      "url": "https://www.youtube.com/watch?v=nSWZdj5m_qM",
+      "published_at": "2026-10-17T20:30:07Z",
+      "duration_s": 4890,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "fa5xxzCGoBo",
+      "title": "3 Habits You Might Have That Can Keep Away You From Succeeding",
+      "host_show": "Jubril Akintunde",
+      "channel_id": "UCb223g7F85bU9cqFqw1AXEg",
+      "url": "https://www.youtube.com/watch?v=fa5xxzCGoBo",
+      "published_at": "2026-10-13T19:29:16Z",
+      "duration_s": 556,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "zpsfIZjuKT4",
+      "title": "GRACE OFURE AT THINKMINT UK REAL ESTATE BRUNCH 2.0 LONDON",
+      "host_show": "Thinkmint Nigeria",
+      "channel_id": "UCSXhEF9eRAWix-bW6ZUbE6g",
+      "url": "https://www.youtube.com/watch?v=zpsfIZjuKT4",
+      "published_at": "2026-10-04T16:43:33Z",
+      "duration_s": 36,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
+    {
+      "id": "FAsQjxeA26Y",
+      "title": "PASTOR GRACE OFURE - POWERFUL PRAYER & CHARGE FOR FINANCIAL BREAKTHROUGH AT ECHOES OF WORSHIP 2.0",
+      "host_show": "Uche Bright Tv",
+      "channel_id": "UC2LXoMlgtgVBsm_D54ksVQQ",
+      "url": "https://www.youtube.com/watch?v=FAsQjxeA26Y",
+      "published_at": "2026-09-28T07:00:06Z",
+      "duration_s": 447,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
+    },
     {
       "id": "PGr6VHsk9kI",
       "title": "Your Mind Won't Work FOR You Until You Work ON It | Intentional + Discipline | EL-ROI2",
@@ -233,6 +420,17 @@
       "duration_s": 429,
       "source": "radar",
       "first_seen_at": "2026-10-01T12:19:54Z"
+    },
+    {
+      "id": "yoJPbMf2V1E",
+      "title": "21 days Routine with Grace Ofure - Testimonial",
+      "host_show": "Lifecard University",
+      "channel_id": "UCa2nPB5_1zikxvK1L5z28hA",
+      "url": "https://www.youtube.com/watch?v=yoJPbMf2V1E",
+      "published_at": "2026-05-31T20:02:48Z",
+      "duration_s": 175,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
     },
     {
       "id": "l-YwFblLWfQ",
@@ -761,6 +959,17 @@
       "duration_s": 1386,
       "source": "radar",
       "first_seen_at": "2026-10-01T12:19:54Z"
+    },
+    {
+      "id": "z1pEkrCpytY",
+      "title": "Conversation with Efa Iwara, Adeola Fayehun & Grace Ofure - Real Estate Investment Plans and More.",
+      "host_show": "Jennifer Confidence",
+      "channel_id": "UCN_rYfwvHolIiYIe1irHg_Q",
+      "url": "https://www.youtube.com/watch?v=z1pEkrCpytY",
+      "published_at": "2021-03-29T15:25:12Z",
+      "duration_s": 563,
+      "source": "radar",
+      "first_seen_at": "2026-11-01T12:35:45Z"
     }
   ]
 }
