@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-11-10T16:59:47Z",
-  "count": 932,
+  "generated_at": "2026-11-11T14:13:00Z",
+  "count": 933,
   "videos": [
+    {
+      "id": "wE3m4PfJXEE",
+      "title": "Why you should never stop your business during a crisis 📉 #businessadvice #resilience",
+      "published_at": "2026-11-11T11:37:37Z",
+      "first_seen_at": "2026-11-11T14:13:00Z",
+      "thumbnail": "https://i4.ytimg.com/vi/wE3m4PfJXEE/hqdefault.jpg",
+      "description_snippet": "Don't stop your business operations during tough economic times.\n\nSmart entrepreneurs know that fundamental human needs like shelter and food create constant demand. Instead of shutting down, use these challenges as opportunities to adapt and solve problems for your clients.\n\nFocusing on growth duri",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "Tvo4XRbKmAE",
       "title": "Why resilience is your greatest asset #motivation #growth #mindset",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/v9uDtFNj5m8/mqdefault.jpg",
       "description_snippet": "Building wealth requires more than earning money. You need the right strategy, discipline, knowledge and financial habits.\n\nIn this video, you'll learn powerful principles for moving from financial survival to wealth creation—including how to build multiple streams of income, avoid toxic debt, inves",
       "duration_s": 601,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "PYdfWCE2uJ4",
-      "title": "Your Money Mindset Is Keeping You Poor",
-      "published_at": "2026-09-01T17:38:40Z",
-      "first_seen_at": "2026-09-01T18:27:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/PYdfWCE2uJ4/mqdefault.jpg",
-      "description_snippet": "What if the biggest thing stopping you from building wealth isn't your income, but the way you think about money?\n\nIn this powerful video, Grace Ofure explains how wealthy people approach money, assets, opportunities, risk, leverage, technology and long-term wealth creation differently.\n\nWhile many ",
-      "duration_s": 644,
       "is_short": false,
       "removed": false,
       "source": "api"
