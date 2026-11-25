@@ -4,9 +4,21 @@
     "handle": "@graceofure",
     "title": "Grace Ofure Zone"
   },
-  "generated_at": "2026-11-24T23:51:58Z",
-  "count": 937,
+  "generated_at": "2026-11-25T19:12:39Z",
+  "count": 938,
   "videos": [
+    {
+      "id": "DprA7catfFk",
+      "title": "What to do when things don't go as planned #wisdom #growth",
+      "published_at": "2026-11-25T13:11:39Z",
+      "first_seen_at": "2026-11-25T19:12:39Z",
+      "thumbnail": "https://i1.ytimg.com/vi/DprA7catfFk/hqdefault.jpg",
+      "description_snippet": "Every season comes with its lessons, and sometimes the experiences we never planned for become the very lessons that equip us to help others.\n\nI choose growth over discouragement, purpose over pressure, and impact over silence. There is still so much work to do, so many lives to touch and so much va",
+      "duration_s": null,
+      "is_short": null,
+      "removed": false,
+      "source": "rss"
+    },
     {
       "id": "IziEUrGPJII",
       "title": "Trust is everything in real estate. #leadership #leadershipskills",
@@ -351,18 +363,6 @@
       "thumbnail": "https://i.ytimg.com/vi/V5fHX5JEdPY/mqdefault.jpg",
       "description_snippet": "Welcome to Grace Ofure Zone Channel where i discuss everything Real Estate Investments and Business.\nEnjoy expert takes from the number one real estate investment and business expert in Nigeria.",
       "duration_s": 299,
-      "is_short": false,
-      "removed": false,
-      "source": "api"
-    },
-    {
-      "id": "7VTXzysq51U",
-      "title": "Building Successful Strategies to Attain Growth and Influence | Become a Producer, Not a Consumer",
-      "published_at": "2026-09-15T17:00:04Z",
-      "first_seen_at": "2026-09-15T21:17:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/7VTXzysq51U/mqdefault.jpg",
-      "description_snippet": "What does it really take to experience growth, influence, productivity, and true prosperity?\n\nIn this powerful teaching, we explore practical and biblical strategies for building a successful life, discovering your value, developing your skills, creating wealth, pursuing ownership, and becoming prod",
-      "duration_s": 1415,
       "is_short": false,
       "removed": false,
       "source": "api"
